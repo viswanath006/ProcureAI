@@ -1,0 +1,54 @@
+{
+  "name": "procureai-backend",
+  "version": "1.0.0",
+  "description": "ProcureAI Backend API - Government Procurement Platform",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "test": "tsx src/scripts/test-auth.ts",
+    "test:auth": "tsx src/scripts/test-auth.ts",
+    "test:tender": "tsx src/scripts/test-tender-lifecycle.ts",
+    "test:eligibility": "tsx src/scripts/test-eligibility-engine.ts",
+    "test:sealed-bids": "tsx src/scripts/test-sealed-bids.ts",
+    "test:ai-eval": "tsx src/scripts/test-ai-evaluation.ts",
+    "test:xai": "tsx src/scripts/test-xai-engine.ts",
+    "test:anomaly": "tsx src/scripts/test-anomaly-detection.ts",
+    "test:decision": "tsx src/scripts/test-decision-system.ts",
+    "test:audit": "tsx src/scripts/test-audit-system.ts",
+    "test:security": "tsx src/scripts/test-security-audit.ts",
+    "test:demo": "tsx src/scripts/demo-e2e-scenario.ts",
+    "demo": "tsx src/scripts/demo-e2e-scenario.ts"
+  },
+  "keywords": [
+    "procurement",
+    "government",
+    "e-procurement"
+  ],
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.6.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
