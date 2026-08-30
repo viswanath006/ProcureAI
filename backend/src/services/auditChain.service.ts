@@ -136,12 +136,12 @@ export function canonicalizeEventData(event: {
 }): string {
   const sortedDetails = event.details ? JSON.stringify(event.details, Object.keys(event.details).sort()) : '{}';
   return [
-    event.id.trim(),
-    event.actor.trim(),
-    event.role.trim(),
-    event.action.trim(),
-    event.entity.trim(),
-    event.timestamp.trim(),
+    (event.id || '').trim(),
+    (event.actor || '').trim(),
+    (event.role || '').trim(),
+    (event.action || '').trim(),
+    (event.entity || 'SYSTEM').trim(),
+    (event.timestamp || new Date().toISOString()).trim(),
     sortedDetails,
   ].join('|');
 }
