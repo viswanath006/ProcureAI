@@ -1,0 +1,9 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Single-page application routing rule (redirect all paths to index.html with 200 status)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

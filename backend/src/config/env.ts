@@ -8,7 +8,15 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(4000),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
-  AI_SERVICE_URL: z.string().default('http://localhost:8000'),
+  AI_SERVICE_URL: z
+    .string()
+    .default('http://localhost:8000')
+    .transform((val) => {
+      if (!val.startsWith('http://') && !val.startsWith('https://')) {
+        return `https://${val}`;
+      }
+      return val.replace(/\/+$/, '');
+    }),
 
   // JWT — access token (short-lived, 15m)
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),

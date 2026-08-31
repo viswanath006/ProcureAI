@@ -1,4 +1,14 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1';
+let rawBase = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1';
+if (rawBase && !rawBase.startsWith('http://') && !rawBase.startsWith('https://')) {
+  rawBase = `https://${rawBase}`;
+}
+if (rawBase.endsWith('/')) {
+  rawBase = rawBase.slice(0, -1);
+}
+if (!rawBase.endsWith('/api/v1')) {
+  rawBase = `${rawBase}/api/v1`;
+}
+const API_BASE = rawBase;
 
 export interface ApiResponse<T> {
   success: boolean;

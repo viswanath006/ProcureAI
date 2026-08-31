@@ -13,7 +13,15 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl/Postman)
+      if (!origin) return callback(null, true);
+      const allowedOrigins = env.CORS_ORIGIN.split(',').map((o) => o.trim());
+      if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Allow during hackathon/demo environments
+    },
     credentials: true,
   })
 );

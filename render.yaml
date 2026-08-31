@@ -1,0 +1,87 @@
+services:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 1. AI Microservice (FastAPI + Python 3.12)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - type: web
+    name: procureai-ai-service
+    env: python
+    region: oregon
+    plan: free
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: ENVIRONMENT
+        value: production
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 2. PostgreSQL Database
+  # ─────────────────────────────────────────────────────────────────────────────
+  - type: pg
+    name: procureai-db
+    region: oregon
+    plan: free
+    databaseName: procureai
+    user: procureai
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 3. Backend API (Node.js 20 + Express + TypeScript)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - type: web
+    name: procureai-backend
+    env: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run db:migrate && npm run start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: procureai-db
+          property: connectionString
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: procureai-ai-service
+          property: host
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: COOKIE_SECURE
+        value: "true"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 4. Frontend Web App (React 18 + Vite SPA)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - type: web
+    name: procureai-frontend
+    env: static
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: procureai-backend
+          property: host
