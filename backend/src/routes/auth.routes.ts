@@ -16,7 +16,7 @@ const router = Router();
 // Rate limiter for authentication attempts (anti-brute-force)
 const authLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
-  max: env.NODE_ENV === 'test' ? 1000 : env.RATE_LIMIT_MAX_REQUESTS,
+  max: env.NODE_ENV === 'test' ? 1000 : Math.max(100, env.RATE_LIMIT_MAX_REQUESTS),
   message: {
     success: false,
     error: {
