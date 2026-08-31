@@ -1,4 +1,14 @@
-let rawBase = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1';
+const isProd = import.meta.env.PROD || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+
+let rawBase = import.meta.env.VITE_API_URL;
+if (!rawBase || rawBase.includes('localhost') || rawBase.includes('127.0.0.1')) {
+  if (isProd) {
+    rawBase = 'https://procureai-backend-xbv5.onrender.com/api/v1';
+  } else {
+    rawBase = 'http://localhost:4000/api/v1';
+  }
+}
+
 if (rawBase && !rawBase.startsWith('http://') && !rawBase.startsWith('https://')) {
   rawBase = `https://${rawBase}`;
 }
