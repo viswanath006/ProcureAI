@@ -1,3 +1,15 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Render Blueprint Specification (render.yaml)
+# ProcureAI Full-Stack Deployment
+# ─────────────────────────────────────────────────────────────────────────────
+
+databases:
+  - name: procureai-db
+    databaseName: procureai
+    user: procureai
+    region: oregon
+    plan: free
+
 services:
   # ─────────────────────────────────────────────────────────────────────────────
   # 1. AI Microservice (FastAPI + Python 3.12)
@@ -18,17 +30,7 @@ services:
         value: production
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # 2. PostgreSQL Database
-  # ─────────────────────────────────────────────────────────────────────────────
-  - type: pg
-    name: procureai-db
-    region: oregon
-    plan: free
-    databaseName: procureai
-    user: procureai
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # 3. Backend API (Node.js 20 + Express + TypeScript)
+  # 2. Backend API (Node.js 20 + Express + TypeScript)
   # ─────────────────────────────────────────────────────────────────────────────
   - type: web
     name: procureai-backend
@@ -65,13 +67,11 @@ services:
         value: "true"
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # 4. Frontend Web App (React 18 + Vite SPA)
+  # 3. Frontend Web App (React 18 + Vite SPA)
   # ─────────────────────────────────────────────────────────────────────────────
-  - type: web
+  - type: static
     name: procureai-frontend
-    env: static
     region: oregon
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
