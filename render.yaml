@@ -1,7 +1,10 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Render Blueprint Specification (render.yaml)
 # ProcureAI Full-Stack Deployment
+# Official schema: https://render.com/schema/render.yaml.json
 # ─────────────────────────────────────────────────────────────────────────────
+
+version: "1"
 
 databases:
   - name: procureai-db
@@ -16,7 +19,7 @@ services:
   # ─────────────────────────────────────────────────────────────────────────────
   - type: web
     name: procureai-ai-service
-    env: python
+    runtime: python
     region: oregon
     plan: free
     rootDir: ai-service
@@ -34,7 +37,7 @@ services:
   # ─────────────────────────────────────────────────────────────────────────────
   - type: web
     name: procureai-backend
-    env: node
+    runtime: node
     region: oregon
     plan: free
     rootDir: backend
@@ -68,10 +71,11 @@ services:
 
   # ─────────────────────────────────────────────────────────────────────────────
   # 3. Frontend Web App (React 18 + Vite SPA)
+  # In Render schema: type must be 'web' with runtime: 'static'
   # ─────────────────────────────────────────────────────────────────────────────
-  - type: static
+  - type: web
     name: procureai-frontend
-    region: oregon
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
