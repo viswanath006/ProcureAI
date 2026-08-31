@@ -1,14 +1,14 @@
 import { Pool, PoolClient, QueryResultRow } from 'pg';
 import { env } from './env';
 
+const isRemote = !env.DATABASE_URL.includes('localhost') && !env.DATABASE_URL.includes('127.0.0.1');
+
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
-  ssl: process.env.NODE_ENV === 'production' && !env.DATABASE_URL.includes('localhost') && !env.DATABASE_URL.includes('@postgres:')
-    ? { rejectUnauthorized: false }
-    : undefined,
+  ssl: isRemote ? { rejectUnauthorized: false } : undefined,
 });
 
 pool.on('error', (err: Error) => {

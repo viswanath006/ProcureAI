@@ -12,11 +12,12 @@ if (!DATABASE_URL) {
   process.exit(1);
 }
 
+const dbUrl: string = DATABASE_URL;
+const isRemote = !dbUrl.includes('localhost') && !dbUrl.includes('127.0.0.1');
+
 const pool = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' && !DATABASE_URL.includes('localhost') && !DATABASE_URL.includes('@postgres:')
-    ? { rejectUnauthorized: false }
-    : undefined,
+  connectionString: dbUrl,
+  ssl: isRemote ? { rejectUnauthorized: false } : undefined,
 });
 
 async function runSqlFile(client: any, filePath: string, description: string) {
@@ -26,10 +27,28 @@ async function runSqlFile(client: any, filePath: string, description: string) {
   console.log(`✅ Completed ${description}`);
 }
 
+async function connectWithRetry(retries = 10, delayMs = 3000) {
+  for (let i = 1; i <= retries; i++) {
+    try {
+      console.log(`🔌 Connecting to database (attempt ${i}/${retries})...`);
+      const client = await pool.connect();
+      console.log('✅ Database connected successfully!');
+      return client;
+    } catch (err: any) {
+      console.warn(`⚠️ Connection failed: ${err.message}. Retrying in ${delayMs / 1000}s...`);
+      if (i === retries) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  throw new Error('Could not connect to database after maximum retries');
+}
+
 async function migrate() {
-  const client = await pool.connect();
+  let client;
   try {
     console.log('🚀 Starting database migration and seeding for Render/Cloud Postgres...\n');
+    console.log(`📍 DATABASE_URL: ${dbUrl.replace(/:[^:@]+@/, ':****@')}`);
+    client = await connectWithRetry();
 
     // Check for self-contained bundle first (works when rootDir is backend)
     const bundleMigrations = path.resolve(__dirname, '../db-bundle/all_migrations.sql');
@@ -77,7 +96,9 @@ async function migrate() {
     console.error('\n❌ Migration failed:', err);
     process.exit(1);
   } finally {
-    client.release();
+    if (client) {
+      client.release();
+    }
     await pool.end();
   }
 }
