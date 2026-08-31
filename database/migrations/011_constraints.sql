@@ -18,7 +18,7 @@ END $$;
 -- A company may only have ONE active bid per tender at a time.
 -- Withdrawn and disqualified bids do not count (partial index).
 -- This prevents duplicate bid submissions at the database level.
-CREATE UNIQUE INDEX uq_bid_one_active_per_company_tender
+CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_one_active_per_company_tender
   ON bids(tender_id, company_id)
   WHERE status NOT IN ('withdrawn', 'disqualified');
 
@@ -27,7 +27,7 @@ COMMENT ON INDEX uq_bid_one_active_per_company_tender
 
 -- ── Unique final submission per bid ──────────────────────────────────────────
 -- A bid can only have ONE non-withdrawn submission.
-CREATE UNIQUE INDEX uq_bid_submission_active
+CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_submission_active
   ON bid_submissions(bid_id)
   WHERE is_withdrawn = FALSE;
 

@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS government_decisions (
 );
 
 -- One final decision per tender
-CREATE UNIQUE INDEX uq_government_decision_tender
+CREATE UNIQUE INDEX IF NOT EXISTS uq_government_decision_tender
   ON government_decisions(tender_id)
   WHERE is_final = TRUE;
 
