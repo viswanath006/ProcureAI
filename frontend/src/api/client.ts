@@ -1,24 +1,23 @@
-const isProd = import.meta.env.PROD || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
-
-let rawBase = import.meta.env.VITE_API_URL;
-if (!rawBase || rawBase.includes('localhost') || rawBase.includes('127.0.0.1')) {
-  if (isProd) {
-    rawBase = 'https://procureai-backend-xbv5.onrender.com/api/v1';
-  } else {
-    rawBase = 'http://localhost:4000/api/v1';
+export function getApiBase(): string {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+    let u = envUrl.trim();
+    if (!u.startsWith('http://') && !u.startsWith('https://')) u = `https://${u}`;
+    if (u.endsWith('/')) u = u.slice(0, -1);
+    if (!u.endsWith('/api/v1')) u = `${u}/api/v1`;
+    return u;
   }
-}
 
-if (rawBase && !rawBase.startsWith('http://') && !rawBase.startsWith('https://')) {
-  rawBase = `https://${rawBase}`;
+  // If in browser and not localhost, always use live Render production backend
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host && host !== 'localhost' && host !== '127.0.0.1') {
+      return 'https://procureai-backend-xbv5.onrender.com/api/v1';
+    }
+  }
+
+  return 'http://localhost:4000/api/v1';
 }
-if (rawBase.endsWith('/')) {
-  rawBase = rawBase.slice(0, -1);
-}
-if (!rawBase.endsWith('/api/v1')) {
-  rawBase = `${rawBase}/api/v1`;
-}
-const API_BASE = rawBase;
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -116,6 +115,7 @@ async function request<T>(
   options: RequestInit = {},
   isRetry = false
 ): Promise<ApiResponse<T>> {
+  const API_BASE = getApiBase();
   const headers = new Headers(options.headers || {});
   headers.set('Accept', 'application/json');
 
@@ -128,10 +128,12 @@ async function request<T>(
   }
 
   try {
-    const response = await fetch(`${API_BASE}${path}`, {
+    const fullUrl = `${API_BASE}${path}`;
+    console.log(`[ProcureAI API] ${options.method || 'GET'} -> ${fullUrl}`);
+
+    const response = await fetch(fullUrl, {
       ...options,
       headers,
-      credentials: 'include', // sends refresh token cookie
     });
 
     // Handle token expiration
