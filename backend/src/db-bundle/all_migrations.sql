@@ -432,7 +432,7 @@ COMMENT ON COLUMN companies.annual_turnover_paisa IS 'Stored in paisa (1 INR = 1
 COMMENT ON COLUMN companies.encryption_key_id IS 'Reference to KMS key used to encrypt sensitive financial fields.';
 
 -- ── Add company_id FK back to users now that companies table exists ───────────
-DO  BEGIN
+DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_company') THEN
     ALTER TABLE users
       ADD CONSTRAINT fk_users_company
@@ -440,7 +440,7 @@ DO  BEGIN
         REFERENCES companies(id)
         ON DELETE SET NULL;
   END IF;
-END ;
+END $$;
 
 -- ── company_documents ─────────────────────────────────────────────────────────
 -- KYC / compliance documents attached to a company.
@@ -1205,7 +1205,7 @@ CREATE INDEX IF NOT EXISTS idx_shl_created_at            ON service_health_log(c
 
 -- ── Deferred FK: tenders.awarded_to_bid_id → bids ────────────────────────────
 -- Cannot add this FK during table creation because bids table didn't exist yet.
-DO  BEGIN
+DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_tenders_awarded_bid') THEN
     ALTER TABLE tenders
       ADD CONSTRAINT fk_tenders_awarded_bid
@@ -1213,7 +1213,7 @@ DO  BEGIN
         REFERENCES bids(id)
         DEFERRABLE INITIALLY DEFERRED;
   END IF;
-END ;
+END $$;
 
 -- ── Unique active bid per company per tender (the "one bid" rule) ─────────────
 -- A company may only have ONE active bid per tender at a time.

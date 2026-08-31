@@ -4,7 +4,7 @@
 
 -- ── Deferred FK: tenders.awarded_to_bid_id → bids ────────────────────────────
 -- Cannot add this FK during table creation because bids table didn't exist yet.
-DO  BEGIN
+DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_tenders_awarded_bid') THEN
     ALTER TABLE tenders
       ADD CONSTRAINT fk_tenders_awarded_bid
@@ -12,7 +12,7 @@ DO  BEGIN
         REFERENCES bids(id)
         DEFERRABLE INITIALLY DEFERRED;
   END IF;
-END ;
+END $$;
 
 -- ── Unique active bid per company per tender (the "one bid" rule) ─────────────
 -- A company may only have ONE active bid per tender at a time.
