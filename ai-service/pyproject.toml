@@ -1,0 +1,17 @@
+[project]
+name = "procureai-ai-service"
+version = "1.7.0"
+description = "ProcureAI AI Evaluation Engine — FastAPI service"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.115.6",
+    "uvicorn[standard]==0.34.0",
+    "pydantic==2.10.4",
+    "pydantic-settings==2.7.0",
+    "numpy>=1.26.0",
+    "scikit-learn>=1.4.0",
+    "shap>=0.45.0",
+]
+
+[tool.uv]
+# Vercel uses uv to install; this file drives uv lock generation
