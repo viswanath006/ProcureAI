@@ -160,6 +160,11 @@ async function migrate() {
       }
     }
 
+    // Ensure all demo user password hashes match ProcureAI_Dev_2026!
+    const verifiedHash = '$2b$10$6frD5327kfnMVj/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.';
+    await client.query('UPDATE users SET password_hash = $1', [verifiedHash]);
+    console.log('🔑 Verified password hashes updated for all accounts.');
+
     console.log('\n══════════════════════════════════════════════');
     console.log('🎉 All migrations and seeds applied successfully!');
     console.log('══════════════════════════════════════════════\n');

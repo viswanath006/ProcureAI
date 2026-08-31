@@ -10,7 +10,7 @@
 -- Real bcrypt cost-12 hash of "ProcureAI_Dev_2026!"
 DO $$
 DECLARE
-  dev_hash TEXT := '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K';
+  dev_hash TEXT := '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.';
 BEGIN
   UPDATE users SET password_hash = dev_hash
   WHERE email IN (

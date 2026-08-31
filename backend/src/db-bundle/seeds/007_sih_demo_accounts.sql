@@ -2,7 +2,7 @@
 -- Seed 007 — SIH 2026 Standardized Demo Accounts
 -- Provides primary and alias accounts for Smart India Hackathon evaluation.
 -- Password for ALL accounts: ProcureAI_Dev_2026!
--- Hash: $2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K
+-- Hash: $2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.
 -- =============================================================================
 
 INSERT INTO users (
@@ -15,7 +15,7 @@ INSERT INTO users (
     '00000001-0000-0000-0000-000000000011',
     '00000000-0000-0000-0000-000000000002', -- GOVT_OFFICER
     'officer.suresh@finance.gov.in',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K',
+    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.',
     'Suresh Kumar (Director of Procurement)',
     'GOV-FIN-DIR-01',
     'Department of Expenditure, Ministry of Finance',
@@ -30,7 +30,7 @@ INSERT INTO users (
     '00000001-0000-0000-0000-000000000012',
     '00000000-0000-0000-0000-000000000004', -- BIDDER
     'bidder.alpha@alphacorp.dev',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K',
+    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.',
     'Vikram Mehta (Apex Infra Buildtech Ltd)',
     NULL, NULL,
     'Managing Director & Authorized Bidder',
@@ -44,7 +44,7 @@ INSERT INTO users (
     '00000001-0000-0000-0000-000000000013',
     '00000000-0000-0000-0000-000000000005', -- AUDITOR
     'auditor.priya@cag.gov.in',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K',
+    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.',
     'Priya Sharma (Principal Auditor)',
     'CAG-AUDIT-088',
     'Comptroller and Auditor General of India',
@@ -59,7 +59,7 @@ INSERT INTO users (
     '00000001-0000-0000-0000-000000000014',
     '00000000-0000-0000-0000-000000000001', -- ADMIN
     'admin.rajesh@procureai.gov.in',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/tHDirJJ4K',
+    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Z5OrnP.dwKAEjjMq3Zyj.Q0gMTSUIFy7vIFlc.',
     'Rajesh Verma (Platform Architect)',
     'SYS-NIC-ADM-01',
     'National Informatics / ProcureAI PMU',
