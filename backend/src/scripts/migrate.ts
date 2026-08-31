@@ -31,33 +31,44 @@ async function migrate() {
   try {
     console.log('🚀 Starting database migration and seeding for Render/Cloud Postgres...\n');
 
-    // 1. Migrations in exact dependency sequence
-    const migrationsDir = path.resolve(__dirname, '../../../database/migrations');
-    if (!fs.existsSync(migrationsDir)) {
-      throw new Error(`Migrations directory not found at: ${migrationsDir}`);
-    }
+    // Check for self-contained bundle first (works when rootDir is backend)
+    const bundleMigrations = path.resolve(__dirname, '../db-bundle/all_migrations.sql');
+    const bundleSeeds = path.resolve(__dirname, '../db-bundle/all_seeds.sql');
 
-    const migrationFiles = fs
-      .readdirSync(migrationsDir)
-      .filter((f) => f.endsWith('.sql'))
-      .sort();
+    if (fs.existsSync(bundleMigrations)) {
+      console.log('📦 Using self-contained db-bundle inside backend service...');
+      await runSqlFile(client, bundleMigrations, 'All Database Migrations');
+      if (fs.existsSync(bundleSeeds)) {
+        await runSqlFile(client, bundleSeeds, 'All Initial Seeds');
+      }
+    } else {
+      // Fallback to reading root database directory
+      const migrationsDir = path.resolve(__dirname, '../../../database/migrations');
+      if (!fs.existsSync(migrationsDir)) {
+        throw new Error(`Migrations directory not found at: ${migrationsDir}`);
+      }
 
-    console.log(`Found ${migrationFiles.length} migration files.`);
-    for (const file of migrationFiles) {
-      await runSqlFile(client, path.join(migrationsDir, file), `Migration ${file}`);
-    }
-
-    // 2. Seeds in exact sequence
-    const seedsDir = path.resolve(__dirname, '../../../database/seeds');
-    if (fs.existsSync(seedsDir)) {
-      const seedFiles = fs
-        .readdirSync(seedsDir)
+      const migrationFiles = fs
+        .readdirSync(migrationsDir)
         .filter((f) => f.endsWith('.sql'))
         .sort();
 
-      console.log(`\nFound ${seedFiles.length} seed files.`);
-      for (const file of seedFiles) {
-        await runSqlFile(client, path.join(seedsDir, file), `Seed ${file}`);
+      console.log(`Found ${migrationFiles.length} migration files.`);
+      for (const file of migrationFiles) {
+        await runSqlFile(client, path.join(migrationsDir, file), `Migration ${file}`);
+      }
+
+      const seedsDir = path.resolve(__dirname, '../../../database/seeds');
+      if (fs.existsSync(seedsDir)) {
+        const seedFiles = fs
+          .readdirSync(seedsDir)
+          .filter((f) => f.endsWith('.sql'))
+          .sort();
+
+        console.log(`\nFound ${seedFiles.length} seed files.`);
+        for (const file of seedFiles) {
+          await runSqlFile(client, path.join(seedsDir, file), `Seed ${file}`);
+        }
       }
     }
 
