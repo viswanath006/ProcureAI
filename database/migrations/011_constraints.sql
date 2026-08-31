@@ -4,11 +4,15 @@
 
 -- ── Deferred FK: tenders.awarded_to_bid_id → bids ────────────────────────────
 -- Cannot add this FK during table creation because bids table didn't exist yet.
-ALTER TABLE tenders
-  ADD CONSTRAINT fk_tenders_awarded_bid
-    FOREIGN KEY (awarded_to_bid_id)
-    REFERENCES bids(id)
-    DEFERRABLE INITIALLY DEFERRED;
+DO  BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_tenders_awarded_bid') THEN
+    ALTER TABLE tenders
+      ADD CONSTRAINT fk_tenders_awarded_bid
+        FOREIGN KEY (awarded_to_bid_id)
+        REFERENCES bids(id)
+        DEFERRABLE INITIALLY DEFERRED;
+  END IF;
+END ;
 
 -- ── Unique active bid per company per tender (the "one bid" rule) ─────────────
 -- A company may only have ONE active bid per tender at a time.
@@ -88,6 +92,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_criteria_weights ON tender_evaluation_criteria;
 CREATE CONSTRAINT TRIGGER trg_validate_criteria_weights
   AFTER INSERT OR UPDATE ON tender_evaluation_criteria
   DEFERRABLE INITIALLY DEFERRED
@@ -112,6 +117,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_lock_submitted_bid_fields ON bids;
 CREATE TRIGGER trg_lock_submitted_bid_fields
   BEFORE UPDATE ON bids
   FOR EACH ROW EXECUTE FUNCTION fn_lock_submitted_bid_fields();
@@ -130,6 +136,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_tender_publish ON tenders;
 CREATE TRIGGER trg_validate_tender_publish
   BEFORE INSERT OR UPDATE ON tenders
   FOR EACH ROW EXECUTE FUNCTION fn_validate_tender_publish();
@@ -150,6 +157,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_bid_tender_status ON bids;
 CREATE TRIGGER trg_validate_bid_tender_status
   BEFORE INSERT ON bids
   FOR EACH ROW EXECUTE FUNCTION fn_validate_bid_tender_status();
@@ -172,6 +180,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_award_bid_status ON government_decisions;
 CREATE TRIGGER trg_validate_award_bid_status
   BEFORE INSERT OR UPDATE ON government_decisions
   FOR EACH ROW EXECUTE FUNCTION fn_validate_award_bid_status();

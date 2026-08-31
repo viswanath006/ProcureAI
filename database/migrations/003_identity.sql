@@ -89,11 +89,15 @@ COMMENT ON COLUMN companies.annual_turnover_paisa IS 'Stored in paisa (1 INR = 1
 COMMENT ON COLUMN companies.encryption_key_id IS 'Reference to KMS key used to encrypt sensitive financial fields.';
 
 -- ── Add company_id FK back to users now that companies table exists ───────────
-ALTER TABLE users
-  ADD CONSTRAINT fk_users_company
-    FOREIGN KEY (company_id)
-    REFERENCES companies(id)
-    ON DELETE SET NULL;
+DO  BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_company') THEN
+    ALTER TABLE users
+      ADD CONSTRAINT fk_users_company
+        FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+        ON DELETE SET NULL;
+  END IF;
+END ;
 
 -- ── company_documents ─────────────────────────────────────────────────────────
 -- KYC / compliance documents attached to a company.

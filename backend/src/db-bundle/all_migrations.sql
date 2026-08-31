@@ -1,4 +1,3 @@
-
 -- >>> BEGIN 001_extensions.sql <<<
 -- =============================================================================
 -- Migration 001 — PostgreSQL Extensions
@@ -28,31 +27,44 @@ CREATE EXTENSION IF NOT EXISTS "citext";
 
 -- ── User / Identity ──────────────────────────────────────────────────────────
 
-CREATE TYPE user_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE user_status AS ENUM (
   'pending_verification',   -- registered but email/identity not confirmed
   'active',                 -- fully verified, can use platform
   'suspended',              -- temporarily disabled by admin
   'deactivated'             -- permanently disabled
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── Company ───────────────────────────────────────────────────────────────────
 
-CREATE TYPE company_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE company_status AS ENUM (
   'pending_review',         -- documents submitted, awaiting KYC approval
   'verified',               -- KYC passed, can submit bids
   'rejected',               -- KYC failed
   'suspended',              -- blocked by compliance
   'deactivated'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE document_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE document_status AS ENUM (
   'pending',                -- uploaded, not yet reviewed
   'approved',
   'rejected',
   'expired'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE document_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE document_type AS ENUM (
   'registration_certificate',
   'tax_clearance',
   'audited_financials',
@@ -61,10 +73,14 @@ CREATE TYPE document_type AS ENUM (
   'iso_certification',
   'other'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── Tender ────────────────────────────────────────────────────────────────────
 
-CREATE TYPE tender_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE tender_status AS ENUM (
   'draft',                  -- being authored, not published
   'published',              -- open for bids
   'clarification',          -- Q&A period, bids on hold
@@ -73,8 +89,12 @@ CREATE TYPE tender_status AS ENUM (
   'awarded',                -- winner selected
   'cancelled'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE tender_category AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE tender_category AS ENUM (
   'infrastructure',
   'information_technology',
   'healthcare',
@@ -86,15 +106,23 @@ CREATE TYPE tender_category AS ENUM (
   'environment',
   'other'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE requirement_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE requirement_type AS ENUM (
   'financial',              -- minimum turnover, net worth etc.
   'technical',              -- certifications, experience
   'legal',                  -- registration, compliance
   'capacity'                -- manpower, equipment
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE criteria_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE criteria_type AS ENUM (
   'technical',
   'financial',
   'experience',
@@ -103,10 +131,14 @@ CREATE TYPE criteria_type AS ENUM (
   'social_impact',
   'environmental'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── Bid ───────────────────────────────────────────────────────────────────────
 
-CREATE TYPE bid_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE bid_status AS ENUM (
   'draft',                  -- being composed, not submitted
   'submitted',              -- formally submitted (sealed)
   'withdrawn',              -- voluntarily withdrawn before close
@@ -116,46 +148,70 @@ CREATE TYPE bid_status AS ENUM (
   'rejected',
   'awarded'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE submission_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE submission_type AS ENUM (
   'initial',                -- first submission
   'revision',               -- allowed amendment before deadline
   'final'                   -- explicitly marked final by bidder
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── AI Pipeline ───────────────────────────────────────────────────────────────
 
-CREATE TYPE eligibility_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE eligibility_status AS ENUM (
   'pass',
   'fail',
   'waived',                 -- manually waived by officer with reason
   'not_applicable'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE evaluation_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE evaluation_status AS ENUM (
   'pending',
   'running',
   'completed',
   'failed',                 -- AI pipeline error
   'cancelled'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE recommendation_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE recommendation_type AS ENUM (
   'award',
   'reject',
   'shortlist',
   'request_clarification',
   'flag_for_review'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE risk_level AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE risk_level AS ENUM (
   'low',
   'medium',
   'high',
   'critical'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE risk_category AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE risk_category AS ENUM (
   'financial',
   'compliance',
   'capacity',
@@ -164,8 +220,12 @@ CREATE TYPE risk_category AS ENUM (
   'data_integrity',
   'bid_manipulation'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE anomaly_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE anomaly_type AS ENUM (
   'price_collusion',        -- bids suspiciously similar across companies
   'bid_clustering',         -- multiple bids cluster near the estimate
   'shill_bidding',          -- same entity bidding under different companies
@@ -175,24 +235,36 @@ CREATE TYPE anomaly_type AS ENUM (
   'late_surge',             -- sudden bid pattern change near deadline
   'other'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE anomaly_severity AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE anomaly_severity AS ENUM (
   'informational',
   'warning',
   'critical'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── Decision ─────────────────────────────────────────────────────────────────
 
-CREATE TYPE decision_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE decision_type AS ENUM (
   'award',
   'reject',
   'defer',                  -- defer to committee / legal review
   'cancel_tender',
   're_tender'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE override_reason_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE override_reason_type AS ENUM (
   'ai_error',               -- AI produced incorrect result
   'additional_information', -- officer has info AI did not
   'policy_exception',       -- government policy override
@@ -200,10 +272,14 @@ CREATE TYPE override_reason_type AS ENUM (
   'committee_directive',    -- higher authority instruction
   'other'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ── Observability ─────────────────────────────────────────────────────────────
 
-CREATE TYPE audit_action AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE audit_action AS ENUM (
   -- identity
   'user_registered', 'user_verified', 'user_suspended', 'user_login', 'user_logout',
   -- company
@@ -220,8 +296,12 @@ CREATE TYPE audit_action AS ENUM (
   -- system
   'anomaly_detected', 'risk_flag_raised', 'schema_migrated'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE notification_type AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE notification_type AS ENUM (
   'tender_published',
   'bid_received',
   'bid_status_changed',
@@ -232,20 +312,31 @@ CREATE TYPE notification_type AS ENUM (
   'anomaly_alert',
   'system_alert'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE notification_channel AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE notification_channel AS ENUM (
   'in_app',
   'email',
   'sms'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE notification_status AS ENUM (
+DO $$ BEGIN
+  CREATE TYPE notification_status AS ENUM (
   'pending',
   'sent',
   'delivered',
   'failed',
   'read'
 );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- >>> END 002_enums.sql <<<
 
@@ -341,11 +432,15 @@ COMMENT ON COLUMN companies.annual_turnover_paisa IS 'Stored in paisa (1 INR = 1
 COMMENT ON COLUMN companies.encryption_key_id IS 'Reference to KMS key used to encrypt sensitive financial fields.';
 
 -- ── Add company_id FK back to users now that companies table exists ───────────
-ALTER TABLE users
-  ADD CONSTRAINT fk_users_company
-    FOREIGN KEY (company_id)
-    REFERENCES companies(id)
-    ON DELETE SET NULL;
+DO  BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_company') THEN
+    ALTER TABLE users
+      ADD CONSTRAINT fk_users_company
+        FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+        ON DELETE SET NULL;
+  END IF;
+END ;
 
 -- ── company_documents ─────────────────────────────────────────────────────────
 -- KYC / compliance documents attached to a company.
@@ -893,6 +988,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_audit_log_immutable ON audit_logs;
 CREATE TRIGGER trg_audit_log_immutable
   BEFORE UPDATE OR DELETE ON audit_logs
   FOR EACH ROW EXECUTE FUNCTION fn_audit_log_immutable();
@@ -953,152 +1049,152 @@ COMMENT ON TABLE service_health_log IS 'Phase 1 infrastructure health log. Prese
 -- =============================================================================
 
 -- ── roles ────────────────────────────────────────────────────────────────────
-CREATE INDEX idx_roles_code ON roles(code);
+CREATE INDEX IF NOT EXISTS idx_roles_code ON roles(code);
 
 -- ── users ────────────────────────────────────────────────────────────────────
-CREATE INDEX idx_users_role_id         ON users(role_id);
-CREATE INDEX idx_users_company_id      ON users(company_id) WHERE company_id IS NOT NULL;
-CREATE INDEX idx_users_status          ON users(status);
-CREATE INDEX idx_users_email           ON users(email);  -- citext index
-CREATE INDEX idx_users_last_login      ON users(last_login_at DESC NULLS LAST);
+CREATE INDEX IF NOT EXISTS idx_users_role_id         ON users(role_id);
+CREATE INDEX IF NOT EXISTS idx_users_company_id      ON users(company_id) WHERE company_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_users_status          ON users(status);
+CREATE INDEX IF NOT EXISTS idx_users_email           ON users(email);  -- citext index
+CREATE INDEX IF NOT EXISTS idx_users_last_login      ON users(last_login_at DESC NULLS LAST);
 
 -- ── companies ────────────────────────────────────────────────────────────────
-CREATE INDEX idx_companies_status          ON companies(status);
-CREATE INDEX idx_companies_created_by      ON companies(created_by);
-CREATE INDEX idx_companies_verified_at     ON companies(verified_at DESC NULLS LAST)
+CREATE INDEX IF NOT EXISTS idx_companies_status          ON companies(status);
+CREATE INDEX IF NOT EXISTS idx_companies_created_by      ON companies(created_by);
+CREATE INDEX IF NOT EXISTS idx_companies_verified_at     ON companies(verified_at DESC NULLS LAST)
   WHERE verified_at IS NOT NULL;
 -- Trigram index for fuzzy company name search
-CREATE INDEX idx_companies_name_trgm       ON companies USING GIN (name gin_trgm_ops);
-CREATE INDEX idx_companies_reg_number      ON companies(registration_number);
+CREATE INDEX IF NOT EXISTS idx_companies_name_trgm       ON companies USING GIN (name gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS idx_companies_reg_number      ON companies(registration_number);
 
 -- ── company_documents ────────────────────────────────────────────────────────
-CREATE INDEX idx_company_docs_company_id   ON company_documents(company_id);
-CREATE INDEX idx_company_docs_status       ON company_documents(status);
-CREATE INDEX idx_company_docs_valid_until  ON company_documents(valid_until)
+CREATE INDEX IF NOT EXISTS idx_company_docs_company_id   ON company_documents(company_id);
+CREATE INDEX IF NOT EXISTS idx_company_docs_status       ON company_documents(status);
+CREATE INDEX IF NOT EXISTS idx_company_docs_valid_until  ON company_documents(valid_until)
   WHERE valid_until IS NOT NULL;
-CREATE INDEX idx_company_docs_type         ON company_documents(document_type);
+CREATE INDEX IF NOT EXISTS idx_company_docs_type         ON company_documents(document_type);
 
 -- ── tenders ──────────────────────────────────────────────────────────────────
-CREATE INDEX idx_tenders_status            ON tenders(status);
-CREATE INDEX idx_tenders_created_by        ON tenders(created_by);
-CREATE INDEX idx_tenders_category          ON tenders(category);
-CREATE INDEX idx_tenders_deadline          ON tenders(submission_deadline_at);
+CREATE INDEX IF NOT EXISTS idx_tenders_status            ON tenders(status);
+CREATE INDEX IF NOT EXISTS idx_tenders_created_by        ON tenders(created_by);
+CREATE INDEX IF NOT EXISTS idx_tenders_category          ON tenders(category);
+CREATE INDEX IF NOT EXISTS idx_tenders_deadline          ON tenders(submission_deadline_at);
 -- Partial index: active tenders only (most frequent query pattern)
-CREATE INDEX idx_tenders_active            ON tenders(submission_deadline_at, category)
+CREATE INDEX IF NOT EXISTS idx_tenders_active            ON tenders(submission_deadline_at, category)
   WHERE status IN ('published', 'clarification');
 -- Trigram index for full-text search on tender titles
-CREATE INDEX idx_tenders_title_trgm        ON tenders USING GIN (title gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS idx_tenders_title_trgm        ON tenders USING GIN (title gin_trgm_ops);
 -- GIN index for tags array
-CREATE INDEX idx_tenders_tags              ON tenders USING GIN (tags);
-CREATE INDEX idx_tenders_ref_number        ON tenders(reference_number);
+CREATE INDEX IF NOT EXISTS idx_tenders_tags              ON tenders USING GIN (tags);
+CREATE INDEX IF NOT EXISTS idx_tenders_ref_number        ON tenders(reference_number);
 
 -- ── tender_requirements ──────────────────────────────────────────────────────
-CREATE INDEX idx_tender_reqs_tender_id     ON tender_requirements(tender_id);
-CREATE INDEX idx_tender_reqs_type          ON tender_requirements(requirement_type);
-CREATE INDEX idx_tender_reqs_mandatory     ON tender_requirements(tender_id, is_mandatory);
+CREATE INDEX IF NOT EXISTS idx_tender_reqs_tender_id     ON tender_requirements(tender_id);
+CREATE INDEX IF NOT EXISTS idx_tender_reqs_type          ON tender_requirements(requirement_type);
+CREATE INDEX IF NOT EXISTS idx_tender_reqs_mandatory     ON tender_requirements(tender_id, is_mandatory);
 
 -- ── tender_evaluation_criteria ───────────────────────────────────────────────
-CREATE INDEX idx_criteria_tender_id        ON tender_evaluation_criteria(tender_id);
-CREATE INDEX idx_criteria_type             ON tender_evaluation_criteria(criteria_type);
+CREATE INDEX IF NOT EXISTS idx_criteria_tender_id        ON tender_evaluation_criteria(tender_id);
+CREATE INDEX IF NOT EXISTS idx_criteria_type             ON tender_evaluation_criteria(criteria_type);
 
 -- ── bids ─────────────────────────────────────────────────────────────────────
-CREATE INDEX idx_bids_tender_id            ON bids(tender_id);
-CREATE INDEX idx_bids_company_id           ON bids(company_id);
-CREATE INDEX idx_bids_created_by           ON bids(created_by);
-CREATE INDEX idx_bids_status               ON bids(status);
-CREATE INDEX idx_bids_tender_company       ON bids(tender_id, company_id);
+CREATE INDEX IF NOT EXISTS idx_bids_tender_id            ON bids(tender_id);
+CREATE INDEX IF NOT EXISTS idx_bids_company_id           ON bids(company_id);
+CREATE INDEX IF NOT EXISTS idx_bids_created_by           ON bids(created_by);
+CREATE INDEX IF NOT EXISTS idx_bids_status               ON bids(status);
+CREATE INDEX IF NOT EXISTS idx_bids_tender_company       ON bids(tender_id, company_id);
 -- Covering index for tender evaluation queries
-CREATE INDEX idx_bids_tender_status        ON bids(tender_id, status)
+CREATE INDEX IF NOT EXISTS idx_bids_tender_status        ON bids(tender_id, status)
   INCLUDE (company_id, created_at);
 
 -- ── bid_documents ────────────────────────────────────────────────────────────
-CREATE INDEX idx_bid_docs_bid_id           ON bid_documents(bid_id);
-CREATE INDEX idx_bid_docs_type             ON bid_documents(document_type);
+CREATE INDEX IF NOT EXISTS idx_bid_docs_bid_id           ON bid_documents(bid_id);
+CREATE INDEX IF NOT EXISTS idx_bid_docs_type             ON bid_documents(document_type);
 
 -- ── bid_hashes ───────────────────────────────────────────────────────────────
-CREATE INDEX idx_bid_hashes_bid_id         ON bid_hashes(bid_id);
-CREATE INDEX idx_bid_hashes_content        ON bid_hashes(content_hash);
+CREATE INDEX IF NOT EXISTS idx_bid_hashes_bid_id         ON bid_hashes(bid_id);
+CREATE INDEX IF NOT EXISTS idx_bid_hashes_content        ON bid_hashes(content_hash);
 
 -- ── bid_submissions ──────────────────────────────────────────────────────────
-CREATE INDEX idx_bid_submissions_bid_id    ON bid_submissions(bid_id);
-CREATE INDEX idx_bid_submissions_by        ON bid_submissions(submitted_by);
-CREATE INDEX idx_bid_submissions_at        ON bid_submissions(submitted_at DESC);
+CREATE INDEX IF NOT EXISTS idx_bid_submissions_bid_id    ON bid_submissions(bid_id);
+CREATE INDEX IF NOT EXISTS idx_bid_submissions_by        ON bid_submissions(submitted_by);
+CREATE INDEX IF NOT EXISTS idx_bid_submissions_at        ON bid_submissions(submitted_at DESC);
 
 -- ── eligibility_results ──────────────────────────────────────────────────────
-CREATE INDEX idx_eligibility_bid_id        ON eligibility_results(bid_id);
-CREATE INDEX idx_eligibility_req_id        ON eligibility_results(requirement_id);
-CREATE INDEX idx_eligibility_status        ON eligibility_results(bid_id, status);
+CREATE INDEX IF NOT EXISTS idx_eligibility_bid_id        ON eligibility_results(bid_id);
+CREATE INDEX IF NOT EXISTS idx_eligibility_req_id        ON eligibility_results(requirement_id);
+CREATE INDEX IF NOT EXISTS idx_eligibility_status        ON eligibility_results(bid_id, status);
 
 -- ── ai_evaluations ───────────────────────────────────────────────────────────
-CREATE INDEX idx_ai_evals_tender_id        ON ai_evaluations(tender_id);
-CREATE INDEX idx_ai_evals_status           ON ai_evaluations(status);
-CREATE INDEX idx_ai_evals_created          ON ai_evaluations(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_ai_evals_tender_id        ON ai_evaluations(tender_id);
+CREATE INDEX IF NOT EXISTS idx_ai_evals_status           ON ai_evaluations(status);
+CREATE INDEX IF NOT EXISTS idx_ai_evals_created          ON ai_evaluations(created_at DESC);
 -- Most recent completed evaluation per tender
-CREATE INDEX idx_ai_evals_tender_completed ON ai_evaluations(tender_id, completed_at DESC NULLS LAST)
+CREATE INDEX IF NOT EXISTS idx_ai_evals_tender_completed ON ai_evaluations(tender_id, completed_at DESC NULLS LAST)
   WHERE status = 'completed';
 
 -- ── ai_scores ────────────────────────────────────────────────────────────────
-CREATE INDEX idx_ai_scores_evaluation_id   ON ai_scores(evaluation_id);
-CREATE INDEX idx_ai_scores_bid_id          ON ai_scores(bid_id);
-CREATE INDEX idx_ai_scores_criteria_id     ON ai_scores(criteria_id);
-CREATE INDEX idx_ai_scores_eval_bid        ON ai_scores(evaluation_id, bid_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_evaluation_id   ON ai_scores(evaluation_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_bid_id          ON ai_scores(bid_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_criteria_id     ON ai_scores(criteria_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_eval_bid        ON ai_scores(evaluation_id, bid_id);
 
 -- ── ai_recommendations ───────────────────────────────────────────────────────
-CREATE INDEX idx_ai_recs_evaluation_id     ON ai_recommendations(evaluation_id);
-CREATE INDEX idx_ai_recs_bid_id            ON ai_recommendations(bid_id);
-CREATE INDEX idx_ai_recs_recommendation    ON ai_recommendations(recommendation);
+CREATE INDEX IF NOT EXISTS idx_ai_recs_evaluation_id     ON ai_recommendations(evaluation_id);
+CREATE INDEX IF NOT EXISTS idx_ai_recs_bid_id            ON ai_recommendations(bid_id);
+CREATE INDEX IF NOT EXISTS idx_ai_recs_recommendation    ON ai_recommendations(recommendation);
 -- Ranking query: top-ranked bids per evaluation
-CREATE INDEX idx_ai_recs_rank              ON ai_recommendations(evaluation_id, rank ASC NULLS LAST)
+CREATE INDEX IF NOT EXISTS idx_ai_recs_rank              ON ai_recommendations(evaluation_id, rank ASC NULLS LAST)
   WHERE rank IS NOT NULL;
 
 -- ── risk_assessments ─────────────────────────────────────────────────────────
-CREATE INDEX idx_risk_bid_id               ON risk_assessments(bid_id);
-CREATE INDEX idx_risk_category             ON risk_assessments(risk_category);
-CREATE INDEX idx_risk_level                ON risk_assessments(risk_level);
-CREATE INDEX idx_risk_unresolved           ON risk_assessments(bid_id, risk_level)
+CREATE INDEX IF NOT EXISTS idx_risk_bid_id               ON risk_assessments(bid_id);
+CREATE INDEX IF NOT EXISTS idx_risk_category             ON risk_assessments(risk_category);
+CREATE INDEX IF NOT EXISTS idx_risk_level                ON risk_assessments(risk_level);
+CREATE INDEX IF NOT EXISTS idx_risk_unresolved           ON risk_assessments(bid_id, risk_level)
   WHERE is_resolved = FALSE;
 
 -- ── anomaly_results ──────────────────────────────────────────────────────────
-CREATE INDEX idx_anomaly_tender_id         ON anomaly_results(tender_id);
-CREATE INDEX idx_anomaly_type              ON anomaly_results(anomaly_type);
-CREATE INDEX idx_anomaly_severity          ON anomaly_results(severity);
+CREATE INDEX IF NOT EXISTS idx_anomaly_tender_id         ON anomaly_results(tender_id);
+CREATE INDEX IF NOT EXISTS idx_anomaly_type              ON anomaly_results(anomaly_type);
+CREATE INDEX IF NOT EXISTS idx_anomaly_severity          ON anomaly_results(severity);
 -- Pending review anomalies
-CREATE INDEX idx_anomaly_pending           ON anomaly_results(severity, created_at DESC)
+CREATE INDEX IF NOT EXISTS idx_anomaly_pending           ON anomaly_results(severity, created_at DESC)
   WHERE is_confirmed IS NULL;
 -- GIN index on affected_bid_ids array for bid-to-anomaly lookups
-CREATE INDEX idx_anomaly_affected_bids     ON anomaly_results USING GIN (affected_bid_ids);
+CREATE INDEX IF NOT EXISTS idx_anomaly_affected_bids     ON anomaly_results USING GIN (affected_bid_ids);
 
 -- ── government_decisions ─────────────────────────────────────────────────────
-CREATE INDEX idx_decisions_tender_id       ON government_decisions(tender_id);
-CREATE INDEX idx_decisions_decided_by      ON government_decisions(decided_by);
-CREATE INDEX idx_decisions_type            ON government_decisions(decision);
-CREATE INDEX idx_decisions_effective_at    ON government_decisions(effective_at DESC);
+CREATE INDEX IF NOT EXISTS idx_decisions_tender_id       ON government_decisions(tender_id);
+CREATE INDEX IF NOT EXISTS idx_decisions_decided_by      ON government_decisions(decided_by);
+CREATE INDEX IF NOT EXISTS idx_decisions_type            ON government_decisions(decision);
+CREATE INDEX IF NOT EXISTS idx_decisions_effective_at    ON government_decisions(effective_at DESC);
 
 -- ── decision_overrides ───────────────────────────────────────────────────────
-CREATE INDEX idx_overrides_decision_id     ON decision_overrides(decision_id);
-CREATE INDEX idx_overrides_pending_review  ON decision_overrides(created_at DESC)
+CREATE INDEX IF NOT EXISTS idx_overrides_decision_id     ON decision_overrides(decision_id);
+CREATE INDEX IF NOT EXISTS idx_overrides_pending_review  ON decision_overrides(created_at DESC)
   WHERE is_approved IS NULL;
 
 -- ── audit_logs ───────────────────────────────────────────────────────────────
-CREATE INDEX idx_audit_actor_id            ON audit_logs(actor_id) WHERE actor_id IS NOT NULL;
-CREATE INDEX idx_audit_action              ON audit_logs(action);
-CREATE INDEX idx_audit_target              ON audit_logs(target_type, target_id);
-CREATE INDEX idx_audit_created_at          ON audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_actor_id            ON audit_logs(actor_id) WHERE actor_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_audit_action              ON audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_audit_target              ON audit_logs(target_type, target_id);
+CREATE INDEX IF NOT EXISTS idx_audit_created_at          ON audit_logs(created_at DESC);
 -- Correlation ID for distributed tracing
-CREATE INDEX idx_audit_correlation         ON audit_logs(correlation_id)
+CREATE INDEX IF NOT EXISTS idx_audit_correlation         ON audit_logs(correlation_id)
   WHERE correlation_id IS NOT NULL;
 
 -- ── notifications ────────────────────────────────────────────────────────────
-CREATE INDEX idx_notif_user_id             ON notifications(user_id);
-CREATE INDEX idx_notif_status              ON notifications(status);
-CREATE INDEX idx_notif_send_after          ON notifications(send_after_at)
+CREATE INDEX IF NOT EXISTS idx_notif_user_id             ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notif_status              ON notifications(status);
+CREATE INDEX IF NOT EXISTS idx_notif_send_after          ON notifications(send_after_at)
   WHERE status = 'pending';
-CREATE INDEX idx_notif_user_unread         ON notifications(user_id, created_at DESC)
+CREATE INDEX IF NOT EXISTS idx_notif_user_unread         ON notifications(user_id, created_at DESC)
   WHERE status != 'read';
 
 -- ── service_health_log ───────────────────────────────────────────────────────
-CREATE INDEX idx_shl_service_name          ON service_health_log(service_name);
-CREATE INDEX idx_shl_created_at            ON service_health_log(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_shl_service_name          ON service_health_log(service_name);
+CREATE INDEX IF NOT EXISTS idx_shl_created_at            ON service_health_log(created_at DESC);
 
 -- >>> END 010_indexes.sql <<<
 
@@ -1109,11 +1205,15 @@ CREATE INDEX idx_shl_created_at            ON service_health_log(created_at DESC
 
 -- ── Deferred FK: tenders.awarded_to_bid_id → bids ────────────────────────────
 -- Cannot add this FK during table creation because bids table didn't exist yet.
-ALTER TABLE tenders
-  ADD CONSTRAINT fk_tenders_awarded_bid
-    FOREIGN KEY (awarded_to_bid_id)
-    REFERENCES bids(id)
-    DEFERRABLE INITIALLY DEFERRED;
+DO  BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_tenders_awarded_bid') THEN
+    ALTER TABLE tenders
+      ADD CONSTRAINT fk_tenders_awarded_bid
+        FOREIGN KEY (awarded_to_bid_id)
+        REFERENCES bids(id)
+        DEFERRABLE INITIALLY DEFERRED;
+  END IF;
+END ;
 
 -- ── Unique active bid per company per tender (the "one bid" rule) ─────────────
 -- A company may only have ONE active bid per tender at a time.
@@ -1193,6 +1293,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_criteria_weights ON tender_evaluation_criteria;
 CREATE CONSTRAINT TRIGGER trg_validate_criteria_weights
   AFTER INSERT OR UPDATE ON tender_evaluation_criteria
   DEFERRABLE INITIALLY DEFERRED
@@ -1217,6 +1318,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_lock_submitted_bid_fields ON bids;
 CREATE TRIGGER trg_lock_submitted_bid_fields
   BEFORE UPDATE ON bids
   FOR EACH ROW EXECUTE FUNCTION fn_lock_submitted_bid_fields();
@@ -1235,6 +1337,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_tender_publish ON tenders;
 CREATE TRIGGER trg_validate_tender_publish
   BEFORE INSERT OR UPDATE ON tenders
   FOR EACH ROW EXECUTE FUNCTION fn_validate_tender_publish();
@@ -1255,6 +1358,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_bid_tender_status ON bids;
 CREATE TRIGGER trg_validate_bid_tender_status
   BEFORE INSERT ON bids
   FOR EACH ROW EXECUTE FUNCTION fn_validate_bid_tender_status();
@@ -1277,6 +1381,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_validate_award_bid_status ON government_decisions;
 CREATE TRIGGER trg_validate_award_bid_status
   BEFORE INSERT OR UPDATE ON government_decisions
   FOR EACH ROW EXECUTE FUNCTION fn_validate_award_bid_status();
@@ -1306,10 +1411,10 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 COMMENT ON TABLE refresh_tokens IS 'Server-side refresh token store. Enables rotation and revocation. token_hash is SHA-256 of raw token.';
 COMMENT ON COLUMN refresh_tokens.family IS 'Rotation family UUID. If an already-rotated token is replayed, entire family is revoked (theft detection).';
 
-CREATE INDEX idx_refresh_tokens_user_id   ON refresh_tokens(user_id);
-CREATE INDEX idx_refresh_tokens_hash      ON refresh_tokens(token_hash);
-CREATE INDEX idx_refresh_tokens_family    ON refresh_tokens(family);
-CREATE INDEX idx_refresh_tokens_active    ON refresh_tokens(user_id, expires_at DESC)
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id   ON refresh_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash      ON refresh_tokens(token_hash);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_family    ON refresh_tokens(family);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_active    ON refresh_tokens(user_id, expires_at DESC)
   WHERE is_revoked = FALSE;
 
 -- Auto-cleanup expired tokens (runs on every INSERT — cheap for low-volume auth table)
@@ -1323,6 +1428,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_cleanup_refresh_tokens ON refresh_tokens;
 CREATE TRIGGER trg_cleanup_refresh_tokens
   AFTER INSERT ON refresh_tokens
   FOR EACH STATEMENT EXECUTE FUNCTION fn_cleanup_expired_refresh_tokens();

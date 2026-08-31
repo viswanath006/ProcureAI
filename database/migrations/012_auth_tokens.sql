@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 COMMENT ON TABLE refresh_tokens IS 'Server-side refresh token store. Enables rotation and revocation. token_hash is SHA-256 of raw token.';
 COMMENT ON COLUMN refresh_tokens.family IS 'Rotation family UUID. If an already-rotated token is replayed, entire family is revoked (theft detection).';
 
-CREATE INDEX idx_refresh_tokens_user_id   ON refresh_tokens(user_id);
-CREATE INDEX idx_refresh_tokens_hash      ON refresh_tokens(token_hash);
-CREATE INDEX idx_refresh_tokens_family    ON refresh_tokens(family);
-CREATE INDEX idx_refresh_tokens_active    ON refresh_tokens(user_id, expires_at DESC)
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id   ON refresh_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash      ON refresh_tokens(token_hash);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_family    ON refresh_tokens(family);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_active    ON refresh_tokens(user_id, expires_at DESC)
   WHERE is_revoked = FALSE;
 
 -- Auto-cleanup expired tokens (runs on every INSERT — cheap for low-volume auth table)
@@ -37,6 +37,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_cleanup_refresh_tokens ON refresh_tokens;
 CREATE TRIGGER trg_cleanup_refresh_tokens
   AFTER INSERT ON refresh_tokens
   FOR EACH STATEMENT EXECUTE FUNCTION fn_cleanup_expired_refresh_tokens();
