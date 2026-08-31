@@ -1,19 +1,34 @@
 export function getApiBase(): string {
-  const envUrl = import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-    let u = envUrl.trim();
-    if (!u.startsWith('http://') && !u.startsWith('https://')) u = `https://${u}`;
-    if (u.endsWith('/')) u = u.slice(0, -1);
-    if (!u.endsWith('/api/v1')) u = `${u}/api/v1`;
-    return u;
-  }
+  let envUrl = import.meta.env.VITE_API_URL as string | undefined;
 
-  // If in browser and not localhost, always use live Render production backend
+  // If running on Render in browser, always direct to the live active backend
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
-    if (host && host !== 'localhost' && host !== '127.0.0.1') {
+    if (host && host.includes('onrender.com')) {
       return 'https://procureai-backend-xbv5.onrender.com/api/v1';
     }
+  }
+
+  // Sanitize any envUrl
+  if (envUrl) {
+    let u = envUrl.trim();
+    // Fix truncated hostnames from Render Blueprint (e.g. procureai-backend-vy2f -> procureai-backend-xbv5.onrender.com)
+    if (u.includes('procureai-backend') && !u.includes('.onrender.com')) {
+      u = 'https://procureai-backend-xbv5.onrender.com';
+    } else if (u.includes('procureai-backend-vy2f')) {
+      u = u.replace('procureai-backend-vy2f', 'procureai-backend-xbv5');
+    }
+
+    if (!u.includes('localhost') && !u.includes('127.0.0.1')) {
+      if (!u.startsWith('http://') && !u.startsWith('https://')) u = `https://${u}`;
+      if (u.endsWith('/')) u = u.slice(0, -1);
+      if (!u.endsWith('/api/v1')) u = `${u}/api/v1`;
+      return u;
+    }
+  }
+
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return 'https://procureai-backend-xbv5.onrender.com/api/v1';
   }
 
   return 'http://localhost:4000/api/v1';
