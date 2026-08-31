@@ -13,7 +13,7 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       // Allow requests with no origin (like mobile apps or curl/Postman)
       if (!origin) return callback(null, true);
       const allowedOrigins = env.CORS_ORIGIN.split(',').map((o) => o.trim());
