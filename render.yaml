@@ -55,7 +55,7 @@ services:
         fromService:
           type: web
           name: procureai-ai-service
-          property: host
+          property: hostWithScheme
       - key: CORS_ORIGIN
         value: "*"
       - key: JWT_SECRET
@@ -88,4 +88,4 @@ services:
         fromService:
           type: web
           name: procureai-backend
-          property: host
+          property: hostWithScheme
