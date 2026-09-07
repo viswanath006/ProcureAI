@@ -110,20 +110,12 @@ async function migrate() {
     console.log('📋 Migration tracking table ready\n');
 
     // ── Migrations ─────────────────────────────────────────────────────────────
-    // Resolve paths: works both in local (rootDir: .) and Render (rootDir: backend)
-    const bundleMigrationsDir = path.resolve(__dirname, '../db-bundle/migrations');
-    const rootMigrationsDir   = path.resolve(__dirname, '../../../database/migrations');
+    const migrationsDir = path.resolve(__dirname, '../../../database/migrations');
 
-    let migrationsDir: string;
-    if (fs.existsSync(bundleMigrationsDir)) {
-      migrationsDir = bundleMigrationsDir;
-      console.log('📦 Using bundled migrations (backend/src/db-bundle/migrations/)');
-    } else if (fs.existsSync(rootMigrationsDir)) {
-      migrationsDir = rootMigrationsDir;
-      console.log('📂 Using root migrations (database/migrations/)');
-    } else {
-      throw new Error('No migrations directory found. Expected either db-bundle/migrations or database/migrations.');
+    if (!fs.existsSync(migrationsDir)) {
+      throw new Error(`Migrations directory not found at ${migrationsDir}`);
     }
+    console.log(`📂 Using migrations (${migrationsDir})`);
 
     const migrationFiles = fs
       .readdirSync(migrationsDir)
@@ -136,19 +128,10 @@ async function migrate() {
     }
 
     // ── Seeds ──────────────────────────────────────────────────────────────────
-    const bundleSeedsDir = path.resolve(__dirname, '../db-bundle/seeds');
-    const rootSeedsDir   = path.resolve(__dirname, '../../../database/seeds');
+    const seedsDir = path.resolve(__dirname, '../../../database/seeds');
+    if (fs.existsSync(seedsDir)) {
+      console.log(`\n📂 Using seeds (${seedsDir})`);
 
-    let seedsDir: string | null = null;
-    if (fs.existsSync(bundleSeedsDir)) {
-      seedsDir = bundleSeedsDir;
-      console.log('\n📦 Using bundled seeds (backend/src/db-bundle/seeds/)');
-    } else if (fs.existsSync(rootSeedsDir)) {
-      seedsDir = rootSeedsDir;
-      console.log('\n📂 Using root seeds (database/seeds/)');
-    }
-
-    if (seedsDir) {
       const seedFiles = fs
         .readdirSync(seedsDir)
         .filter((f) => f.endsWith('.sql'))

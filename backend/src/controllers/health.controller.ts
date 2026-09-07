@@ -47,10 +47,14 @@ export async function systemStatus(_req: Request, res: Response): Promise<void> 
 
   let dbLogCount = 0;
   if (dbHealthy) {
-    const result = await query<{ count: string }>(
-      'SELECT COUNT(*)::text AS count FROM service_health_log'
-    );
-    dbLogCount = parseInt(result.rows[0]?.count ?? '0', 10);
+    try {
+      const result = await query<{ count: string }>(
+        'SELECT COUNT(*)::text AS count FROM service_health_log'
+      );
+      dbLogCount = parseInt(result.rows[0]?.count ?? '0', 10);
+    } catch {
+      dbLogCount = 0;
+    }
   }
 
   const allHealthy = dbHealthy && aiHealth.reachable;

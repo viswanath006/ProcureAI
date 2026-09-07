@@ -4,7 +4,11 @@ export function getApiBase(): string {
   if (envUrl) {
     let u = envUrl.trim();
     if (!u.startsWith('http://') && !u.startsWith('https://')) {
-      u = `https://${u}`;
+      if (u.includes('localhost') || u.includes('127.0.0.1')) {
+        u = `http://${u}`;
+      } else {
+        u = `https://${u}`;
+      }
     }
     if (u.endsWith('/')) {
       u = u.slice(0, -1);

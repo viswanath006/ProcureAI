@@ -1,4 +1,0 @@
-# ProcureAI — run from project root:
-#   docker compose up --build
-include:
-  - path: docker/docker-compose.yml
