@@ -1,0 +1,26 @@
+[
+  {
+    "id": "e05d6baa-ef9a-4467-a73e-3c4990428f7c",
+    "email": "new.test.user@procureai.gov.in",
+    "full_name": "New Test User",
+    "role_id": "govt_officer",
+    "role_code": "GOVT_OFFICER",
+    "company_id": null,
+    "status": "active",
+    "password_hash": "$2b$10$eyQYLcCq/mQyTy65Eojw/uklGyDEg7bMN/bL1VQjinAc2i4V4HCaK",
+    "failed_login_count": 0,
+    "locked_until": null
+  },
+  {
+    "id": "708c3e58-774b-4e4e-ba82-68e5c660b7e4",
+    "email": "bsdk2536@gmail.com",
+    "full_name": "bsdk",
+    "role_id": "bidder",
+    "role_code": "BIDDER",
+    "company_id": null,
+    "status": "active",
+    "password_hash": "$2b$10$T6vs2qNfdgRSekrzvUToWOFs44z.fkvJzZ8kLX5K7EqmAJrSmNrVa",
+    "failed_login_count": 0,
+    "locked_until": null
+  }
+]

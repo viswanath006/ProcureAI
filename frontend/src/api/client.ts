@@ -44,6 +44,10 @@ export interface User {
 export interface AuthResponseData {
   user: User;
   accessToken: string;
+<<<<<<< HEAD
+=======
+  refreshToken?: string;
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 }
 
 export interface HealthData {
@@ -81,11 +85,34 @@ export interface PingData {
   };
 }
 
+<<<<<<< HEAD
 // In-memory access token storage (XSS safe)
 let currentAccessToken: string | null = null;
 
 export function setAccessToken(token: string | null): void {
   currentAccessToken = token;
+=======
+// In-memory + persistent access token storage
+let currentAccessToken: string | null = null;
+
+try {
+  currentAccessToken = localStorage.getItem('procureai_access_token');
+} catch {
+  currentAccessToken = null;
+}
+
+export function setAccessToken(token: string | null): void {
+  currentAccessToken = token;
+  try {
+    if (token) {
+      localStorage.setItem('procureai_access_token', token);
+    } else {
+      localStorage.removeItem('procureai_access_token');
+    }
+  } catch {
+    // LocalStorage unavailable in sandbox
+  }
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 }
 
 export function getAccessToken(): string | null {
@@ -136,6 +163,10 @@ async function request<T>(
 
     const response = await fetch(fullUrl, {
       ...options,
+<<<<<<< HEAD
+=======
+      credentials: 'include',
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
       headers,
     });
 
@@ -161,10 +192,29 @@ async function request<T>(
       isRefreshing = true;
 
       try {
+<<<<<<< HEAD
         const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
           method: 'POST',
           headers: { Accept: 'application/json' },
           credentials: 'include',
+=======
+        const savedRefreshToken = (() => {
+          try {
+            return localStorage.getItem('procureai_refresh_token');
+          } catch {
+            return null;
+          }
+        })();
+
+        const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: savedRefreshToken ? JSON.stringify({ refreshToken: savedRefreshToken }) : undefined,
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
         });
 
         const refreshData: ApiResponse<AuthResponseData> = await refreshRes.json();
@@ -172,6 +222,17 @@ async function request<T>(
         if (refreshData.success && refreshData.data?.accessToken) {
           const newToken = refreshData.data.accessToken;
           setAccessToken(newToken);
+<<<<<<< HEAD
+=======
+          try {
+            if (refreshData.data.refreshToken) {
+              localStorage.setItem('procureai_refresh_token', refreshData.data.refreshToken);
+            }
+            if (refreshData.data.user) {
+              localStorage.setItem('procureai_user', JSON.stringify(refreshData.data.user));
+            }
+          } catch {}
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
           processQueue(null, newToken);
           isRefreshing = false;
           return request<T>(path, options, true);
@@ -227,6 +288,7 @@ export const api = {
       body: JSON.stringify(payload),
     }),
 
+<<<<<<< HEAD
   refresh: () =>
     request<AuthResponseData>('/auth/refresh', {
       method: 'POST',
@@ -235,6 +297,18 @@ export const api = {
   logout: () =>
     request<{ message: string }>('/auth/logout', {
       method: 'POST',
+=======
+  refresh: (refreshToken?: string | null) =>
+    request<AuthResponseData>('/auth/refresh', {
+      method: 'POST',
+      body: refreshToken ? JSON.stringify({ refreshToken }) : undefined,
+    }),
+
+  logout: (refreshToken?: string | null) =>
+    request<{ message: string }>('/auth/logout', {
+      method: 'POST',
+      body: refreshToken ? JSON.stringify({ refreshToken }) : undefined,
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
     }),
 
   getMe: () => request<{ user: User }>('/auth/me'),

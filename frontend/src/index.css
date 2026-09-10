@@ -1,3 +1,31 @@
+<<<<<<< HEAD
+=======
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYREGULAR.woff') format('woff');
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYMEDIUM.woff') format('woff');
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYSEMIBOLDITALIC.woff') format('woff');
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYBOLD.woff') format('woff');
+}
+
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,12 +41,22 @@
   }
 
   html {
+<<<<<<< HEAD
     scroll-behavior: smooth;
   }
 
   body {
     @apply bg-gray-50 text-gray-800 antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+=======
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+  }
+
+  body {
+    @apply bg-[#FAFAFB] text-gray-900 antialiased;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif !important;
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
     min-height: 100vh;
   }
 
@@ -27,6 +65,111 @@
   }
 }
 
+<<<<<<< HEAD
+=======
+/* ─── Universal San Francisco Typography Enforcement ────────────────────── */
+*,
+*::before,
+*::after,
+html,
+body,
+#root,
+div,
+span,
+p,
+a,
+h1, h2, h3, h4, h5, h6,
+button,
+input,
+select,
+textarea,
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+label,
+strong,
+b,
+em,
+small,
+code,
+pre,
+kbd,
+samp {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.font-mono,
+.font-sans,
+[class*="font-mono"],
+[class*="font-sans"],
+.font-mono *,
+.font-sans * {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ─── Light Theme Overrides matching LoginPage ──────────────────────────── */
+.bg-slate-900,
+.bg-slate-900\/90,
+.bg-slate-900\/80,
+.bg-slate-900\/60,
+.bg-slate-900\/40 {
+  background-color: #FFFFFF !important;
+}
+
+.bg-slate-950,
+.bg-slate-950\/90,
+.bg-slate-950\/80,
+.bg-slate-950\/70,
+.bg-slate-950\/60,
+.bg-slate-950\/50,
+.bg-slate-950\/40 {
+  background-color: #FFFFFF !important;
+}
+
+/* Modal overlays soft dimming */
+div.fixed.bg-slate-950\/80 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+.bg-slate-800,
+.bg-slate-800\/80,
+.bg-slate-800\/70,
+.bg-slate-800\/60 {
+  background-color: #F4F4F5 !important;
+}
+
+.border-slate-800,
+.border-slate-800\/80,
+.border-slate-800\/70,
+.border-slate-800\/60,
+.border-slate-800\/50,
+.border-slate-700 {
+  border-color: #E4E4E7 !important;
+}
+
+.text-slate-100,
+.text-slate-200 {
+  color: #18181B !important;
+}
+
+.text-slate-300,
+.text-slate-400 {
+  color: #52525B !important;
+}
+
+.text-slate-500 {
+  color: #71717A !important;
+}
+
+.divide-slate-800\/70 > :not([hidden]) ~ :not([hidden]),
+.divide-slate-800\/60 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #F4F4F5 !important;
+}
+
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 /* ─── Components ────────────────────────────────────────────────────────── */
 @layer components {
   /* Card */
@@ -48,6 +191,71 @@
     @apply rounded-2xl border border-gray-200 bg-white shadow-sm;
   }
 
+<<<<<<< HEAD
+=======
+  /* Real frosted glass — light theme, uses SVG feTurbulence for authentic glass bend */
+  .glass-real {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: url(#glass-lg) blur(16px) saturate(180%);
+    -webkit-backdrop-filter: url(#glass-lg) blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 24px 64px rgba(99, 102, 241, 0.12),
+      0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 28px;
+  }
+
+  /* Auth pages — San Francisco / SF Pro font stack
+     Uses SF Pro on macOS/iOS, Segoe UI on Windows, Inter elsewhere */
+  .auth-bg,
+  .auth-bg * {
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      'SF Pro Display',
+      'SF Pro Text',
+      'Helvetica Neue',
+      'Segoe UI',
+      Arial,
+      sans-serif;
+  }
+
+  /* Auth page — clean white base with ultra-subtle pastel blobs */
+  .auth-bg {
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  /* Blob layer 1 — very soft, slow drift */
+  .auth-bg::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 20%, rgba(199, 210, 254, 0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(186, 230, 253, 0.3)  0%, transparent 60%),
+      radial-gradient(ellipse 45% 40% at 60% 5%,  rgba(221, 214, 254, 0.28) 0%, transparent 60%);
+    animation: blob-drift-light 22s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* Blob layer 2 — slower, opposite */
+  .auth-bg::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 55% 45% at 80% 15%, rgba(167, 243, 208, 0.2) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 50% at 5%  85%, rgba(254, 215, 170, 0.18) 0%, transparent 55%);
+    animation: blob-drift-light 32s ease-in-out infinite alternate-reverse;
+    pointer-events: none;
+  }
+
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
   /* Status badge */
   .badge-up {
     @apply inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200;
@@ -129,6 +337,61 @@
   50% { opacity: 0.4; }
 }
 
+<<<<<<< HEAD
+=======
+@keyframes blob-drift-light {
+  0%   { transform: translate(0px,   0px)   scale(1);    }
+  25%  { transform: translate(25px, -18px)  scale(1.04); }
+  50%  { transform: translate(-15px, 25px)  scale(0.98); }
+  75%  { transform: translate(20px,  15px)  scale(1.03); }
+  100% { transform: translate(-10px, -8px)  scale(1.01); }
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes dashboardBgWave {
+  0% {
+    opacity: 0.04;
+  }
+  100% {
+    opacity: 0.10;
+  }
+}
+
+@keyframes tabPaneFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tab-pane-fade {
+  animation: tabPaneFadeIn 0.15s ease-out forwards;
+  will-change: opacity;
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-up {
+  animation: modalScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }

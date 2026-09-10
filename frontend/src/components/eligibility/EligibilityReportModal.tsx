@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+=======
+import { createPortal } from 'react-dom';
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 import { api } from '../../api/client';
 
 interface EligibilityReportModalProps {
@@ -57,9 +61,15 @@ export const EligibilityReportModal: React.FC<EligibilityReportModalProps> = ({
 
   if (!isOpen) return null;
 
+<<<<<<< HEAD
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
       <div className="card-glass max-w-4xl w-full max-h-[90vh] flex flex-col p-6 sm:p-8 space-y-6 animate-scale-up border-slate-700 shadow-2xl">
+=======
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+      <div className="card-glass max-w-4xl w-full max-h-[90vh] flex flex-col p-6 sm:p-8 space-y-6 animate-scale-up border-slate-700 shadow-2xl my-auto">
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
         {/* Header */}
         <div className="flex justify-between items-start border-b border-slate-800 pb-4">
           <div>
@@ -222,6 +232,11 @@ export const EligibilityReportModal: React.FC<EligibilityReportModalProps> = ({
           </button>
         </div>
       </div>
+<<<<<<< HEAD
     </div>
+=======
+    </div>,
+    document.body
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
   );
 };

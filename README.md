@@ -1,15 +1,200 @@
 # ProcureAI 🏛️⚡
 
+<<<<<<< HEAD
 <div align="center">
 
 <h3>Intelligent. Fair. Transparent.</h3>
 <p><em>An Enterprise-Grade, Explainable, and Tamper-Evident e-Procurement Governance Platform with Multi-Criteria Decision Support and Real-Time Anomaly Analysis.</em></p>
 
+=======
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 [![License: SIH 2026](https://img.shields.io/badge/License-SIH%202026-orange?style=for-the-badge)](https://github.com/viswanath006/ProcureAI)
 [![Tests Passing](https://img.shields.io/badge/Tests-389%2F389%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=checkmarx)](https://github.com/viswanath006/ProcureAI)
 [![Security Audited](https://img.shields.io/badge/Security-5%2F5%20Attack%20Vectors%20Rejected-blue?style=for-the-badge&logo=shield)](https://github.com/viswanath006/ProcureAI)
 
+<<<<<<< HEAD
 <br/>
+=======
+## Overview
+
+**Intelligent. Fair. Transparent.**
+
+ProcureAI is an enterprise‑grade, explainable, tamper‑evident e‑procurement governance platform. It enables public agencies to run transparent tender processes with multi‑criteria decision support, real‑time anomaly detection, and cryptographically sealed bid vaults.
+
+---
+
+## Key Features & Capabilities
+
+- **AES‑256‑GCM sealed bid vault** – client‑side encryption guarantees confidentiality until the official unsealing ceremony.
+- **Quality & Cost Based Selection (QCBS)** – weighted scoring (price 40 %, technical 20 %, experience 15 %, financial 10 %, performance 10 %, risk 5 %).
+- **Explainable AI (XAI) via SHAP** – clear attribution of each scoring factor for auditors and decision‑makers.
+- **Anomaly & Collusion Detection** – Isolation Forest and proximity clustering surface suspicious bidding patterns.
+- **Cryptographic Audit Ledger** – SHA‑256 chained events provide immutable, tamper‑evident histories.
+- **Role‑Based Portals** – dedicated UI for Officers, Bidders, Auditors, and Admins.
+- **Zero‑knowledge proofs (future)** – proof of compliance without revealing sensitive data.
+
+---
+
+## Architecture Overview
+
+```mermaid
+graph TB
+  subgraph Client ["Client Experience Layer"]
+    UI_Officer["👔 Officer Portal"]
+    UI_Bidder["🏢 Bidder Portal"]
+    UI_Auditor["🔍 Auditor Portal"]
+    UI_Admin["⚙️ Admin Portal"]
+  end
+  subgraph Gateway ["Express API Gateway"]
+    MW_Auth["Dual‑Token JWT & RBAC"]
+    MW_Rate["Rate Limiting & Security Headers"]
+    MW_Audit["Audit Log Interceptor"]
+    Router["REST API Engine (/api/v1)"]
+  end
+  subgraph AI ["Python AI Microservice"]
+    QCBS["QCBS Scorer"]
+    XAI["SHAP Explainer"]
+    Anomaly["Isolation Forest"]
+  end
+  subgraph DB ["PostgreSQL"]
+    DB_Tenders["Tenders & Vault"]
+    DB_Audit["Audit Ledger"]
+  end
+  UI_Officer -->|HTTPS| MW_Rate --> MW_Auth --> MW_Audit --> Router --> AI
+  Router --> DB
+```
+
+---
+
+## Quick Start & Installation
+
+### Prerequisites
+- Node.js v18 or later
+- Python 3.11 or later
+- PostgreSQL v16
+- Docker Compose v2 (optional for one‑click deployment)
+
+### Option A – One‑Command Docker Compose (recommended)
+```bash
+git clone https://github.com/viswanath006/ProcureAI.git
+cd ProcureAI
+cp .env.example .env   # adjust secrets if needed
+docker compose up --build
+```
+The frontend will be available at `http://localhost:5173`, the backend at `http://localhost:4000`, and the AI service at `http://localhost:8000`.
+
+### Option B – Local Development
+```bash
+# Backend
+cd backend
+npm install
+npm run dev   # http://localhost:4000
+
+# AI Service
+cd ../ai-service
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --port 8000 --reload
+
+# Frontend
+cd ../frontend
+npm install
+npm run dev   # http://localhost:5173
+```
+
+---
+
+## Usage Guide
+
+1. **Login** – Use the demo accounts (Officer: `officer.suresh@finance.gov.in`, Bidder: `bidder.alpha@alphacorp.dev`, Auditor: `auditor.priya@cag.gov.in`, Admin: `admin.rajesh@procureai.gov.in`). Password is `ProcureAI_Dev_2026!`.
+2. **Create Tender** – Officers define specifications, eligibility gates, and timelines.
+3. **Bid Submission** – Bidders upload encrypted proposals; the system enforces single‑submission rules.
+4. **Evaluation** – AI generates QCBS scores and SHAP explanations; auditors can review anomaly alerts.
+5. **Decision** – Officers approve or override with mandatory justification; the decision is recorded in the immutable audit ledger.
+
+---
+
+## API Reference Summary
+
+| Domain | Method | Endpoint | Access Role | Description |
+|---|---|---|---|---|
+| **Auth** | `POST` | `/api/v1/auth/login` | Public | Issue JWT pair. |
+| **Auth** | `POST` | `/api/v1/auth/refresh` | Public | Rotate access token. |
+| **Tenders** | `GET` | `/api/v1/tenders` | Authenticated | List tenders. |
+| **Tenders** | `POST` | `/api/v1/tenders` | `GOVT_OFFICER` | Create tender. |
+| **Eligibility** | `POST` | `/api/v1/eligibility/evaluate` | Authenticated | Evaluate statutory gates. |
+| **Bids** | `POST` | `/api/v1/bids/submit` | `BIDDER` | Submit encrypted bid. |
+| **Bids** | `GET` | `/api/v1/bids/:bidId` | Authenticated | View bid (owner‑only). |
+| **AI** | `POST` | `/api/v1/ai/evaluate` | `GOVT_OFFICER` | Run QCBS scoring. |
+| **XAI** | `POST` | `/api/v1/ai/explain` | Authenticated | SHAP attribution. |
+| **Anomaly** | `POST` | `/api/v1/ai/anomaly` | `GOVT_OFFICER` | Detect collusion. |
+| **Decision** | `POST` | `/api/v1/tenders/:id/decision` | `GOVT_OFFICER` | Record award/override. |
+| **Audit** | `GET` | `/api/v1/audit/logs` | `AUDITOR` | Query ledger events. |
+| **Audit** | `GET` | `/api/v1/audit/verify` | `AUDITOR` | Verify ledger integrity. |
+| **Demo** | `POST` | `/api/v1/demo/reset` | Public | Reset demo data. |
+| **Demo** | `POST` | `/api/v1/demo/scenario-1` | Public | AI recommendation demo. |
+| **Demo** | `POST` | `/api/v1/demo/scenario-2` | Public | Human override demo. |
+
+---
+
+## 📦 Assets
+
+All custom images are stored in the `frontend/src/assets/images` folder.
+
+- `calendar.png` – background for the calendar date picker.
+- `access_blocked.png` – background for the access‑denied page.
+- `create.png` – background for the create‑tender dialog.
+- `lock.png` – lock icon used throughout the UI.
+
+---
+
+## ⚖️ Statutory Compliance & Governance
+
+ProcureAI aligns with Indian public procurement regulations:
+1. **GFR 2017 Rule 149/192** – QCBS ensures value‑for‑money.
+2. **CVC Guidelines** – sealed‑bid confidentiality and audit trails.
+3. **IT Act 2000 & DPDP 2023** – client‑side encryption and data protection.
+
+---
+
+## 🗺️ Roadmap & Future Scope
+
+- **GeM & CPPP Integration** – bidirectional sync with national portals.
+- **Zero‑Knowledge Proofs** – prove compliance without data exposure.
+- **Federated Anti‑Cartel Intelligence** – collaborative anomaly detection across agencies.
+- **Hardware Security Keys** – FIDO2 support for multi‑signature ceremonies.
+
+---
+
+## 📄 License & Acknowledgments
+
+- **License**: MIT (see `LICENSE` file).
+- **Hackathon Track**: Smart India Hackathon 2026.
+- **Repository**: [https://github.com/viswanath006/ProcureAI](https://github.com/viswanath006/ProcureAI)
+
+---
+
+<div align="center">
+  <b>Built with integrity for fair, transparent, and accountable governance.</b>
+</div>
+
+
+<div align="center">
+</div>
+
+## Overview
+
+**Intelligent. Fair. Transparent.**  
+An enterprise‑grade, explainable, tamper‑evident e‑procurement governance platform with multi‑criteria decision support and real‑time anomaly analysis.
+
+### Badges
+
+[![License: SIH 2026](https://img.shields.io/badge/License-SIH%202026-orange?style=for-the-badge)](https://github.com/viswanath006/ProcureAI)
+[![Tests Passing](https://img.shields.io/badge/Tests-389%2F389%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=checkmarx)](https://github.com/viswanath006/ProcureAI)
+[![Security Audited](https://img.shields.io/badge/Security-5%2F5%20Attack%20Vectors%20Rejected-blue?style=for-the-badge&logo=shield)](https://github.com/viswanath006/ProcureAI)
+
+**Tech Stack**
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
@@ -22,7 +207,11 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v16-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose_v2-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
 
+<<<<<<< HEAD
 </div>
+=======
+---
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 
 ---
 
@@ -471,6 +660,20 @@ ProcureAI is designed in strict alignment with national procurement frameworks:
 - 🤝 **Federated Cross-Agency Anti-Cartel Intelligence**: Privacy-preserving federated machine learning across central and state departments to detect interstate contractor syndicates.
 - 📱 **Mobile Hardware Security Key Support**: FIDO2 / WebAuthn hardware dongle integration for multi-signature unsealing ceremonies.
 
+<<<<<<< HEAD
+=======
+## 📦 Assets
+
+All custom images are stored in the `frontend/src/assets/images` folder.
+
+- `calendar.png` – background for the calendar date picker.
+- `access_blocked.png` – background for the access‑denied page.
+- `create.png` – background for the create‑tender dialog.
+- `lock.png` – lock icon used throughout the UI.
+
+These assets are bundled with the frontend build and will be included automatically when you clone the repository.
+
+>>>>>>> 4169a4f (Recreated professional README and organized assets)
 ---
 
 ## 📄 License & Acknowledgments
