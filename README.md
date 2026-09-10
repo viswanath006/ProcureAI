@@ -1,20 +1,21 @@
 # ProcureAI 🏛️⚡
 
-<<<<<<< HEAD
-<div align="center">
+
+
 
 <h3>Intelligent. Fair. Transparent.</h3>
 <p><em>An Enterprise-Grade, Explainable, and Tamper-Evident e-Procurement Governance Platform with Multi-Criteria Decision Support and Real-Time Anomaly Analysis.</em></p>
 
-=======
->>>>>>> 4169a4f (Recreated professional README and organized assets)
+
+
 [![License: SIH 2026](https://img.shields.io/badge/License-SIH%202026-orange?style=for-the-badge)](https://github.com/viswanath006/ProcureAI)
 [![Tests Passing](https://img.shields.io/badge/Tests-389%2F389%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=checkmarx)](https://github.com/viswanath006/ProcureAI)
 [![Security Audited](https://img.shields.io/badge/Security-5%2F5%20Attack%20Vectors%20Rejected-blue?style=for-the-badge&logo=shield)](https://github.com/viswanath006/ProcureAI)
 
-<<<<<<< HEAD
+
 <br/>
-=======
+
+
 ## Overview
 
 **Intelligent. Fair. Transparent.**
@@ -174,15 +175,10 @@ ProcureAI aligns with Indian public procurement regulations:
 
 ---
 
-<div align="center">
-  <b>Built with integrity for fair, transparent, and accountable governance.</b>
-</div>
 
 
-<div align="center">
-</div>
 
-## Overview
+
 
 **Intelligent. Fair. Transparent.**  
 An enterprise‑grade, explainable, tamper‑evident e‑procurement governance platform with multi‑criteria decision support and real‑time anomaly analysis.
@@ -194,7 +190,7 @@ An enterprise‑grade, explainable, tamper‑evident e‑procurement governance 
 [![Security Audited](https://img.shields.io/badge/Security-5%2F5%20Attack%20Vectors%20Rejected-blue?style=for-the-badge&logo=shield)](https://github.com/viswanath006/ProcureAI)
 
 **Tech Stack**
->>>>>>> 4169a4f (Recreated professional README and organized assets)
+
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
@@ -207,11 +203,11 @@ An enterprise‑grade, explainable, tamper‑evident e‑procurement governance 
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v16-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose_v2-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
 
-<<<<<<< HEAD
+
 </div>
 =======
 ---
->>>>>>> 4169a4f (Recreated professional README and organized assets)
+
 
 ---
 
@@ -660,8 +656,8 @@ ProcureAI is designed in strict alignment with national procurement frameworks:
 - 🤝 **Federated Cross-Agency Anti-Cartel Intelligence**: Privacy-preserving federated machine learning across central and state departments to detect interstate contractor syndicates.
 - 📱 **Mobile Hardware Security Key Support**: FIDO2 / WebAuthn hardware dongle integration for multi-signature unsealing ceremonies.
 
-<<<<<<< HEAD
-=======
+
+
 ## 📦 Assets
 
 All custom images are stored in the `frontend/src/assets/images` folder.
@@ -673,7 +669,7 @@ All custom images are stored in the `frontend/src/assets/images` folder.
 
 These assets are bundled with the frontend build and will be included automatically when you clone the repository.
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
+
 ---
 
 ## 📄 License & Acknowledgments
