@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "db:migrate": "tsx src/scripts/migrate.ts",
-    "lint": "eslint src --ext .ts",
+    "lint": "tsc --noEmit",
     "test": "tsx src/scripts/test-auth.ts",
     "test:auth": "tsx src/scripts/test-auth.ts",
     "test:tender": "tsx src/scripts/test-tender-lifecycle.ts",

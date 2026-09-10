@@ -172,7 +172,7 @@ export const TendersPortal: React.FC = () => {
 
               {isLoading ? (
                 <div className="card-glass p-8 text-center text-xs text-slate-400 animate-pulse">
-                  Querying procurement registry...
+                  Loading tenders...
                 </div>
               ) : filteredTenders.length === 0 ? (
                 <div className="card-glass p-8 text-center text-xs text-slate-500">
@@ -253,8 +253,8 @@ export const TendersPortal: React.FC = () => {
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-800 font-mono text-xs">
                       <div>
-                        <span className="text-[10px] text-slate-500 block">LIFECYCLE STATUS</span>
-                        <span className="font-bold text-slate-200 uppercase">
+                        <span className="text-[10px] text-gray-500 block">STATUS</span>
+                        <span className="font-bold text-gray-800 uppercase">
                           {inlineSelectedTender.status}
                         </span>
                       </div>
@@ -306,34 +306,29 @@ export const TendersPortal: React.FC = () => {
 
                   {/* Bidder Action: Submit Sealed Bid */}
                   {user?.role_code === 'BIDDER' && (
-                    <div className="p-5 rounded-xl bg-blue-500/10 border border-blue-500/30 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">🔒</span>
-                          <h4 className="text-sm font-bold text-blue-300 font-mono">
-                            Cryptographic Sealed Proposal Portal
-                          </h4>
-                        </div>
-                        <span className="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 font-mono text-[10px] font-bold">
-                          AES-256-GCM • SHA-256
-                        </span>
+                    <div className="p-5 rounded-xl bg-blue-50 border border-blue-200 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">📝</span>
+                        <h4 className="text-sm font-bold text-blue-700">
+                          Submit Your Bid
+                        </h4>
                       </div>
-                      <p className="text-xs text-slate-300">
-                        Proposals are encrypted at rest and locked. Commercial values remain strictly confidential until the post-deadline opening ceremony.
+                      <p className="text-xs text-gray-600">
+                        Your bid will be securely sealed and kept confidential until the submission deadline passes.
                       </p>
 
                       <button
                         onClick={() => setIsSealedBidModalOpen(true)}
-                        className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs font-mono shadow-md transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
                       >
-                        <span>🔒 Open Sealed Bid Submission Wizard →</span>
+                        <span>Submit Bid</span>
                       </button>
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="card-glass p-12 text-center text-xs text-slate-500">
-                  Select a tender to view details and execute authorized operations.
+                <div className="card-glass p-12 text-center text-sm text-gray-400">
+                  Select a tender from the list to view its details.
                 </div>
               )}
             </div>
@@ -369,7 +364,7 @@ export const TendersPortal: React.FC = () => {
           onClose={() => setIsSealedBidModalOpen(false)}
           onSuccess={() => {
             loadTenders();
-            setActionSuccess('Proposal successfully encrypted and locked in sealed registry.');
+            setActionSuccess('Bid submitted successfully.');
           }}
         />
       )}

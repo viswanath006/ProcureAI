@@ -38,10 +38,10 @@ export const AdminPortal: React.FC = () => {
       <div>
         <div className="flex items-center gap-2">
           <span className="text-xl">⚙️</span>
-          <h2 className="text-xl font-bold text-slate-100">System Administration & RBAC Management</h2>
+          <h2 className="text-xl font-bold text-gray-800">Administration</h2>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
-          Platform-level configuration, principal directory, and active cryptographic session diagnostics.
+        <p className="text-sm text-gray-500 mt-1">
+          Manage users, view system status, and configure platform settings.
         </p>
       </div>
 
@@ -52,8 +52,8 @@ export const AdminPortal: React.FC = () => {
       )}
 
       {isLoading ? (
-        <div className="card-glass p-8 text-center text-xs text-slate-400 animate-pulse">
-          Loading system telemetry...
+        <div className="card-glass p-8 text-center text-sm text-gray-400 animate-pulse">
+          Loading...
         </div>
       ) : (
         <div className="space-y-6">
@@ -61,88 +61,84 @@ export const AdminPortal: React.FC = () => {
           {systemInfo && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="card-glass p-4">
-                <span className="text-[10px] text-slate-500 font-mono block">ACTIVE JWT SESSIONS</span>
-                <span className="text-2xl font-bold text-procure-400 font-mono">
+                <span className="text-[11px] text-gray-500 block mb-1">Active Sessions</span>
+                <span className="text-2xl font-bold text-blue-600">
                   {systemInfo.activeSessions}
                 </span>
-                <span className="text-[10px] text-slate-400 block mt-1">Cryptographic Refresh Families</span>
               </div>
 
               <div className="card-glass p-4">
-                <span className="text-[10px] text-slate-500 font-mono block">SYSTEM UPTIME</span>
-                <span className="text-2xl font-bold text-emerald-400 font-mono">
+                <span className="text-[11px] text-gray-500 block mb-1">System Uptime</span>
+                <span className="text-2xl font-bold text-emerald-600">
                   {Math.floor(systemInfo.uptimeSeconds / 60)}m {systemInfo.uptimeSeconds % 60}s
                 </span>
-                <span className="text-[10px] text-slate-400 block mt-1">Node {systemInfo.nodeVersion}</span>
               </div>
 
               <div className="card-glass p-4">
-                <span className="text-[10px] text-slate-500 font-mono block">DATABASE TABLES</span>
-                <span className="text-2xl font-bold text-indigo-400 font-mono">
+                <span className="text-[11px] text-gray-500 block mb-1">Database Tables</span>
+                <span className="text-2xl font-bold text-indigo-600">
                   {systemInfo.tableStats?.length || 22}
                 </span>
-                <span className="text-[10px] text-slate-400 block mt-1">PostgreSQL 16 Normalized</span>
               </div>
 
               <div className="card-glass p-4">
-                <span className="text-[10px] text-slate-500 font-mono block">REGISTERED PRINCIPALS</span>
-                <span className="text-2xl font-bold text-amber-400 font-mono">
+                <span className="text-[11px] text-gray-500 block mb-1">Registered Users</span>
+                <span className="text-2xl font-bold text-amber-600">
                   {users.length}
                 </span>
-                <span className="text-[10px] text-slate-400 block mt-1">RBAC Enforced</span>
               </div>
             </div>
           )}
 
           {/* Users Table */}
           <div className="card-glass p-6 space-y-4">
-            <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-3">
-              <span className="font-bold text-slate-300 uppercase tracking-wider font-mono">
-                Principal Identity Directory
+            <div className="flex justify-between items-center text-sm border-b border-gray-200 pb-3">
+              <span className="font-bold text-gray-700">
+                User Directory
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">
-                BCrypt Cost 12 Enforced
+              <span className="text-xs text-gray-400">
+                {users.length} registered users
               </span>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs font-mono">
+              <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-500">
-                    <th className="pb-2.5 pr-4 font-semibold uppercase">Principal Name</th>
-                    <th className="pb-2.5 px-3 font-semibold uppercase">Email</th>
-                    <th className="pb-2.5 px-3 font-semibold uppercase">Assigned Role</th>
-                    <th className="pb-2.5 px-3 font-semibold uppercase">Affiliation</th>
-                    <th className="pb-2.5 pl-3 font-semibold uppercase">Status</th>
+                  <tr className="border-b border-gray-200 text-gray-500">
+                    <th className="pb-2.5 pr-4 font-semibold text-xs uppercase">Name</th>
+                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Email</th>
+                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Role</th>
+                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Organization</th>
+                    <th className="pb-2.5 pl-3 font-semibold text-xs uppercase">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-[11px]">
+                <tbody className="divide-y divide-gray-100">
                   {users.map((u) => (
-                    <tr key={u.id} className="hover:bg-slate-900/40">
-                      <td className="py-2.5 pr-4 text-slate-200 font-sans font-medium">
+                    <tr key={u.id} className="hover:bg-gray-50">
+                      <td className="py-2.5 pr-4 text-gray-800 font-medium text-sm">
                         {u.full_name}
                       </td>
-                      <td className="py-2.5 px-3 text-slate-400">{u.email}</td>
+                      <td className="py-2.5 px-3 text-gray-500 text-xs">{u.email}</td>
                       <td className="py-2.5 px-3">
                         <span
-                          className={`px-2 py-0.5 rounded font-bold text-[10px] ${
+                          className={`px-2 py-0.5 rounded font-bold text-[11px] border ${
                             u.role_code === 'ADMIN'
-                              ? 'bg-red-500/20 text-red-400'
+                              ? 'bg-red-50 text-red-700 border-red-200'
                               : u.role_code === 'GOVT_OFFICER'
-                              ? 'bg-amber-500/20 text-amber-300'
+                              ? 'bg-amber-50 text-amber-700 border-amber-200'
                               : u.role_code === 'BIDDER'
-                              ? 'bg-blue-500/20 text-blue-300'
-                              : 'bg-emerald-500/20 text-emerald-300'
+                              ? 'bg-blue-50 text-blue-700 border-blue-200'
+                              : 'bg-emerald-50 text-emerald-700 border-emerald-200'
                           }`}
                         >
-                          {u.role_code}
+                          {u.role_code === 'GOVT_OFFICER' ? 'Officer' : u.role_code === 'BIDDER' ? 'Bidder' : u.role_code === 'AUDITOR' ? 'Auditor' : 'Admin'}
                         </span>
                       </td>
-                      <td className="py-2.5 px-3 text-slate-400">
+                      <td className="py-2.5 px-3 text-gray-500 text-xs">
                         {u.company_name || 'Government Agency'}
                       </td>
                       <td className="py-2.5 pl-3">
-                        <span className="text-emerald-400 font-semibold">{u.status}</span>
+                        <span className="text-emerald-600 font-semibold text-xs">{u.status}</span>
                       </td>
                     </tr>
                   ))}

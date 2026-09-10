@@ -25,7 +25,7 @@ export const LoginPage: React.FC = () => {
     if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setError(result.error || 'Authentication failed');
+      setError(result.error || 'Login failed. Please check your credentials.');
     }
   };
 
@@ -38,52 +38,47 @@ export const LoginPage: React.FC = () => {
     if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setError(result.error || 'Quick login failed');
+      setError(result.error || 'Login failed.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background ambient glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-procure-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3 z-10">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
         <Link to="/" className="inline-flex items-center gap-3 group">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-procure-500 to-indigo-600 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-procure-500/25 group-hover:scale-105 transition-transform">
-            ⚡
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-md group-hover:shadow-lg transition-shadow">
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-white" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 18L9 6l6 7 4-5" />
+              <circle cx="19" cy="6" r="2" fill="currentColor" stroke="none" />
+            </svg>
           </div>
-          <span className="text-2xl font-black tracking-tight text-white font-mono">
-            Procure<span className="text-procure-400">AI</span>
+          <span className="text-2xl font-black tracking-tight text-gray-900">
+            Procure<span className="text-blue-600">AI</span>
           </span>
         </Link>
-        <h2 className="text-xl font-bold text-slate-100">Secure Access Portal</h2>
-        <p className="text-xs text-procure-400 font-mono tracking-wider uppercase font-semibold">
-          Intelligent. Fair. Transparent.
-        </p>
+        <h2 className="text-xl font-bold text-gray-800">Sign in to your account</h2>
+        <p className="text-sm text-gray-500">Intelligent. Fair. Transparent.</p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4 sm:px-0">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
         <div className="card-glass p-8 space-y-6">
           {isAuthenticated && user && (
-            <div className="p-4 rounded-xl bg-procure-500/10 border border-procure-500/30 text-xs flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-sm flex items-center justify-between">
               <div>
-                <p className="text-slate-300">Currently logged in as:</p>
-                <p className="font-semibold text-procure-300 font-mono">
-                  {user.email} <span className="text-amber-400">[{user.role_code}]</span>
-                </p>
+                <p className="text-gray-500 text-xs">Currently signed in as:</p>
+                <p className="font-semibold text-gray-800">{user.email}</p>
               </div>
               <button
                 onClick={() => logout()}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium transition-colors"
               >
-                Log out
+                Sign out
               </button>
             </div>
           )}
 
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-start gap-2">
+            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600 flex items-start gap-2">
               <span className="text-base">⚠️</span>
               <div className="flex-1 font-medium">{error}</div>
             </div>
@@ -91,8 +86,8 @@ export const LoginPage: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Government / Corporate Email
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Email Address
               </label>
               <input
                 type="email"
@@ -100,13 +95,13 @@ export const LoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@domain.gov.in"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-procure-500 text-slate-100 text-sm placeholder:text-slate-500 outline-none transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-800 text-sm placeholder:text-gray-400 outline-none transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Cryptographic Key / Password
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Password
               </label>
               <input
                 type="password"
@@ -114,79 +109,75 @@ export const LoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-procure-500 text-slate-100 text-sm placeholder:text-slate-500 outline-none transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-800 text-sm placeholder:text-gray-400 outline-none transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-procure-600 to-indigo-600 hover:from-procure-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-procure-500/25 transition-all disabled:opacity-50"
+              className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Authenticating Principal...' : 'Sign In to Workspace →'}
+              {isSubmitting ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          {/* Quick Demo Switcher */}
-          <div className="pt-4 border-t border-slate-800/80">
-            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2.5 text-center font-mono">
-              SIH Judging Quick Role Logins
+          {/* Quick Login Shortcuts */}
+          <div className="pt-4 border-t border-gray-200">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 text-center">
+              Quick Sign In — Demo Accounts
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickLogin('officer.suresh@finance.gov.in')}
-                className="p-2.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition-all group"
+                className="p-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-left transition-colors"
               >
-                <div className="text-[11px] font-bold text-amber-400 flex items-center gap-1.5 font-mono">
-                  <span>🏛️</span> Govt Officer
+                <div className="text-xs font-bold text-amber-700 flex items-center gap-1.5">
+                  🏛️ Government Officer
                 </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5 font-mono">officer.suresh</div>
-                <div className="text-[9px] text-slate-500 font-sans">Tenders & Decisions</div>
+                <div className="text-[11px] text-amber-600 mt-0.5">Manage Tenders & Decisions</div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleQuickLogin('bidder.alpha@alphacorp.dev')}
-                className="p-2.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-blue-500/40 text-left transition-all group"
+                className="p-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-left transition-colors"
               >
-                <div className="text-[11px] font-bold text-blue-400 flex items-center gap-1.5 font-mono">
-                  <span>🏢</span> Bidder Rep
+                <div className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+                  🏢 Bidder
                 </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5 font-mono">Apex Infra</div>
-                <div className="text-[9px] text-slate-500 font-sans">Sealed Submissions</div>
+                <div className="text-[11px] text-blue-600 mt-0.5">Submit Bids</div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleQuickLogin('auditor.priya@cag.gov.in')}
-                className="p-2.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-emerald-500/40 text-left transition-all group"
+                className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-left transition-colors"
               >
-                <div className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
-                  <span>🔍</span> CAG Auditor
+                <div className="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                  🔍 Auditor
                 </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5 font-mono">auditor.priya</div>
-                <div className="text-[9px] text-slate-500 font-sans">Immutable Audit Chain</div>
+                <div className="text-[11px] text-emerald-600 mt-0.5">View Audit Records</div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleQuickLogin('admin.rajesh@procureai.gov.in')}
-                className="p-2.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-rose-500/40 text-left transition-all group"
+                className="p-3 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-left transition-colors"
               >
-                <div className="text-[11px] font-bold text-rose-400 flex items-center gap-1.5 font-mono">
-                  <span>⚙️</span> Admin
+                <div className="text-xs font-bold text-red-700 flex items-center gap-1.5">
+                  ⚙️ Administrator
                 </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5 font-mono">admin.rajesh</div>
-                <div className="text-[9px] text-slate-500 font-sans">System & Security</div>
+                <div className="text-[11px] text-red-600 mt-0.5">System Management</div>
               </button>
             </div>
           </div>
 
-          <div className="text-center text-xs text-slate-400 pt-2">
-            Need a new account?{' '}
-            <Link to="/register" className="text-procure-400 hover:text-procure-300 font-medium underline">
-              Register New Entity
+          <div className="text-center text-sm text-gray-500">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium underline">
+              Register
             </Link>
           </div>
         </div>

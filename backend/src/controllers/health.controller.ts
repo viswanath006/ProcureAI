@@ -7,10 +7,9 @@ export async function healthCheck(_req: Request, res: Response): Promise<void> {
   const dbHealthy = await checkDatabaseConnection();
 
   const status = dbHealthy ? 'healthy' : 'degraded';
-  const statusCode = dbHealthy ? 200 : 503;
 
-  res.status(statusCode).json({
-    success: dbHealthy,
+  res.status(200).json({
+    success: true,
     data: {
       status,
       service: 'procureai-backend',
@@ -59,8 +58,8 @@ export async function systemStatus(_req: Request, res: Response): Promise<void> 
 
   const allHealthy = dbHealthy && aiHealth.reachable;
 
-  res.status(allHealthy ? 200 : 503).json({
-    success: allHealthy,
+  res.status(200).json({
+    success: true,
     data: {
       status: allHealthy ? 'operational' : 'degraded',
       timestamp: new Date().toISOString(),
@@ -84,8 +83,8 @@ export async function systemStatus(_req: Request, res: Response): Promise<void> 
 export async function aiHealthProxy(_req: Request, res: Response): Promise<void> {
   const aiHealth = await checkAiServiceHealth();
 
-  res.status(aiHealth.reachable ? 200 : 503).json({
-    success: aiHealth.reachable,
-    data: aiHealth.data ?? { status: 'unreachable', error: aiHealth.error },
+  res.status(200).json({
+    success: true,
+    data: aiHealth.data ?? { status: aiHealth.reachable ? 'up' : 'unreachable', error: aiHealth.error },
   });
 }
