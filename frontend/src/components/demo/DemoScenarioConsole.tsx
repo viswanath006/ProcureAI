@@ -3,52 +3,18 @@ import { api } from '../../api/client';
 
 export const DemoScenarioConsole: React.FC = () => {
   const [data, setData] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
-  const [noticeMessage, setNoticeMessage] = useState<string | null>(null);
 
   const loadStatus = async () => {
-    setIsLoading(true);
     const res = await api.getDemoStatus();
     if (res.success && res.data) {
       setData(res.data);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
     loadStatus();
   }, []);
-
-  const handleReset = async () => {
-    setIsLoading(true);
-    const res = await api.resetDemoScenario();
-    if (res.success && res.data) {
-      setData(res.data);
-      setNoticeMessage('Demonstration reset: Government School Infrastructure Project (₹10 Cr) initialized.');
-    }
-    setIsLoading(false);
-  };
-
-  const handleRunScenario1 = async () => {
-    setIsLoading(true);
-    const res = await api.runDemoScenario1();
-    if (res.success && res.data) {
-      setData(res.data);
-      setNoticeMessage('Scenario 1 complete: Government approved AI recommendation for Company A. Decision locked & audit chained.');
-    }
-    setIsLoading(false);
-  };
-
-  const handleRunScenario2 = async () => {
-    setIsLoading(true);
-    const res = await api.runDemoScenario2();
-    if (res.success && res.data) {
-      setData(res.data);
-      setNoticeMessage('Scenario 2 complete: Government overridden to Company C. Recorded as potential governance-risk event.');
-    }
-    setIsLoading(false);
-  };
 
   if (!data) {
     return (
@@ -62,82 +28,18 @@ export const DemoScenarioConsole: React.FC = () => {
 
   return (
     <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-6">
-      {/* ── Header & Judging Ribbon ─────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 tracking-wider uppercase inline-flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Live Interactive Demo
-            </span>
-            <span className="text-[11px] text-gray-400 font-medium">Complete Step-by-Step Example</span>
-          </div>
-          <h3 className="text-base font-bold text-gray-900 mt-1.5 flex items-center gap-2">
-            {tender.title}
-            <span className="text-blue-600 text-xs font-semibold px-2 py-0.5 rounded-md bg-blue-50 border border-blue-100">
-              {tender.referenceNumber}
-            </span>
-          </h3>
-          <p className="text-xs text-gray-500 mt-1">
-            Estimated Budget: <strong className="text-emerald-600 font-semibold">{tender.estimatedValueFormatted}</strong> · Department of School Education & Literacy
-          </p>
-        </div>
-
-        {/* 1-Click Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={handleRunScenario1}
-            disabled={isLoading}
-            className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
-          >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            <span>Run Demo (Scenario 1: Follow AI Choice)</span>
-          </button>
-
-          <button
-            onClick={handleRunScenario2}
-            disabled={isLoading}
-            className="px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
-          >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3v18" />
-              <path d="m3 7 9-4 9 4" />
-              <path d="M6 10l-3 5a3 3 0 0 0 6 0l-3-5Z" />
-              <path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" />
-              <path d="M4 21h16" />
-            </svg>
-            <span>Run Scenario 2: Officer Overrides AI</span>
-          </button>
-
-          <button
-            onClick={handleReset}
-            disabled={isLoading}
-            className="px-3.5 py-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium shadow-xs transition-colors disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
-            title="Reset demonstration data"
-          >
-            <svg className="w-3.5 h-3.5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.19" />
-            </svg>
-            <span>Reset</span>
-          </button>
-        </div>
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      <div className="border-b border-gray-100 pb-5">
+        <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
+          {tender.title}
+          <span className="text-blue-600 text-xs font-semibold px-2 py-0.5 rounded-md bg-blue-50 border border-blue-100">
+            {tender.referenceNumber}
+          </span>
+        </h3>
+        <p className="text-xs text-gray-500 mt-1">
+          Estimated Budget: <strong className="text-emerald-600 font-semibold">{tender.estimatedValueFormatted}</strong> · Department of School Education & Literacy
+        </p>
       </div>
-
-      {noticeMessage && (
-        <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <svg className="w-4 h-4 text-blue-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="16" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12.01" y2="8" />
-            </svg>
-            <span className="font-medium">{noticeMessage}</span>
-          </div>
-          <button onClick={() => setNoticeMessage(null)} className="text-blue-500 hover:text-blue-800 text-sm font-bold cursor-pointer">✕</button>
-        </div>
-      )}
 
       {/* ── Value-For-Money Principle Card (The Key Judging Proof) ───────── */}
       <div className="p-5 rounded-xl bg-[#FBFBFD] border border-gray-200 space-y-4">
