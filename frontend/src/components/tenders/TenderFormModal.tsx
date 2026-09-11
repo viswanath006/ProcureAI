@@ -1,12 +1,7 @@
 import React, { useState, useMemo } from 'react';
-<<<<<<< HEAD
-import { api } from '../../api/client';
-=======
 import { createPortal } from 'react-dom';
 import { api } from '../../api/client';
 import { CalendarDatePicker } from '../common/CalendarDatePicker';
->>>>>>> 4169a4f (Recreated professional README and organized assets)
-
 interface TenderFormModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,11 +9,8 @@ interface TenderFormModalProps {
   initialData?: any;
 }
 
-<<<<<<< HEAD
-=======
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 export const TenderFormModal: React.FC<TenderFormModalProps> = ({
   isOpen,
   onClose,
@@ -234,21 +226,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
 
   if (!isOpen) return null;
 
-<<<<<<< HEAD
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="card-glass max-w-4xl w-full max-h-[90vh] flex flex-col p-6 sm:p-8 space-y-6 animate-scale-up border-slate-700 shadow-2xl">
-        {/* Header */}
-        <div className="flex justify-between items-start border-b border-slate-800 pb-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl">📋</span>
-              <h3 className="text-xl font-bold text-slate-100">
-                {initialData ? 'Update Procurement Tender' : 'Create Government Procurement Tender'}
-              </h3>
-            </div>
-            <p className="text-xs text-slate-400 mt-1">
-=======
   return createPortal(
     <div style={{ fontFamily: FONT }} className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
       <div className="relative overflow-hidden bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col p-6 sm:p-8 space-y-6 animate-scale-up border border-gray-200/90 shadow-2xl text-gray-900 my-auto">
@@ -285,17 +262,11 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               </h3>
             </div>
             <p className="text-xs text-gray-500 mt-1">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               Author tender specifications, configure strict eligibility gates, and calibrate weighted evaluation criteria.
             </p>
           </div>
           <button
             onClick={onClose}
-<<<<<<< HEAD
-            className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800"
-          >
-            ✕
-=======
             className="p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
             aria-label="Close"
           >
@@ -303,21 +274,10 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           </button>
         </div>
 
         {/* Step Navigation */}
-<<<<<<< HEAD
-        <div className="flex flex-wrap gap-2 border-b border-slate-800/80 pb-3 font-mono text-xs">
-          <button
-            type="button"
-            onClick={() => setActiveStep('info')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              activeStep === 'info'
-                ? 'bg-procure-600 text-white'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200'
-=======
         <div className="relative z-10 inline-flex p-1 rounded-full bg-[#F4F4F5]/90 backdrop-blur-xs border border-gray-200/90 gap-1 flex-wrap text-xs">
           <button
             type="button"
@@ -326,7 +286,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               activeStep === 'info'
                 ? 'bg-white text-gray-950 shadow-xs'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             }`}
           >
             1. General Info & Budget
@@ -334,17 +293,10 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveStep('eligibility')}
-<<<<<<< HEAD
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              activeStep === 'eligibility'
-                ? 'bg-procure-600 text-white'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200'
-=======
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out cursor-pointer select-none ${
               activeStep === 'eligibility'
                 ? 'bg-white text-gray-950 shadow-xs'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             }`}
           >
             2. Eligibility Criteria ({requirements.length})
@@ -352,19 +304,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveStep('criteria')}
-<<<<<<< HEAD
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
-              activeStep === 'criteria'
-                ? 'bg-procure-600 text-white'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            3. Evaluation Weights ({totalWeight}%)
-            {isWeightBalanced ? (
-              <span className="text-emerald-400 font-bold">✓</span>
-            ) : (
-              <span className="text-amber-400 font-bold">!</span>
-=======
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out cursor-pointer select-none flex items-center gap-1.5 ${
               activeStep === 'criteria'
                 ? 'bg-white text-gray-950 shadow-xs'
@@ -376,23 +315,15 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
             ) : (
               <span className="w-2 h-2 rounded-full bg-amber-500" />
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             )}
           </button>
           <button
             type="button"
             onClick={() => setActiveStep('documents')}
-<<<<<<< HEAD
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              activeStep === 'documents'
-                ? 'bg-procure-600 text-white'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200'
-=======
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out cursor-pointer select-none ${
               activeStep === 'documents'
                 ? 'bg-white text-gray-950 shadow-xs'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             }`}
           >
             4. Required Documents ({documents.length})
@@ -400,27 +331,13 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
         </div>
 
         {error && (
-<<<<<<< HEAD
-          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-start gap-2">
-            <span className="text-base">⚠️</span>
-=======
           <div className="relative z-10 p-3.5 rounded-xl bg-rose-50/90 border border-rose-200 text-xs text-rose-800 flex items-start gap-2 shadow-xs">
             <svg className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             <div className="font-medium">{error}</div>
           </div>
         )}
 
         {/* Modal Body */}
-<<<<<<< HEAD
-        <div className="flex-1 overflow-y-auto pr-1 space-y-4">
-          {/* STEP 1: General Info */}
-          {activeStep === 'info' && (
-            <div className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
         <div className="relative z-10 flex-1 overflow-y-auto pr-1 space-y-4">
           {/* STEP 1: General Info */}
           {activeStep === 'info' && (
@@ -428,7 +345,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     TENDER REFERENCE NUMBER
                   </label>
                   <input
@@ -436,20 +352,12 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                     required
                     value={referenceNumber}
                     onChange={(e) => setReferenceNumber(e.target.value)}
-<<<<<<< HEAD
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
-=======
                     className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   />
                 </div>
 
                 <div>
-<<<<<<< HEAD
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
                   <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     PROCURING DEPARTMENT
                   </label>
                   <input
@@ -457,21 +365,13 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                     required
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-<<<<<<< HEAD
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100"
-=======
                     className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   />
                 </div>
               </div>
 
               <div>
-<<<<<<< HEAD
-                <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
                 <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   OFFICIAL TENDER TITLE
                 </label>
                 <input
@@ -480,20 +380,12 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Nationwide High-Speed Optical Transport Backbone Upgrade"
-<<<<<<< HEAD
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-semibold"
-=======
                   className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs font-semibold focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 />
               </div>
 
               <div>
-<<<<<<< HEAD
-                <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
                 <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   PROJECT DESCRIPTION & SCOPE OF WORK
                 </label>
                 <textarea
@@ -502,31 +394,19 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Provide comprehensive scope of work, technical guidelines, and performance metrics..."
-<<<<<<< HEAD
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100"
-=======
                   className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <div>
-<<<<<<< HEAD
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
                   <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     CATEGORY
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-<<<<<<< HEAD
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
-=======
                     className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] shadow-xs"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   >
                     <option value="infrastructure">Infrastructure</option>
                     <option value="information_technology">Information Technology</option>
@@ -541,11 +421,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 </div>
 
                 <div>
-<<<<<<< HEAD
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-=======
                   <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     ESTIMATED VALUE (INR ₹)
                   </label>
                   <input
@@ -553,46 +429,13 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                     required
                     value={estimatedValueInr}
                     onChange={(e) => setEstimatedValueInr(Number(e.target.value))}
-<<<<<<< HEAD
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
-                  />
-                  <span className="text-[10px] text-emerald-400 mt-0.5 block font-mono">
-=======
                     className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] shadow-xs font-semibold"
                   />
                   <span className="text-[10px] text-emerald-600 mt-1 block font-semibold">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     ≈ ₹{(estimatedValueInr / 10000000).toFixed(2)} Crore
                   </span>
                 </div>
 
-<<<<<<< HEAD
-                <div>
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-                    OPENING DATE
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={openingDate}
-                    onChange={(e) => setOpeningDate(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10px] text-slate-400 font-mono block mb-1">
-                    SUBMISSION DEADLINE (CLOSING DATE)
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={closingDate}
-                    onChange={(e) => setClosingDate(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
-                  />
-                </div>
-=======
                 <CalendarDatePicker
                   label="OPENING DATE"
                   required
@@ -611,74 +454,45 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                   placeholder="Select deadline..."
                   align="right"
                 />
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </div>
             </div>
           )}
 
           {/* STEP 2: Eligibility Requirements */}
           {activeStep === 'eligibility' && (
-<<<<<<< HEAD
-            <div className="space-y-4 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-mono text-[11px]">
-=======
             <div key="eligibility" className="tab-pane-fade space-y-4 text-xs pb-36">
               <div className="flex justify-between items-center">
                 <span className="text-gray-500 text-[11px]">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   Bidders failing any mandatory eligibility condition are disqualified prior to technical scoring.
                 </span>
                 <button
                   type="button"
                   onClick={addRequirement}
-<<<<<<< HEAD
-                  className="px-3 py-1 rounded bg-procure-600 hover:bg-procure-500 text-white font-semibold"
-                >
-                  + Add Requirement
-=======
                   className="px-3.5 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-colors cursor-pointer flex items-center gap-1"
                 >
                   <span>+ Add Requirement</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 </button>
               </div>
 
               <div className="space-y-3">
                 {requirements.map((req, idx) => (
-<<<<<<< HEAD
-                  <div key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-mono font-bold text-procure-300">
-=======
                   <div key={idx} className="p-4 rounded-2xl bg-white/85 backdrop-blur-xs border border-gray-200 space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-blue-600">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         Requirement #{idx + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeRequirement(idx)}
-<<<<<<< HEAD
-                        className="text-red-400 hover:text-red-300 text-xs"
-=======
                         className="text-rose-600 hover:text-rose-700 text-xs font-medium cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       >
                         Remove
                       </button>
                     </div>
 
-<<<<<<< HEAD
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
-                      <div>
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">TYPE</label>
-=======
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
                       <div>
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">TYPE</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <select
                           value={req.requirement_type}
                           onChange={(e) => {
@@ -686,11 +500,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             copy[idx].requirement_type = e.target.value;
                             setRequirements(copy);
                           }}
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-200"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         >
                           <option value="financial">Financial</option>
                           <option value="technical">Technical</option>
@@ -700,11 +510,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                       </div>
 
                       <div className="sm:col-span-2">
-<<<<<<< HEAD
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">TITLE</label>
-=======
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">TITLE</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <input
                           type="text"
                           required
@@ -715,11 +521,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             setRequirements(copy);
                           }}
                           placeholder="e.g. Minimum Net Worth"
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-200"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         />
                       </div>
 
@@ -733,25 +535,15 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                               copy[idx].is_mandatory = e.target.checked;
                               setRequirements(copy);
                             }}
-<<<<<<< HEAD
-                            className="rounded bg-slate-950 border-slate-700 text-procure-500"
-                          />
-                          <span className="text-slate-300 font-semibold text-[11px]">Mandatory Gate</span>
-=======
                             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                           />
                           <span className="text-gray-800 font-semibold text-[11px]">Mandatory Gate</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         </label>
                       </div>
                     </div>
 
                     <div>
-<<<<<<< HEAD
-                      <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">DESCRIPTION & VERIFICATION</label>
-=======
                       <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">DESCRIPTION & VERIFICATION</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       <input
                         type="text"
                         value={req.description}
@@ -761,11 +553,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                           setRequirements(copy);
                         }}
                         placeholder="Detailed verification criteria..."
-<<<<<<< HEAD
-                        className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-300"
-=======
                         className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-800 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       />
                     </div>
                   </div>
@@ -776,21 +564,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
 
           {/* STEP 3: Evaluation Criteria & Live Weights Calculator */}
           {activeStep === 'criteria' && (
-<<<<<<< HEAD
-            <div className="space-y-4 text-xs">
-              {/* Weight Status Bar */}
-              <div className={`p-4 rounded-xl border flex justify-between items-center ${
-                isWeightBalanced
-                  ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300'
-                  : 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-              }`}>
-                <div>
-                  <div className="font-bold flex items-center gap-2 font-mono text-sm">
-                    <span>{isWeightBalanced ? '✅' : '⚠️'}</span>
-                    Total Evaluation Weight: {totalWeight}% / 100%
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-0.5 font-sans">
-=======
             <div key="criteria" className="tab-pane-fade space-y-4 text-xs pb-36">
               {/* Weight Status Bar */}
               <div className={`p-4 rounded-2xl border flex justify-between items-center ${
@@ -808,7 +581,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                     <span>Total Evaluation Weight: {totalWeight}% / 100%</span>
                   </div>
                   <div className="text-[11px] text-gray-500 mt-0.5">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     {isWeightBalanced
                       ? 'Weights are calibrated and compliant with government procurement policy.'
                       : `Weights must equal exactly 100% before publishing. Difference: ${100 - totalWeight}%.`}
@@ -818,11 +590,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 <button
                   type="button"
                   onClick={addCriterion}
-<<<<<<< HEAD
-                  className="px-3 py-1 rounded bg-procure-600 hover:bg-procure-500 text-white font-semibold"
-=======
                   className="px-3.5 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-colors cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 >
                   + Add Criterion
                 </button>
@@ -830,39 +598,23 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
 
               <div className="space-y-3">
                 {criteria.map((crit, idx) => (
-<<<<<<< HEAD
-                  <div key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-mono font-bold text-indigo-300">
-=======
                   <div key={idx} className="p-4 rounded-2xl bg-white/85 backdrop-blur-xs border border-gray-200 space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-purple-700">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         Criterion #{idx + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeCriterion(idx)}
-<<<<<<< HEAD
-                        className="text-red-400 hover:text-red-300 text-xs"
-=======
                         className="text-rose-600 hover:text-rose-700 text-xs font-medium cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       >
                         Remove
                       </button>
                     </div>
 
-<<<<<<< HEAD
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
-                      <div>
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">TYPE</label>
-=======
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
                       <div>
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">TYPE</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <select
                           value={crit.criteria_type}
                           onChange={(e) => {
@@ -870,11 +622,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             copy[idx].criteria_type = e.target.value;
                             setCriteria(copy);
                           }}
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-200"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         >
                           <option value="technical">Technical</option>
                           <option value="financial">Financial</option>
@@ -887,11 +635,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                       </div>
 
                       <div className="sm:col-span-2">
-<<<<<<< HEAD
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">CRITERIA NAME</label>
-=======
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">CRITERIA NAME</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <input
                           type="text"
                           required
@@ -902,20 +646,12 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             setCriteria(copy);
                           }}
                           placeholder="e.g. Technical Feasibility & Solution Architecture"
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-200"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         />
                       </div>
 
                       <div>
-<<<<<<< HEAD
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">WEIGHT (%)</label>
-=======
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">WEIGHT (%)</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <input
                           type="number"
                           min="1"
@@ -927,21 +663,13 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             copy[idx].weight = Number(e.target.value);
                             setCriteria(copy);
                           }}
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-emerald-400 font-mono font-bold"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-emerald-700 text-xs font-bold focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         />
                       </div>
                     </div>
 
                     <div>
-<<<<<<< HEAD
-                      <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">SCORING RUBRIC DESCRIPTION</label>
-=======
                       <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">SCORING RUBRIC DESCRIPTION</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       <input
                         type="text"
                         value={crit.description || ''}
@@ -951,11 +679,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                           setCriteria(copy);
                         }}
                         placeholder="Define how AI scoring algorithms will evaluate proposals against this criteria..."
-<<<<<<< HEAD
-                        className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-300"
-=======
                         className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-800 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       />
                     </div>
                   </div>
@@ -966,67 +690,39 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
 
           {/* STEP 4: Required Documents */}
           {activeStep === 'documents' && (
-<<<<<<< HEAD
-            <div className="space-y-4 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-mono text-[11px]">
-=======
             <div key="documents" className="tab-pane-fade space-y-4 text-xs pb-36">
               <div className="flex justify-between items-center">
                 <span className="text-gray-500 text-[11px]">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   Bidders must upload cryptographic sealed PDF/excel attachments matching these requirements.
                 </span>
                 <button
                   type="button"
                   onClick={addDocument}
-<<<<<<< HEAD
-                  className="px-3 py-1 rounded bg-procure-600 hover:bg-procure-500 text-white font-semibold"
-                >
-                  + Add Document Requirement
-=======
                   className="px-3.5 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-colors cursor-pointer flex items-center gap-1"
                 >
                   <span>+ Add Document Requirement</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 </button>
               </div>
 
               <div className="space-y-3">
                 {documents.map((doc, idx) => (
-<<<<<<< HEAD
-                  <div key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-mono font-bold text-slate-300">
-=======
                   <div key={idx} className="p-4 rounded-2xl bg-white/85 backdrop-blur-xs border border-gray-200 space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-gray-900">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         Document Requirement #{idx + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeDocument(idx)}
-<<<<<<< HEAD
-                        className="text-red-400 hover:text-red-300 text-xs"
-=======
                         className="text-rose-600 hover:text-rose-700 text-xs font-medium cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       >
                         Remove
                       </button>
                     </div>
 
-<<<<<<< HEAD
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <div className="sm:col-span-2">
-                        <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">DOCUMENT NAME</label>
-=======
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                       <div className="sm:col-span-2">
                         <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">DOCUMENT NAME</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         <input
                           type="text"
                           required
@@ -1037,11 +733,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                             setDocuments(copy);
                           }}
                           placeholder="e.g. Audited Financial Statements (Last 3 Years)"
-<<<<<<< HEAD
-                          className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-200"
-=======
                           className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         />
                       </div>
 
@@ -1055,25 +747,15 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                               copy[idx].required = e.target.checked;
                               setDocuments(copy);
                             }}
-<<<<<<< HEAD
-                            className="rounded bg-slate-950 border-slate-700 text-procure-500"
-                          />
-                          <span className="text-slate-300 font-semibold text-[11px]">Strictly Mandatory</span>
-=======
                             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                           />
                           <span className="text-gray-800 font-semibold text-[11px]">Strictly Mandatory</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         </label>
                       </div>
                     </div>
 
                     <div>
-<<<<<<< HEAD
-                      <label className="text-[9px] text-slate-500 block mb-0.5 font-mono">FILE SPECIFICATION</label>
-=======
                       <label className="text-[9px] text-gray-500 block mb-1 font-semibold uppercase">FILE SPECIFICATION</label>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       <input
                         type="text"
                         value={doc.description || ''}
@@ -1083,11 +765,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                           setDocuments(copy);
                         }}
                         placeholder="Format and certification requirements..."
-<<<<<<< HEAD
-                        className="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-800 text-slate-300"
-=======
                         className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-800 text-xs focus:outline-none focus:border-blue-500"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       />
                     </div>
                   </div>
@@ -1098,18 +776,6 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
         </div>
 
         {/* Modal Footer Actions */}
-<<<<<<< HEAD
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-800">
-          <div className="text-[11px] text-slate-400 font-mono">
-            {isWeightBalanced ? (
-              <span className="text-emerald-400">✓ Ready to Publish (100% weight sum)</span>
-            ) : (
-              <span className="text-amber-400">Weights total: {totalWeight}% (Draft save allowed)</span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-=======
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-gray-100">
           <div className="text-[11px] font-medium">
             {isWeightBalanced ? (
@@ -1126,16 +792,11 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5 w-full sm:w-auto">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             <button
               type="button"
               disabled={isSubmitting}
               onClick={() => handleSubmit('DRAFT')}
-<<<<<<< HEAD
-              className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-colors"
-=======
               className="flex-1 sm:flex-none px-4 py-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium text-xs transition-colors shadow-xs cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             >
               Save Draft
             </button>
@@ -1144,11 +805,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
               type="button"
               disabled={isSubmitting || !isWeightBalanced}
               onClick={() => handleSubmit('PUBLISHED')}
-<<<<<<< HEAD
-              className="flex-1 sm:flex-none px-5 py-2 rounded-lg bg-gradient-to-r from-procure-600 to-indigo-600 hover:from-procure-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-lg shadow-procure-600/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-=======
               className="flex-1 sm:flex-none px-5 py-2 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             >
               {isSubmitting ? (
                 <>
@@ -1162,11 +819,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-    </div>
-=======
     </div>,
     document.body
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   );
 };

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 @font-face {
   font-family: 'SF Pro Display';
   font-style: normal;
@@ -25,7 +23,6 @@
   src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYBOLD.woff') format('woff');
 }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,14 +38,6 @@
   }
 
   html {
-<<<<<<< HEAD
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-gray-50 text-gray-800 antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-=======
     scrollbar-gutter: stable;
     overflow-y: scroll;
   }
@@ -56,7 +45,6 @@
   body {
     @apply bg-[#FAFAFB] text-gray-900 antialiased;
     font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif !important;
->>>>>>> 4169a4f (Recreated professional README and organized assets)
     min-height: 100vh;
   }
 
@@ -65,8 +53,6 @@
   }
 }
 
-<<<<<<< HEAD
-=======
 /* ─── Universal San Francisco Typography Enforcement ────────────────────── */
 *,
 *::before,
@@ -169,7 +155,6 @@ div.fixed.bg-slate-950\/80 {
   border-color: #F4F4F5 !important;
 }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 /* ─── Components ────────────────────────────────────────────────────────── */
 @layer components {
   /* Card */
@@ -191,8 +176,6 @@ div.fixed.bg-slate-950\/80 {
     @apply rounded-2xl border border-gray-200 bg-white shadow-sm;
   }
 
-<<<<<<< HEAD
-=======
   /* Real frosted glass — light theme, uses SVG feTurbulence for authentic glass bend */
   .glass-real {
     background: rgba(255, 255, 255, 0.55);
@@ -255,7 +238,6 @@ div.fixed.bg-slate-950\/80 {
     pointer-events: none;
   }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   /* Status badge */
   .badge-up {
     @apply inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200;
@@ -337,8 +319,6 @@ div.fixed.bg-slate-950\/80 {
   50% { opacity: 0.4; }
 }
 
-<<<<<<< HEAD
-=======
 @keyframes blob-drift-light {
   0%   { transform: translate(0px,   0px)   scale(1);    }
   25%  { transform: translate(25px, -18px)  scale(1.04); }
@@ -391,7 +371,6 @@ div.fixed.bg-slate-950\/80 {
   will-change: transform, opacity;
 }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }

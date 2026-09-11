@@ -21,13 +21,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-<<<<<<< HEAD
-  const [user, setUser] = useState<User | null>(null);
-  const [accessTokenState, setAccessTokenState] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // Attempt silent refresh on initial application load
-=======
   const [user, setUser] = useState<User | null>(() => {
     try {
       const saved = localStorage.getItem('procureai_user');
@@ -56,31 +49,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   // Attempt silent refresh in background or on initial application load
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   useEffect(() => {
     let isMounted = true;
 
     async function initAuth() {
-<<<<<<< HEAD
-      try {
-        const response = await api.refresh();
-        if (isMounted && response.success && response.data) {
-          const { user: refreshedUser, accessToken } = response.data;
-          setAccessToken(accessToken);
-          setAccessTokenState(accessToken);
-          setUser(refreshedUser);
-        } else {
-          setAccessToken(null);
-          setAccessTokenState(null);
-          setUser(null);
-        }
-      } catch {
-        if (isMounted) {
-          setAccessToken(null);
-          setAccessTokenState(null);
-          setUser(null);
-        }
-=======
       const savedRefreshToken = (() => {
         try {
           return localStorage.getItem('procureai_refresh_token');
@@ -119,7 +91,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch {
         // Network offline — keep cached offline session
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -139,12 +110,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await api.login(credentials);
       if (response.success && response.data) {
-<<<<<<< HEAD
-        const { user: loggedInUser, accessToken } = response.data;
-        setAccessToken(accessToken);
-        setAccessTokenState(accessToken);
-        setUser(loggedInUser);
-=======
         const { user: loggedInUser, accessToken, refreshToken } = response.data;
         setAccessToken(accessToken);
         setAccessTokenState(accessToken);
@@ -156,7 +121,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('procureai_refresh_token', refreshToken);
           }
         } catch {}
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         setIsLoading(false);
         return { success: true };
       } else {
@@ -187,12 +151,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const response = await api.register(payload);
         if (response.success && response.data) {
-<<<<<<< HEAD
-          const { user: registeredUser, accessToken } = response.data;
-          setAccessToken(accessToken);
-          setAccessTokenState(accessToken);
-          setUser(registeredUser);
-=======
           const { user: registeredUser, accessToken, refreshToken } = response.data;
           setAccessToken(accessToken);
           setAccessTokenState(accessToken);
@@ -204,7 +162,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               localStorage.setItem('procureai_refresh_token', refreshToken);
             }
           } catch {}
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           setIsLoading(false);
           return { success: true };
         } else {
@@ -226,10 +183,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const logout = useCallback(async () => {
-<<<<<<< HEAD
-    try {
-      await api.logout();
-=======
     const savedRefreshToken = (() => {
       try {
         return localStorage.getItem('procureai_refresh_token');
@@ -240,19 +193,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await api.logout(savedRefreshToken);
->>>>>>> 4169a4f (Recreated professional README and organized assets)
     } finally {
       setAccessToken(null);
       setAccessTokenState(null);
       setUser(null);
-<<<<<<< HEAD
-=======
       try {
         localStorage.removeItem('procureai_user');
         localStorage.removeItem('procureai_access_token');
         localStorage.removeItem('procureai_refresh_token');
       } catch {}
->>>>>>> 4169a4f (Recreated professional README and organized assets)
     }
   }, []);
 

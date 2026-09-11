@@ -19,14 +19,6 @@ export default {
         },
       },
       fontFamily: {
-<<<<<<< HEAD
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.4s ease-out',
-=======
         sans: [
           '"SF Pro Display"',
           '-apple-system',
@@ -55,7 +47,6 @@ export default {
         'fade-in': 'fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
         'fadeIn': 'fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
         'slide-up': 'slideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
@@ -64,11 +55,7 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-<<<<<<< HEAD
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
-=======
           '0%': { opacity: '0', transform: 'translateY(4px)' },
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },

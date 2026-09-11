@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-=======
 import { createPortal } from 'react-dom';
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 import { api } from '../../api/client';
 
 interface DecisionWorkflowModalProps {
@@ -144,15 +141,9 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
   const selectedBidderObj = dossier?.bidders?.find((b: any) => b.bid_id === selectedBidId);
 
-<<<<<<< HEAD
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-4xl max-h-[92vh] bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100 font-sans text-xs">
-=======
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
       <div className="relative w-full max-w-4xl max-h-[92vh] bg-white border border-gray-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-gray-900 font-sans text-xs my-auto">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         {/* ── Modal Header ─────────────────────────────────────────────────── */}
         <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/60">
           <div className="flex items-center gap-2.5">
@@ -667,11 +658,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
           )}
         </div>
       </div>
-<<<<<<< HEAD
-    </div>
-=======
     </div>,
     document.body
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   );
 };

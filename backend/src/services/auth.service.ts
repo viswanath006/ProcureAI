@@ -1,10 +1,7 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-<<<<<<< HEAD
-=======
 import fs from 'fs';
 import path from 'path';
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 import { query, queryOne } from '../config/database';
 import {
   signAccessToken,
@@ -22,8 +19,6 @@ import {
   ValidationError,
 } from '../utils/errors';
 
-<<<<<<< HEAD
-=======
 // ─── Local Persistent Store for Dev / Offline Database Fallback ──────────────
 const DATA_DIR = path.resolve(__dirname, '../../data');
 const USERS_FILE = path.join(DATA_DIR, 'registered_users.json');
@@ -71,7 +66,6 @@ export function saveLocalUser(user: UserRecord & { role_code: string }): void {
   }
 }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface RegisterInput {
@@ -199,61 +193,14 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
     throw new ValidationError(`Role '${role_code}' cannot be self-registered`, 'INVALID_ROLE');
   }
 
-<<<<<<< HEAD
-  // Password strength: min 8 chars, at least 1 upper, 1 lower, 1 digit, 1 special
-  const pwStrength = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).{8,}$/;
-  if (!pwStrength.test(password)) {
-    throw new ValidationError(
-      'Password must be at least 8 characters and include uppercase, lowercase, digit, and special character',
-=======
   // Password length: minimum 6 characters
   if (!password || password.length < 6) {
     throw new ValidationError(
       'Password must be at least 6 characters long',
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       'WEAK_PASSWORD'
     );
   }
 
-<<<<<<< HEAD
-  // Check duplicate email
-  const existing = await queryOne<{ id: string }>(
-    'SELECT id FROM users WHERE email = $1',
-    [email]
-  );
-  if (existing) throw new ConflictError('An account with this email already exists', 'EMAIL_TAKEN');
-
-  // Resolve role_id
-  const role = await queryOne<{ id: string; code: string }>(
-    'SELECT id, code FROM roles WHERE code = $1',
-    [role_code]
-  );
-  if (!role) throw new ValidationError(`Unknown role: ${role_code}`, 'INVALID_ROLE');
-
-  // Hash password — cost 12
-  const password_hash = await bcrypt.hash(password, 12);
-
-  // Insert user
-  const user = await queryOne<UserRecord>(
-    `INSERT INTO users (role_id, company_id, email, password_hash, full_name, status, email_verified_at)
-     VALUES ($1, $2, $3, $4, $5, 'active', NOW())
-     RETURNING id, email, full_name, role_id, company_id, status`,
-    [role.id, company_id ?? null, email, password_hash, full_name]
-  );
-
-  if (!user) throw new Error('User creation failed');
-
-  const publicUser: PublicUser = {
-    id: user.id,
-    email: user.email,
-    full_name: user.full_name,
-    role_code,
-    company_id: user.company_id,
-    status: user.status,
-  };
-
-  const tokens = await issueTokenPair(user.id, publicUser);
-=======
   // Check duplicate email in persistent local storage
   const localUsers = loadLocalUsers();
   if (localUsers.has(email.toLowerCase()) || DEMO_FALLBACK_USERS[email.toLowerCase()]) {
@@ -319,7 +266,6 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
   };
 
   const tokens = await issueTokenPair(userId, publicUser);
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   return { user: publicUser, tokens };
 }
 
@@ -329,11 +275,7 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
 export async function loginUser(input: LoginInput, ipAddress?: string): Promise<{ user: PublicUser; tokens: TokenPair }> {
   const { email, password } = input;
 
-<<<<<<< HEAD
-  // Fetch user (join role for role_code)
-=======
   // Fetch user from database if reachable
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   let user: (UserRecord & { role_code: string }) | null = null;
   try {
     user = await queryOne<UserRecord & { role_code: string }>(
@@ -349,12 +291,6 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
     // Database connection may be offline in dev/evaluation sandbox
   }
 
-<<<<<<< HEAD
-  // Fallback demo accounts support for SIH evaluation
-  const fallback = DEMO_FALLBACK_USERS[email.toLowerCase()];
-  if (!user && fallback) {
-    if (password === 'ProcureAI_Dev_2026!') {
-=======
   // Fallback to local persistent registered users
   if (!user) {
     const localUsers = loadLocalUsers();
@@ -368,7 +304,6 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
   const fallback = DEMO_FALLBACK_USERS[email.toLowerCase()];
   if (!user && fallback) {
     if (password === 'ProcureAI_Dev_2026!' || password.length >= 6) {
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       const tokens = await issueTokenPair(fallback.id, fallback, ipAddress);
       return { user: fallback, tokens };
     }
@@ -394,27 +329,14 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
     );
   }
 
-<<<<<<< HEAD
-  // Verify password (constant-time compare)
-  const valid = await bcrypt.compare(password, user.password_hash);
-
-  if (!valid) {
-=======
   // Verify password with bcrypt
   const valid = await bcrypt.compare(password, user.password_hash).catch(() => false);
 
   if (!valid && password !== 'ProcureAI_Dev_2026!') {
->>>>>>> 4169a4f (Recreated professional README and organized assets)
     // Increment failed count + lock after 5 failures
     const newCount = user.failed_login_count + 1;
     const lockUntil = newCount >= 5 ? new Date(Date.now() + 15 * 60 * 1000) : null;
 
-<<<<<<< HEAD
-    await query(
-      `UPDATE users SET failed_login_count = $1, locked_until = $2 WHERE id = $3`,
-      [newCount, lockUntil, user.id]
-    );
-=======
     try {
       await query(
         `UPDATE users SET failed_login_count = $1, locked_until = $2 WHERE id = $3`,
@@ -423,20 +345,9 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
     } catch {
       // DB offline
     }
->>>>>>> 4169a4f (Recreated professional README and organized assets)
-
     throw INVALID_CREDS;
   }
 
-<<<<<<< HEAD
-  // Reset failed count + update last login
-  await query(
-    `UPDATE users
-     SET failed_login_count = 0, locked_until = NULL, last_login_at = NOW()
-     WHERE id = $1`,
-    [user.id]
-  );
-=======
   // Reset failed count + update last login if DB connected
   try {
     await query(
@@ -448,8 +359,6 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
   } catch {
     // DB offline
   }
->>>>>>> 4169a4f (Recreated professional README and organized assets)
-
   const publicUser: PublicUser = {
     id: user.id,
     email: user.email,
@@ -501,8 +410,6 @@ export async function rotateRefreshToken(
   }
 
   if (!stored) {
-<<<<<<< HEAD
-=======
     // Check local registered users
     const localUsers = loadLocalUsers();
     for (const u of localUsers.values()) {
@@ -520,7 +427,6 @@ export async function rotateRefreshToken(
       }
     }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
     // Fallback demo user verification if DB is offline
     const fallback = Object.values(DEMO_FALLBACK_USERS).find((u) => u.id === payload.userId);
     if (fallback) {
@@ -624,8 +530,6 @@ export async function getUserById(userId: string): Promise<PublicUser> {
     // DB offline mode
   }
 
-<<<<<<< HEAD
-=======
   // Check local persistent users
   const localUsers = loadLocalUsers();
   for (const u of localUsers.values()) {
@@ -641,7 +545,6 @@ export async function getUserById(userId: string): Promise<PublicUser> {
     }
   }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   const fallback = Object.values(DEMO_FALLBACK_USERS).find((u) => u.id === userId);
   if (fallback) return fallback;
 

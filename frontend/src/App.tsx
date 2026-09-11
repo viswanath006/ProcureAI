@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-=======
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LoginPage } from './components/auth/LoginPage';
 import { RegisterPage } from './components/auth/RegisterPage';
@@ -14,11 +9,8 @@ import { BidderPortal } from './components/portals/BidderPortal';
 import { AuditorPortal } from './components/portals/AuditorPortal';
 import { AdminPortal } from './components/portals/AdminPortal';
 
-<<<<<<< HEAD
-=======
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif";
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 function NavigationHeader() {
   const { user, isAuthenticated, logout, switchDemoRole } = useAuth();
   const [roleOpen, setRoleOpen] = useState(false);
@@ -33,40 +25,6 @@ function NavigationHeader() {
   const currentRole = roles.find((r) => r.code === user?.role_code);
 
   return (
-<<<<<<< HEAD
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
-        {/* Logo & Brand */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow group-hover:shadow-md transition-shadow">
-            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-white" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 18L9 6l6 7 4-5" />
-              <circle cx="19" cy="6" r="2" fill="currentColor" stroke="none" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-base font-bold tracking-tight text-gray-900">
-              Procure<span className="text-blue-600">AI</span>
-            </h1>
-            <p className="text-[10px] font-medium text-gray-400 -mt-0.5 tracking-wide">
-              Intelligent. Fair. Transparent.
-            </p>
-          </div>
-        </Link>
-
-        {/* User Controls */}
-        <div className="flex items-center gap-3">
-          {isAuthenticated && user ? (
-            <div className="flex items-center gap-3">
-              {/* Role Switcher Dropdown */}
-              <div className="relative hidden sm:block">
-                <button
-                  onClick={() => setRoleOpen((v) => !v)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-700 transition-colors"
-                >
-                  <span>Switch Role</span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${currentRole?.color}`}>
-=======
     <header style={{ fontFamily: FONT }} className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur-md shadow-xs">
       <div className="w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
         {/* Logo & Brand in left corner matching LoginPage */}
@@ -99,7 +57,6 @@ function NavigationHeader() {
                 >
                   <span className="hidden sm:inline text-gray-400 text-[11px]">Role:</span>
                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${currentRole?.color}`}>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     {currentRole?.label ?? user.role_code}
                   </span>
                   <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
@@ -108,25 +65,14 @@ function NavigationHeader() {
                 </button>
 
                 {roleOpen && (
-<<<<<<< HEAD
-                  <div className="absolute right-0 mt-1 w-52 rounded-xl border border-gray-200 bg-white shadow-lg py-1 z-50">
-=======
                   <div className="absolute right-0 mt-1.5 w-56 rounded-2xl border border-gray-200 bg-white shadow-xl py-1 z-50 animate-in fade-in zoom-in-95 duration-100">
                     <div className="px-3.5 py-2 border-b border-gray-100 text-[10px] uppercase font-semibold text-gray-400 tracking-wider">
                       Switch Role Persona
                     </div>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                     {roles.map((r) => (
                       <button
                         key={r.code}
                         onClick={() => { switchDemoRole(r.email, r.code); setRoleOpen(false); }}
-<<<<<<< HEAD
-                        className={`w-full flex items-center justify-between px-4 py-2.5 text-xs text-left hover:bg-gray-50 transition-colors ${user.role_code === r.code ? 'font-semibold text-blue-700' : 'text-gray-700'}`}
-                      >
-                        <span>{r.label}</span>
-                        {user.role_code === r.code && (
-                          <svg className="h-3.5 w-3.5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-=======
                         className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs text-left hover:bg-gray-50 transition-colors ${user.role_code === r.code ? 'font-semibold text-blue-700 bg-blue-50/50' : 'text-gray-700'}`}
                       >
                         <div className="flex flex-col">
@@ -135,7 +81,6 @@ function NavigationHeader() {
                         </div>
                         {user.role_code === r.code && (
                           <svg className="h-4 w-4 text-blue-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -148,18 +93,6 @@ function NavigationHeader() {
               {/* User info */}
               <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-gray-200">
                 <div className="text-right">
-<<<<<<< HEAD
-                  <div className="text-xs font-semibold text-gray-800">{user.full_name}</div>
-                  <div className="text-[10px] text-gray-400 truncate max-w-[140px]">{user.email}</div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => logout()}
-                className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 text-xs font-medium transition-colors border border-gray-200"
-              >
-                Sign Out
-=======
                   <div className="text-xs font-semibold text-gray-900">{user.full_name}</div>
                   <div className="text-[10px] text-gray-400 truncate max-w-[220px]">{user.email}</div>
                 </div>
@@ -185,32 +118,21 @@ function NavigationHeader() {
                   <polyline points="16 17 21 12 16 7" />
                   <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-<<<<<<< HEAD
-                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors"
-=======
                 className="px-4 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-medium shadow-xs transition-colors"
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               >
                 Sign In
               </Link>
               <Link
                 to="/register"
-<<<<<<< HEAD
-                className="px-4 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium border border-gray-200 transition-colors"
-              >
-                Register
-=======
                 className="px-4 py-1.5 rounded-full bg-white hover:bg-gray-50 text-gray-800 text-xs font-medium border border-gray-300 transition-colors"
               >
                 Create Account
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </Link>
             </div>
           )}
@@ -222,37 +144,6 @@ function NavigationHeader() {
 
 function MainDashboard() {
   const { user } = useAuth();
-<<<<<<< HEAD
-  const [activeTab, setActiveTab] = useState<'tenders' | 'bidder' | 'auditor' | 'admin'>('tenders');
-
-  const tabs = [
-    { id: 'tenders' as const, label: 'Tenders', icon: '📑', color: 'blue' },
-    { id: 'bidder' as const, label: 'My Bids', icon: '🏢', color: 'blue', restrictedTo: ['BIDDER'] },
-    { id: 'auditor' as const, label: 'Audit Records', icon: '🔍', color: 'emerald', restrictedTo: ['AUDITOR', 'ADMIN'] },
-    { id: 'admin' as const, label: 'Administration', icon: '⚙️', color: 'red', restrictedTo: ['ADMIN'] },
-  ];
-
-  return (
-    <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 space-y-6">
-      {/* ── Welcome Banner ─────────────────────────────────────────── */}
-      <section className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 p-6 sm:p-8 shadow-md">
-        <div className="space-y-2">
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            Welcome to ProcureAI
-          </h2>
-          <p className="text-sm text-blue-100 max-w-xl leading-relaxed">
-            A transparent and fair e-procurement platform. AI helps recommend decisions — final approval always rests with authorised government officers.
-          </p>
-          <div className="pt-2 flex flex-wrap gap-2 text-xs">
-            <span className="px-3 py-1 rounded-full bg-white/15 text-white border border-white/20">
-              Signed in as: <strong>{user ? (user.role_code === 'GOVT_OFFICER' ? 'Government Officer' : user.role_code === 'BIDDER' ? 'Bidder' : user.role_code === 'AUDITOR' ? 'Auditor' : user.role_code === 'ADMIN' ? 'Administrator' : user.role_code) : 'Guest'}</strong>
-            </span>
-            <span className="px-3 py-1 rounded-full bg-white/15 text-white border border-white/20">
-              Bids are sealed until deadline
-            </span>
-            <span className="px-3 py-1 rounded-full bg-white/15 text-white border border-white/20">
-              Full audit trail maintained
-=======
   const [activeTab, setActiveTab] = useState<'tenders' | 'bidder' | 'auditor' | 'admin'>(() => {
     if (user?.role_code === 'BIDDER') return 'bidder';
     if (user?.role_code === 'AUDITOR') return 'auditor';
@@ -407,61 +298,11 @@ function MainDashboard() {
                 <polyline points="9 12 11 14 15 10" />
               </svg>
               <span>100% Verified SHA-256 Audit Trail</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             </span>
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ── Navigation Tabs ─────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 pb-3">
-        {tabs.map((tab) => {
-          const isRestricted = tab.restrictedTo && !tab.restrictedTo.includes(user?.role_code ?? '');
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              <span>{tab.icon}</span>
-              {tab.label}
-              {isRestricted && <span className="text-xs opacity-50">🔒</span>}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* ── Tab Panels ─────────────────────────────────────────────── */}
-      <div>
-        {activeTab === 'tenders' && (
-          <ProtectedRoute>
-            <TendersPortal />
-          </ProtectedRoute>
-        )}
-
-        {activeTab === 'bidder' && (
-          <ProtectedRoute allowedRoles={['BIDDER']}>
-            <BidderPortal />
-          </ProtectedRoute>
-        )}
-
-        {activeTab === 'auditor' && (
-          <ProtectedRoute allowedRoles={['AUDITOR', 'ADMIN']}>
-            <AuditorPortal />
-          </ProtectedRoute>
-        )}
-
-        {activeTab === 'admin' && (
-          <ProtectedRoute allowedRoles={['ADMIN']}>
-            <AdminPortal />
-          </ProtectedRoute>
-        )}
-=======
       {/* ── Apple-Style Segmented Tab Bar ──────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200/90 pb-3">
         <div className="inline-flex p-1 rounded-full bg-[#F4F4F5] border border-gray-200/90 flex-wrap gap-1">
@@ -523,14 +364,11 @@ function MainDashboard() {
             </ProtectedRoute>
           )}
         </div>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       </div>
     </main>
   );
 }
 
-<<<<<<< HEAD
-=======
 function AppShell() {
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
@@ -565,23 +403,11 @@ function AppShell() {
   );
 }
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-<<<<<<< HEAD
-        <div className="min-h-screen bg-gray-50 text-gray-800 flex flex-col font-sans">
-          <NavigationHeader />
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/*" element={<MainDashboard />} />
-          </Routes>
-        </div>
-=======
         <AppShell />
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       </AuthProvider>
     </BrowserRouter>
   );

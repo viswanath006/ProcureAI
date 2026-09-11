@@ -52,11 +52,7 @@ export const DemoScenarioConsole: React.FC = () => {
 
   if (!data) {
     return (
-<<<<<<< HEAD
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 animate-pulse text-center text-xs text-slate-400 font-mono">
-=======
       <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs animate-pulse text-center text-xs text-gray-400 font-medium">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         Loading synthetic demonstration state...
       </div>
     );
@@ -65,23 +61,6 @@ export const DemoScenarioConsole: React.FC = () => {
   const { tender, companies, workflowSteps, currentScenario, scenario2Override, auditVerification } = data;
 
   return (
-<<<<<<< HEAD
-    <div className="p-6 rounded-3xl bg-slate-950/90 border border-procure-500/30 shadow-2xl space-y-6 font-mono text-xs">
-      {/* ── Header & Judging Ribbon ─────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800/80 pb-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 tracking-wider uppercase">
-              SIH Judging Interactive Demo
-            </span>
-            <span className="text-[10px] text-slate-400">Phase 14 End-to-End Workflow</span>
-          </div>
-          <h3 className="text-base font-black text-white font-sans mt-1">
-            {tender.title} <span className="text-procure-400 font-mono text-xs font-normal">({tender.referenceNumber})</span>
-          </h3>
-          <p className="text-[11px] text-slate-400 font-sans mt-0.5">
-            Estimated Budget: <strong className="text-emerald-400 font-mono">{tender.estimatedValueFormatted}</strong> · Department of School Education & Literacy
-=======
     <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-6">
       {/* ── Header & Judging Ribbon ─────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-5">
@@ -101,7 +80,6 @@ export const DemoScenarioConsole: React.FC = () => {
           </h3>
           <p className="text-xs text-gray-500 mt-1">
             Estimated Budget: <strong className="text-emerald-600 font-semibold">{tender.estimatedValueFormatted}</strong> · Department of School Education & Literacy
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           </p>
         </div>
 
@@ -110,28 +88,17 @@ export const DemoScenarioConsole: React.FC = () => {
           <button
             onClick={handleRunScenario1}
             disabled={isLoading}
-<<<<<<< HEAD
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-[11px] shadow-lg shadow-emerald-600/25 transition-all flex items-center gap-1.5 disabled:opacity-50"
-          >
-            <span>⚡</span> Run 17-Step Demo (Scenario 1: AI Award)
-=======
             className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
             <span>Run 17-Step Demo (Scenario 1: AI Award)</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           </button>
 
           <button
             onClick={handleRunScenario2}
             disabled={isLoading}
-<<<<<<< HEAD
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-[11px] shadow-lg shadow-amber-600/25 transition-all flex items-center gap-1.5 disabled:opacity-50"
-          >
-            <span>⚖️</span> Run Scenario 2: Override to Company C
-=======
             className="px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -142,18 +109,11 @@ export const DemoScenarioConsole: React.FC = () => {
               <path d="M4 21h16" />
             </svg>
             <span>Run Scenario 2: Override to Company C</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           </button>
 
           <button
             onClick={handleReset}
             disabled={isLoading}
-<<<<<<< HEAD
-            className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition-colors disabled:opacity-50"
-            title="Reset demonstration data"
-          >
-            🔄 Reset
-=======
             className="px-3.5 py-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium shadow-xs transition-colors disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
             title="Reset demonstration data"
           >
@@ -161,17 +121,11 @@ export const DemoScenarioConsole: React.FC = () => {
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.19" />
             </svg>
             <span>Reset</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           </button>
         </div>
       </div>
 
       {noticeMessage && (
-<<<<<<< HEAD
-        <div className="p-3 rounded-xl bg-procure-500/10 border border-procure-500/30 text-procure-300 text-[11px] flex justify-between items-center">
-          <span>{noticeMessage}</span>
-          <button onClick={() => setNoticeMessage(null)} className="text-slate-400 hover:text-white">✕</button>
-=======
         <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex justify-between items-center">
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-blue-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -182,22 +136,10 @@ export const DemoScenarioConsole: React.FC = () => {
             <span className="font-medium">{noticeMessage}</span>
           </div>
           <button onClick={() => setNoticeMessage(null)} className="text-blue-500 hover:text-blue-800 text-sm font-bold cursor-pointer">✕</button>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         </div>
       )}
 
       {/* ── Value-For-Money Principle Card (The Key Judging Proof) ───────── */}
-<<<<<<< HEAD
-      <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-base">🏆</span>
-            <div>
-              <h4 className="font-bold text-slate-200 uppercase tracking-wider text-xs">
-                Value-For-Money Evaluation Scorecard
-              </h4>
-              <span className="text-[10px] text-slate-400 font-sans">
-=======
       <div className="p-5 rounded-xl bg-[#FBFBFD] border border-gray-200 space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <div className="flex items-center gap-2.5">
@@ -216,25 +158,16 @@ export const DemoScenarioConsole: React.FC = () => {
                 Value-For-Money Evaluation Scorecard
               </h4>
               <span className="text-xs text-gray-500">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 Notice: Company B has the lowest bid, but Company A wins with highest overall evaluation score.
               </span>
             </div>
           </div>
-<<<<<<< HEAD
-          <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-procure-500/20 text-procure-300 border border-procure-500/30">
-=======
           <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-white text-gray-600 border border-gray-200 shadow-xs">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             Weighted: 40/20/15/10/10/5
           </span>
         </div>
 
-<<<<<<< HEAD
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-=======
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           {companies.map((c: any) => {
             const isRec = c.isAiRecommended;
             const isLowest = c.isLowestBidder;
@@ -242,82 +175,31 @@ export const DemoScenarioConsole: React.FC = () => {
             return (
               <div
                 key={c.id}
-<<<<<<< HEAD
-                className={`p-3.5 rounded-xl border transition-all space-y-2.5 ${
-                  isRec
-                    ? 'bg-emerald-500/10 border-emerald-500/40 shadow-lg shadow-emerald-500/10'
-                    : isLowest
-                    ? 'bg-blue-500/10 border-blue-500/30'
-                    : 'bg-slate-950/60 border-slate-800'
-=======
                 className={`p-4 rounded-xl border transition-all space-y-3 ${
                   isRec
                     ? 'bg-white border-2 border-emerald-500 shadow-sm'
                     : isLowest
                     ? 'bg-white border border-blue-300 shadow-xs'
                     : 'bg-white border border-gray-200 shadow-xs'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <div>
-<<<<<<< HEAD
-                    <span className="text-[10px] font-bold text-slate-400">RANK #{c.rank}</span>
-                    <h5 className="font-bold text-slate-100 font-sans text-xs">{c.name}</h5>
-                  </div>
-                  {isRec && (
-                    <span className="px-1.5 py-0.5 rounded text-[8px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
-=======
                     <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">RANK #{c.rank}</span>
                     <h5 className="font-bold text-gray-900 text-xs mt-0.5">{c.name}</h5>
                   </div>
                   {isRec && (
                     <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       TOP AI REC
                     </span>
                   )}
                   {isLowest && !isRec && (
-<<<<<<< HEAD
-                    <span className="px-1.5 py-0.5 rounded text-[8px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">
-=======
                     <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 uppercase">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       LOWEST BID (L1)
                     </span>
                   )}
                 </div>
 
-<<<<<<< HEAD
-                <div className="flex justify-between items-baseline border-b border-slate-800/80 pb-2">
-                  <span className="text-[10px] text-slate-400">Commercial Quote:</span>
-                  <span className="text-sm font-black text-white">{c.bidAmountFormatted}</span>
-                </div>
-
-                <div className="space-y-1 text-[10px]">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Technical Capability:</span>
-                    <strong className="text-purple-300">{c.technicalCapabilityScore}/20</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Experience:</span>
-                    <strong className="text-slate-200">{c.experienceScore}/15</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Past Performance:</span>
-                    <strong className="text-slate-200">{c.pastPerformanceScore}/10</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Price Score:</span>
-                    <strong className="text-blue-300">{c.priceScore.toFixed(1)}/40</strong>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-slate-800/80 flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-slate-400">FINAL SCORE:</span>
-                  <span className={`text-base font-black ${isRec ? 'text-emerald-400' : 'text-slate-200'}`}>
-                    {c.compositeScore.toFixed(1)} / 100
-=======
                 <div className="flex justify-between items-baseline border-b border-gray-100 pb-2.5">
                   <span className="text-xs text-gray-500">Commercial Quote:</span>
                   <span className="text-sm font-bold text-gray-900">{c.bidAmountFormatted}</span>
@@ -346,7 +228,6 @@ export const DemoScenarioConsole: React.FC = () => {
                   <span className="text-[11px] font-semibold text-gray-500">FINAL SCORE:</span>
                   <span className={`text-base font-bold ${isRec ? 'text-emerald-600' : 'text-gray-900'}`}>
                     {c.compositeScore.toFixed(1)} <span className="text-xs font-normal text-gray-400">/ 100</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   </span>
                 </div>
               </div>
@@ -357,16 +238,6 @@ export const DemoScenarioConsole: React.FC = () => {
 
       {/* ── SCENARIO 2 OVERRIDE & GOVERNANCE RISK BANNER ──────────────────── */}
       {currentScenario === 'SCENARIO_2_HUMAN_OVERRIDE' && scenario2Override && (
-<<<<<<< HEAD
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/40 space-y-3 animate-fadeIn">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">⚠️</span>
-            <div>
-              <h4 className="font-bold text-amber-300 uppercase tracking-wider text-xs">
-                Potential Governance-Risk Event (Decision Override Logged)
-              </h4>
-              <span className="text-[10px] text-slate-400 font-sans">
-=======
         <div className="p-5 rounded-xl bg-amber-50/70 border border-amber-200 space-y-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700 shrink-0">
@@ -381,23 +252,11 @@ export const DemoScenarioConsole: React.FC = () => {
                 Potential Governance-Risk Event (Decision Override Logged)
               </h4>
               <span className="text-xs text-amber-700">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 The government officer overrode the AI recommendation to select Company C. Mandatory statutory justification recorded.
               </span>
             </div>
           </div>
 
-<<<<<<< HEAD
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-white/5 space-y-1.5 text-[11px]">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 border-b border-slate-800 pb-2">
-              <div>
-                <span className="text-[10px] text-slate-500 block">AI RECOMMENDATION</span>
-                <span className="font-bold text-emerald-400">{scenario2Override.aiRecommendation}</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-500 block">FINAL HUMAN SELECTION</span>
-                <span className="font-bold text-amber-400">{scenario2Override.finalSelection} (Override: YES)</span>
-=======
           <div className="p-4 rounded-xl bg-white border border-amber-200/70 space-y-2 text-xs">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-b border-gray-100 pb-2.5">
               <div>
@@ -407,36 +266,17 @@ export const DemoScenarioConsole: React.FC = () => {
               <div>
                 <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">FINAL HUMAN SELECTION</span>
                 <span className="font-bold text-amber-600">{scenario2Override.finalSelection} (Override: YES)</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </div>
             </div>
 
             <div>
-<<<<<<< HEAD
-              <span className="text-[10px] text-slate-500 block">MANDATORY OVERRIDE REASON</span>
-              <p className="text-slate-300 font-sans text-xs italic mt-0.5 leading-relaxed">
-=======
               <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">MANDATORY OVERRIDE REASON</span>
               <p className="text-gray-700 text-xs italic mt-1 leading-relaxed">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 "{scenario2Override.reason}"
               </p>
             </div>
 
             <div>
-<<<<<<< HEAD
-              <span className="text-[10px] text-slate-500 block">SUPPORTING NOTE / DOCUMENT REFERENCE</span>
-              <span className="text-slate-400 font-sans text-[11px]">{scenario2Override.supportingNote}</span>
-            </div>
-
-            <div className="pt-1 flex justify-between items-center text-[10px]">
-              <span className="text-slate-500">SHA-256 INTEGRITY HASH:</span>
-              <span className="text-procure-300 font-mono truncate max-w-[280px]">{scenario2Override.integrityHash}</span>
-            </div>
-          </div>
-
-          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[10px] text-amber-200">
-=======
               <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">SUPPORTING NOTE / DOCUMENT REFERENCE</span>
               <span className="text-gray-600 text-xs">{scenario2Override.supportingNote}</span>
             </div>
@@ -450,7 +290,6 @@ export const DemoScenarioConsole: React.FC = () => {
           </div>
 
           <div className="p-3 rounded-lg bg-amber-100/60 border border-amber-200 text-xs text-amber-800">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             <strong>Anti-Bias Policy:</strong> This event is archived in the cryptographic ledger as a potential governance-risk pattern for supervisory review. The system strictly avoids making unsupported accusations of corruption.
           </div>
         </div>
@@ -458,28 +297,16 @@ export const DemoScenarioConsole: React.FC = () => {
 
       {/* ── 17-STEP WORKFLOW STEPPER ─────────────────────────────────────── */}
       <div className="space-y-3">
-<<<<<<< HEAD
-        <div className="flex justify-between items-center">
-          <h4 className="font-bold text-slate-200 uppercase tracking-wider text-xs">
-            17-Step Lifecycle Workflow Tracker
-          </h4>
-          <span className="text-[10px] text-emerald-400 font-bold">
-=======
         <div className="flex justify-between items-center border-b border-gray-100 pb-3">
           <h4 className="font-bold text-gray-900 uppercase tracking-wider text-xs">
             17-Step Lifecycle Workflow Tracker
           </h4>
           <span className="text-xs text-emerald-600 font-semibold">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
             {auditVerification.statusText}
           </span>
         </div>
 
-<<<<<<< HEAD
-        <div className="space-y-1.5">
-=======
         <div className="space-y-2">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           {workflowSteps.map((s: any) => {
             const isCompleted = s.status === 'COMPLETED';
             const isExpanded = expandedStep === s.step;
@@ -489,52 +316,28 @@ export const DemoScenarioConsole: React.FC = () => {
                 key={s.step}
                 className={`rounded-xl border transition-all ${
                   isCompleted
-<<<<<<< HEAD
-                    ? 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700'
-                    : 'bg-slate-950/40 border-slate-900 opacity-60'
-=======
                     ? 'bg-white border-gray-200 hover:border-gray-300'
                     : 'bg-gray-50/60 border-gray-100 opacity-60'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                 }`}
               >
                 <div
                   onClick={() => setExpandedStep(isExpanded ? null : s.step)}
-<<<<<<< HEAD
-                  className="p-2.5 flex items-center justify-between cursor-pointer select-none"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                        isCompleted ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-500'
-=======
                   className="p-3 flex items-center justify-between cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-3">
                     <span
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${
                         isCompleted ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-500'
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       }`}
                     >
                       {isCompleted ? '✓' : s.step}
                     </span>
-<<<<<<< HEAD
-                    <span className="font-bold text-slate-200 text-xs">
-=======
                     <span className="font-semibold text-gray-900 text-xs">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       Step {s.step}: {s.title}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3">
-<<<<<<< HEAD
-                    <span className="text-[10px] text-slate-500">
-                      {new Date(s.timestamp).toLocaleTimeString()}
-                    </span>
-                    <span className="text-slate-400 text-xs">{isExpanded ? '▲' : '▼'}</span>
-=======
                     <span className="text-[11px] text-gray-400">
                       {new Date(s.timestamp).toLocaleTimeString()}
                     </span>
@@ -543,22 +346,14 @@ export const DemoScenarioConsole: React.FC = () => {
                         <polyline points="6 9 12 15 18 9" />
                       </svg>
                     </span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                   </div>
                 </div>
 
                 {isExpanded && (
-<<<<<<< HEAD
-                  <div className="px-3 pb-3 pt-1 border-t border-slate-800/50 space-y-2 text-[11px] text-slate-400 font-sans">
-                    <p>{s.description}</p>
-                    {s.evidence && Object.keys(s.evidence).length > 0 && (
-                      <pre className="p-2.5 rounded-lg bg-slate-950 border border-white/5 text-[10px] text-procure-300 font-mono overflow-x-auto">
-=======
                   <div className="px-4 pb-4 pt-2 border-t border-gray-100 space-y-2.5 text-xs text-gray-600">
                     <p className="leading-relaxed">{s.description}</p>
                     {s.evidence && Object.keys(s.evidence).length > 0 && (
                       <pre className="p-3 rounded-xl bg-[#F9FAFB] border border-gray-200 text-[11px] text-gray-800 overflow-x-auto">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                         {JSON.stringify(s.evidence, null, 2)}
                       </pre>
                     )}

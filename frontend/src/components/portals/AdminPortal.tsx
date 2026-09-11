@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api/client';
 
-<<<<<<< HEAD
-=======
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 
->>>>>>> 4169a4f (Recreated professional README and organized assets)
 export const AdminPortal: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [systemInfo, setSystemInfo] = useState<any | null>(null);
@@ -39,21 +36,6 @@ export const AdminPortal: React.FC = () => {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">⚙️</span>
-          <h2 className="text-xl font-bold text-gray-800">Administration</h2>
-        </div>
-        <p className="text-sm text-gray-500 mt-1">
-          Manage users, view system status, and configure platform settings.
-        </p>
-      </div>
-
-      {error && (
-        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400">
-=======
     <div style={{ fontFamily: FONT }} className="space-y-6">
       <div className="border-b border-gray-200/90 pb-4">
         <div className="flex items-center gap-2.5">
@@ -74,53 +56,19 @@ export const AdminPortal: React.FC = () => {
 
       {error && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">
->>>>>>> 4169a4f (Recreated professional README and organized assets)
           {error}
         </div>
       )}
 
       {isLoading ? (
-<<<<<<< HEAD
-        <div className="card-glass p-8 text-center text-sm text-gray-400 animate-pulse">
-          Loading...
-=======
         <div className="rounded-2xl bg-white border border-gray-200 p-12 text-center text-xs text-gray-400 shadow-xs animate-pulse">
           Loading system telemetry...
->>>>>>> 4169a4f (Recreated professional README and organized assets)
         </div>
       ) : (
         <div className="space-y-6">
           {/* Telemetry Cards */}
           {systemInfo && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-<<<<<<< HEAD
-              <div className="card-glass p-4">
-                <span className="text-[11px] text-gray-500 block mb-1">Active Sessions</span>
-                <span className="text-2xl font-bold text-blue-600">
-                  {systemInfo.activeSessions}
-                </span>
-              </div>
-
-              <div className="card-glass p-4">
-                <span className="text-[11px] text-gray-500 block mb-1">System Uptime</span>
-                <span className="text-2xl font-bold text-emerald-600">
-                  {Math.floor(systemInfo.uptimeSeconds / 60)}m {systemInfo.uptimeSeconds % 60}s
-                </span>
-              </div>
-
-              <div className="card-glass p-4">
-                <span className="text-[11px] text-gray-500 block mb-1">Database Tables</span>
-                <span className="text-2xl font-bold text-indigo-600">
-                  {systemInfo.tableStats?.length || 22}
-                </span>
-              </div>
-
-              <div className="card-glass p-4">
-                <span className="text-[11px] text-gray-500 block mb-1">Registered Users</span>
-                <span className="text-2xl font-bold text-amber-600">
-                  {users.length}
-                </span>
-=======
               <div className="rounded-2xl bg-white border border-gray-200/90 p-5 shadow-xs">
                 <div className="flex justify-between items-start">
                   <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mb-1">Active Sessions</span>
@@ -174,21 +122,11 @@ export const AdminPortal: React.FC = () => {
                   {users.length}
                 </span>
                 <span className="text-[11px] text-gray-400 block mt-1">Across 4 Persona Roles</span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </div>
             </div>
           )}
 
           {/* Users Table */}
-<<<<<<< HEAD
-          <div className="card-glass p-6 space-y-4">
-            <div className="flex justify-between items-center text-sm border-b border-gray-200 pb-3">
-              <span className="font-bold text-gray-700">
-                User Directory
-              </span>
-              <span className="text-xs text-gray-400">
-                {users.length} registered users
-=======
           <div className="rounded-2xl bg-white border border-gray-200 shadow-xs overflow-hidden">
             <div className="p-5 flex justify-between items-center text-sm border-b border-gray-100">
               <span className="font-bold text-gray-900 text-xs uppercase tracking-wider">
@@ -196,33 +134,10 @@ export const AdminPortal: React.FC = () => {
               </span>
               <span className="text-xs text-gray-400">
                 {users.length} registered accounts
->>>>>>> 4169a4f (Recreated professional README and organized assets)
               </span>
             </div>
 
             <div className="overflow-x-auto">
-<<<<<<< HEAD
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-gray-200 text-gray-500">
-                    <th className="pb-2.5 pr-4 font-semibold text-xs uppercase">Name</th>
-                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Email</th>
-                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Role</th>
-                    <th className="pb-2.5 px-3 font-semibold text-xs uppercase">Organization</th>
-                    <th className="pb-2.5 pl-3 font-semibold text-xs uppercase">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {users.map((u) => (
-                    <tr key={u.id} className="hover:bg-gray-50">
-                      <td className="py-2.5 pr-4 text-gray-800 font-medium text-sm">
-                        {u.full_name}
-                      </td>
-                      <td className="py-2.5 px-3 text-gray-500 text-xs">{u.email}</td>
-                      <td className="py-2.5 px-3">
-                        <span
-                          className={`px-2 py-0.5 rounded font-bold text-[11px] border ${
-=======
               <table className="w-full text-left text-xs">
                 <thead>
                   <tr className="border-b border-gray-200 bg-[#F9FAFB] text-gray-500 text-[10px]">
@@ -243,7 +158,6 @@ export const AdminPortal: React.FC = () => {
                       <td className="py-3 px-3">
                         <span
                           className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] border ${
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                             u.role_code === 'ADMIN'
                               ? 'bg-red-50 text-red-700 border-red-200'
                               : u.role_code === 'GOVT_OFFICER'
@@ -256,13 +170,6 @@ export const AdminPortal: React.FC = () => {
                           {u.role_code === 'GOVT_OFFICER' ? 'Officer' : u.role_code === 'BIDDER' ? 'Bidder' : u.role_code === 'AUDITOR' ? 'Auditor' : 'Admin'}
                         </span>
                       </td>
-<<<<<<< HEAD
-                      <td className="py-2.5 px-3 text-gray-500 text-xs">
-                        {u.company_name || 'Government Agency'}
-                      </td>
-                      <td className="py-2.5 pl-3">
-                        <span className="text-emerald-600 font-semibold text-xs">{u.status}</span>
-=======
                       <td className="py-3 px-3 text-gray-600">
                         {u.company_name || 'Government Agency'}
                       </td>
@@ -271,7 +178,6 @@ export const AdminPortal: React.FC = () => {
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           {u.status}
                         </span>
->>>>>>> 4169a4f (Recreated professional README and organized assets)
                       </td>
                     </tr>
                   ))}

@@ -40,11 +40,7 @@ function setRefreshTokenCookie(res: Response, token: string, maxAgeMs: number): 
     sameSite: env.COOKIE_SECURE ? 'none' : 'lax',
     maxAge: maxAgeMs,
     domain: env.COOKIE_DOMAIN || undefined,
-<<<<<<< HEAD
-    path: '/api/v1/auth',
-=======
     path: '/',
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   });
 }
 
@@ -54,11 +50,7 @@ function clearRefreshTokenCookie(res: Response): void {
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SECURE ? 'none' : 'lax',
     domain: env.COOKIE_DOMAIN || undefined,
-<<<<<<< HEAD
-    path: '/api/v1/auth',
-=======
     path: '/',
->>>>>>> 4169a4f (Recreated professional README and organized assets)
   });
 }
 
@@ -80,10 +72,7 @@ export async function register(req: Request, res: Response, next: NextFunction):
       data: {
         user,
         accessToken: tokens.accessToken,
-<<<<<<< HEAD
-=======
         refreshToken: tokens.rawRefreshToken,
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       },
     });
   } catch (error) {
@@ -109,10 +98,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       data: {
         user,
         accessToken: tokens.accessToken,
-<<<<<<< HEAD
-=======
         refreshToken: tokens.rawRefreshToken,
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       },
     });
   } catch (error) {
@@ -143,10 +129,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction): 
       data: {
         user,
         accessToken: tokens.accessToken,
-<<<<<<< HEAD
-=======
         refreshToken: tokens.rawRefreshToken,
->>>>>>> 4169a4f (Recreated professional README and organized assets)
       },
     });
   } catch (error) {
