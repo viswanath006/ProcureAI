@@ -1,0 +1,49 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000100",
+    "reference_number": "PROC-2026-EDU-SCH-01",
+    "title": "Government School Infrastructure Project - Phase 2",
+    "description": "Construction of 25 modern prefabricated rural schools with seismic design and smart classrooms.",
+    "category": "infrastructure",
+    "department": "Department of School Education & Literacy",
+    "estimated_budget_paisa": 10000000000,
+    "currency": "INR",
+    "submission_start_at": "2026-09-06T00:00:00.000Z",
+    "submission_deadline_at": "2026-09-21T18:00:00.000Z",
+    "status": "CLOSED",
+    "creator_name": "Suresh Kumar (Director of Procurement)",
+    "creator_email": "officer.suresh@finance.gov.in",
+    "updated_at": "2026-09-11T02:02:23.808Z",
+    "closed_at": "2026-09-11T02:02:23.808Z"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000200",
+    "reference_number": "PROC-2026-HLT-OXY-02",
+    "title": "District Hospital Oxygen Generation Plant Setup",
+    "description": "Procurement and turnkey installation of 500 LPM PSA Medical Oxygen Generation Plants.",
+    "category": "healthcare",
+    "department": "Ministry of Health & Family Welfare",
+    "estimated_budget_paisa": 4500000000,
+    "currency": "INR",
+    "submission_start_at": "2026-08-15T00:00:00.000Z",
+    "submission_deadline_at": "2026-09-05T18:00:00.000Z",
+    "status": "CLOSED",
+    "creator_name": "Dr. Anita Desai (Medical Superintendent)",
+    "creator_email": "officer.anita@health.gov.in"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000300",
+    "reference_number": "PROC-2026-AGR-COLD-03",
+    "title": "Solar Powered Agricultural Cold Storage Units",
+    "description": "Deployment of 100 decentralized off-grid solar cold storage units across rural mandis.",
+    "category": "agriculture",
+    "department": "Ministry of Agriculture & Farmers Welfare",
+    "estimated_budget_paisa": 3200000000,
+    "currency": "INR",
+    "submission_start_at": "2026-09-10T00:00:00.000Z",
+    "submission_deadline_at": "2026-10-15T18:00:00.000Z",
+    "status": "DRAFT",
+    "creator_name": "Rajesh Verma (Joint Secretary)",
+    "creator_email": "officer.rajesh@agri.gov.in"
+  }
+]
