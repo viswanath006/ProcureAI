@@ -24,22 +24,10 @@ export const DemoScenarioConsole: React.FC = () => {
     );
   }
 
-  const { tender, workflowSteps, currentScenario, scenario2Override, auditVerification } = data;
+  const { workflowSteps, currentScenario, scenario2Override, auditVerification } = data;
 
   return (
     <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-6">
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="border-b border-gray-100 pb-5">
-        <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-          {tender.title}
-          <span className="text-blue-600 text-xs font-semibold px-2 py-0.5 rounded-md bg-blue-50 border border-blue-100">
-            {tender.referenceNumber}
-          </span>
-        </h3>
-        <p className="text-xs text-gray-500 mt-1">
-          Estimated Budget: <strong className="text-emerald-600 font-semibold">{tender.estimatedValueFormatted}</strong> · Department of School Education & Literacy
-        </p>
-      </div>
 
 
       {/* ── SCENARIO 2 OVERRIDE & GOVERNANCE RISK BANNER ──────────────────── */}
