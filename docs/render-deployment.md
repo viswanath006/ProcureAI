@@ -95,8 +95,7 @@ If you prefer configuring each service manually via the Render UI:
    - **Root Directory**: `backend`
    - **Runtime**: `Node`
    - **Build Command**: `npm install && npm run build`
-   - **Pre-Deploy Command**: `npm run db:migrate`
-   - **Start Command**: `npm start`
+   - **Start Command**: `npm run db:migrate && npm start` *(runs migrations and launches the server)*
    - **Health Check Path**: `/api/v1/health`
 4. In **Environment Variables**, configure:
    - `NODE_ENV`: `production`

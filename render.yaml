@@ -39,8 +39,7 @@ services:
     plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
-    preDeployCommand: npm run db:migrate
-    startCommand: npm start
+    startCommand: npm run db:migrate && npm start
     healthCheckPath: /api/v1/health
     envVars:
       - key: NODE_ENV
@@ -50,15 +49,9 @@ services:
           name: procureai-db
           property: connectionString
       - key: AI_SERVICE_URL
-        fromService:
-          type: web
-          name: procureai-ai-service
-          property: host
+        value: https://procureai-ai-service.onrender.com
       - key: CORS_ORIGIN
-        fromService:
-          type: web
-          name: procureai-frontend
-          property: url
+        value: "*"
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
@@ -72,8 +65,6 @@ services:
   - type: web
     name: procureai-frontend
     runtime: static
-    region: oregon
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -83,7 +74,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: procureai-backend
-          property: url
+        value: https://procureai-backend.onrender.com/api/v1
