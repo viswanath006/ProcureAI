@@ -8,7 +8,6 @@ import { SealedBidSubmissionModal } from '../bids/SealedBidSubmissionModal';
 import { AiEvaluationView } from './AiEvaluationView';
 import { TenderRiskAnalysisView } from '../risk/TenderRiskAnalysisView';
 import { DecisionWorkflowModal } from '../decision/DecisionWorkflowModal';
-import { BidderComparisonChart } from '../charts/BidderComparisonChart';
 
 interface TenderDetailModalProps {
   tenderId: string;
@@ -53,7 +52,9 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
   const [showDecisionForm, setShowDecisionForm] = useState(false);
   const [decisionType, setDecisionType] = useState<'award' | 'reject' | 'defer'>('award');
   const [selectedBidId, setSelectedBidId] = useState('');
-  const [rationale, setRationale] = useState('');
+  const [rationale, setRationale] = useState(
+    'Official procurement award confirmed following evaluation of technical capability, financial viability, and statutory compliance.'
+  );
   const [followedAi, setFollowedAi] = useState(true);
   const [overrideReasonType, setOverrideReasonType] = useState('additional_information');
   const [overrideDetail, setOverrideDetail] = useState('');
@@ -64,6 +65,9 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
     const res = await api.getTenderDetails(tenderId);
     if (res.success && res.data) {
       setData(res.data);
+      if (res.data.unsealedBids?.length > 0 && !selectedBidId) {
+        setSelectedBidId(res.data.unsealedBids[0].id);
+      }
     } else {
       setError(res.error?.message || 'Failed to load tender details');
     }
@@ -179,9 +183,11 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
     setSuccess(null);
 
     const res = await api.submitDecision(tenderId, {
+      action: followedAi ? 'approve' : 'reject',
       decision: decisionType,
+      selected_bid_id: decisionType === 'award' ? selectedBidId || undefined : undefined,
       awarded_bid_id: decisionType === 'award' ? selectedBidId || undefined : undefined,
-      rationale,
+      rationale: rationale || 'Official procurement award confirmed following evaluation of technical capability, financial viability, and statutory compliance.',
       followed_ai: followedAi,
       override_reason_type: !followedAi ? overrideReasonType : undefined,
       override_reason_detail: !followedAi ? overrideDetail : undefined,
@@ -190,7 +196,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
     setActionLoading(false);
 
     if (res.success) {
-      setSuccess('Government procurement decision recorded.');
+      setSuccess('Government procurement decision recorded: Contract officially finalized & awarded.');
       setShowDecisionForm(false);
       loadDetails();
       onRefresh();
@@ -312,14 +318,30 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               )}
 
               {(currentStatus === 'PUBLISHED' || currentStatus === 'OPEN') && user?.role_code !== 'BIDDER' && (
-                <button
-                  onClick={handleClose}
-                  disabled={actionLoading}
-                  className="px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
-                >
-                  <span>Close Bidding</span>
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setShowDecisionForm(true);
+                      if (data?.unsealedBids?.length > 0 && !selectedBidId) {
+                        setSelectedBidId(data.unsealedBids[0].id);
+                      }
+                    }}
+                    className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <svg className="w-3.5 h-3.5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3v18" /><path d="m3 7 9-4 9 4" /><path d="M6 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M4 21h16" /></svg>
+                    <span>Check & Finalise Bid</span>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                  </button>
+
+                  <button
+                    onClick={handleClose}
+                    disabled={actionLoading}
+                    className="px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>Close Bidding</span>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                  </button>
+                </>
               )}
 
               {currentStatus === 'CLOSED' && (
@@ -420,15 +442,49 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
           </div>
         )}
 
+        {/* Awarded Banner if finalized */}
+        {['DECISION_MADE', 'AWARDED', 'COMPLETED'].includes(currentStatus) && (
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🏆</span>
+              <div>
+                <span className="font-bold text-sm block text-emerald-950">
+                  Official Procurement Decision Finalized & Awarded
+                </span>
+                <span className="text-xs text-emerald-800">
+                  Winning Bidder: <strong className="text-emerald-950 font-bold">{data?.tender?.awarded_company_name || data?.tender?.decision?.selected_bidder || 'Winning Bidder'}</strong>
+                  {data?.tender?.decision?.integrity_hash && (
+                    <span className="ml-2 font-mono text-[10px] text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
+                      SHA-256: {data.tender.decision.integrity_hash.slice(0, 16)}...
+                    </span>
+                  )}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsDecisionModalOpen(true)}
+              className="px-3.5 py-1.5 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-medium shadow-xs transition-colors shrink-0"
+            >
+              View Decision Dossier
+            </button>
+          </div>
+        )}
+
         {/* Decision Form if toggled */}
         {showDecisionForm && (
           <div className="p-5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-4 animate-fade-in text-xs">
             <div className="flex justify-between items-center">
               <h4 className="font-bold text-amber-900 text-sm flex items-center gap-2">
                 <svg className="w-4 h-4 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3v18" /><path d="m3 7 9-4 9 4" /><path d="M6 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M4 21h16" /></svg>
-                <span>Official Decision Record (Officer in Charge)</span>
+                <span>Official Decision & Bid Finalisation (Officer in Charge)</span>
               </h4>
-              <span className="text-[10px] text-amber-700 font-medium">Audit & Activity Log</span>
+              <button
+                type="button"
+                onClick={() => setShowDecisionForm(false)}
+                className="px-2.5 py-1 rounded-full bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 text-xs font-semibold cursor-pointer shadow-xs"
+              >
+                ✕ Cancel
+              </button>
             </div>
 
             <form onSubmit={handleRecordDecision} className="space-y-3">
@@ -448,7 +504,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
 
                 {decisionType === 'award' && (
                   <div>
-                    <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1">SELECT WINNING BID</label>
+                    <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1">SELECT WINNING BIDDER</label>
                     <select
                       value={selectedBidId}
                       onChange={(e) => setSelectedBidId(e.target.value)}
@@ -457,7 +513,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                       <option value="">-- Choose evaluated bid --</option>
                       {data?.unsealedBids?.map((b: any) => (
                         <option key={b.id} value={b.id}>
-                          {b.company_name} ({b.bid_reference})
+                          {b.company_name} ({b.bid_reference}) {b.amount_inr ? `• ₹${(Number(b.amount_inr) / 10000000).toFixed(2)} Cr` : ''}
                         </option>
                       ))}
                     </select>
@@ -692,28 +748,134 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
 
           {activeTab === 'bids' && (
             <div className="space-y-4">
-              <BidderComparisonChart />
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-gray-100 pb-3">
+                <div>
+                  <h4 className="font-bold text-gray-900 text-sm flex items-center gap-2">
+                    <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                    <span>Companies Who Have Bidded ({data?.unsealedBids?.length || 0})</span>
+                  </h4>
+                  <p className="text-[11px] text-gray-500">
+                    Review candidate company submissions, verify cryptographic seals, and select for official award.
+                  </p>
+                </div>
 
-              {data?.unsealedBids?.length === 0 ? (
-                <div className="p-8 text-center text-xs text-gray-400">
-                  {currentStageIndex < 4
-                    ? 'Bids are safely locked in the secret vault until the deadline passes.'
-                    : 'No bids were submitted for this tender.'}
+                {isOfficerOrAdmin && (data?.unsealedBids?.length || 0) > 0 && !['AWARDED', 'DECISION_MADE', 'COMPLETED'].includes(currentStatus) && (
+                  <button
+                    onClick={() => {
+                      setShowDecisionForm(true);
+                      if (!selectedBidId && data?.unsealedBids?.length > 0) {
+                        setSelectedBidId(data.unsealedBids[0].id);
+                      }
+                    }}
+                    className="px-4 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto shrink-0"
+                  >
+                    <span>Finalise Winning Bid</span>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                  </button>
+                )}
+              </div>
+
+              {(!data?.unsealedBids || data?.unsealedBids.length === 0) ? (
+                <div className="p-10 rounded-2xl bg-gray-50 border border-dashed border-gray-300 text-center space-y-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto text-lg">
+                    📋
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-gray-800 text-xs">No bids submitted yet for this tender</h5>
+                    <p className="text-[11px] text-gray-500 mt-1 max-w-sm mx-auto">
+                      Switch to a Bidder account from the top right role switcher to place a bid on this tender.
+                    </p>
+                  </div>
+                  {user?.role_code === 'BIDDER' && (
+                    <button
+                      onClick={() => setIsSubmitBidModalOpen(true)}
+                      className="px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer inline-flex items-center gap-1"
+                    >
+                      <span>Submit Bid Now</span>
+                    </button>
+                  )}
                 </div>
               ) : (
-                <div className="divide-y divide-gray-100">
-                  {data?.unsealedBids?.map((b: any) => (
-                    <div key={b.id} className="py-3 flex justify-between items-center">
-                      <div>
-                        <span className="font-bold text-blue-600">{b.bid_reference}</span>
-                        <span className="text-gray-900 ml-2 font-medium">{b.company_name}</span>
+                <div className="space-y-3">
+                  {data?.unsealedBids?.map((b: any, idx: number) => {
+                    const isAwarded = data?.tender?.awarded_bid_id === b.id || data?.tender?.decision?.selected_bid_id === b.id;
+                    const isSelectedInForm = selectedBidId === b.id;
+
+                    return (
+                      <div
+                        key={b.id || idx}
+                        className={`p-4 rounded-2xl border transition-all ${
+                          isAwarded
+                            ? 'bg-emerald-50/70 border-emerald-400 ring-2 ring-emerald-500/20 shadow-xs'
+                            : isSelectedInForm
+                            ? 'bg-blue-50/60 border-blue-400 shadow-xs'
+                            : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xs'
+                        }`}
+                      >
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-bold text-gray-900 text-sm">
+                                {b.company_name}
+                              </span>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                {b.bid_reference}
+                              </span>
+                              {isAwarded && (
+                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-600 text-white shadow-2xs">
+                                  🏆 Awarded Winner
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-3 text-[11px] text-gray-500 pt-0.5">
+                              {b.amount_inr ? (
+                                <span className="font-bold text-emerald-700">
+                                  Quote: ₹{(Number(b.amount_inr) / 10000000).toFixed(2)} Cr
+                                </span>
+                              ) : null}
+                              <span>•</span>
+                              <span>Timeline: <strong className="text-gray-700">{b.completion_days || 180} Days</strong></span>
+                              <span>•</span>
+                              <span>Submitted: {b.submitted_at ? new Date(b.submitted_at).toLocaleString() : 'Recent'}</span>
+                              <span>•</span>
+                              <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
+                                <svg className="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                                <span>AES-256 Sealed</span>
+                              </span>
+                            </div>
+
+                            {b.technical_proposal && (
+                              <p className="text-[11px] text-gray-600 pt-1 leading-relaxed">
+                                <strong className="text-gray-700">Proposal: </strong>
+                                {b.technical_proposal}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Action Button for Officer */}
+                          {isOfficerOrAdmin && !['AWARDED', 'DECISION_MADE', 'COMPLETED'].includes(currentStatus) && (
+                            <div className="flex items-center gap-2 shrink-0">
+                              <button
+                                onClick={() => {
+                                  setSelectedBidId(b.id);
+                                  setShowDecisionForm(true);
+                                }}
+                                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1 shadow-xs ${
+                                  isSelectedInForm
+                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                                }`}
+                              >
+                                <span>{isSelectedInForm ? 'Selected for Award' : 'Award to this Bidder'}</span>
+                                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-[11px] text-gray-500 flex items-center gap-3">
-                        <span>{b.completion_days} days</span>
-                        <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[10px] font-semibold uppercase">{b.status}</span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

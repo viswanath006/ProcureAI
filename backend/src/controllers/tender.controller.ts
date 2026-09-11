@@ -10,6 +10,7 @@ import {
   AuthorizationError,
 } from '../utils/errors';
 import { loadLocalBids } from './bid.controller';
+import { getLocalDecision } from '../services/decision.service';
 
 // ─── Local Data Persistence Store ─────────────────────────────────────────────
 
@@ -1111,30 +1112,52 @@ export async function getTenderDetails(req: Request, res: Response, next: NextFu
           ];
 
       const localBids = loadLocalBids().filter((b) => b.tender_id === tender.id || b.tender_reference === tender.reference_number);
-      bidsCount = Math.max(3, localBids.length);
+      const isDemoTender = tender.id === '00000000-0000-0000-0000-000000000100' || tender.reference_number === 'PROC-2026-EDU-SCH-01';
 
-      const defaultUnsealedBids = [
-        { id: 'bid-1', bid_reference: 'BID-2026-01', status: 'submitted', company_name: 'Apex Infra Buildtech Ltd', completion_days: 180 },
-        { id: 'bid-2', bid_reference: 'BID-2026-02', status: 'submitted', company_name: 'Bharat Civil Works & Const. Co.', completion_days: 195 },
-        { id: 'bid-3', bid_reference: 'BID-2026-03', status: 'submitted', company_name: 'Crescent Urban Developers Ltd', completion_days: 210 },
-      ];
-      unsealedBids = defaultUnsealedBids.map((b) => {
-        if (b.company_name.includes('Apex Infra') && localBids.length > 0) {
-          const latest = localBids[0];
-          return {
-            ...b,
-            bid_reference: latest.bid_reference || b.bid_reference,
-            completion_days: latest.completion_days || b.completion_days,
-          };
-        }
-        return b;
-      });
+      if (localBids.length > 0) {
+        bidsCount = localBids.length;
+        unsealedBids = localBids.map((b) => ({
+          id: b.id,
+          bid_reference: b.bid_reference || 'BID-SUBMITTED',
+          status: b.status || 'submitted',
+          company_name: b.company_name || 'Bidding Company',
+          company_id: b.company_id,
+          amount_inr: b.amount_inr || (b.amountPaisa ? b.amountPaisa / 100 : 0),
+          completion_days: b.completion_days || 180,
+          submitted_at: b.submitted_at || new Date().toISOString(),
+          technical_proposal: b.technical_proposal,
+          financial_proposal: b.financial_proposal,
+          canonical_hash: b.canonical_hash,
+          receipt_token: b.receipt_token,
+        }));
+      } else if (isDemoTender) {
+        bidsCount = 3;
+        unsealedBids = [
+          { id: 'bid-1', bid_reference: 'BID-2026-01', status: 'submitted', company_name: 'Apex Infra Buildtech Ltd', completion_days: 180, amount_inr: 82000000, submitted_at: '2026-08-28T10:30:00Z' },
+          { id: 'bid-2', bid_reference: 'BID-2026-02', status: 'submitted', company_name: 'Bharat Civil Works & Const. Co.', completion_days: 195, amount_inr: 78000000, submitted_at: '2026-08-29T14:15:00Z' },
+          { id: 'bid-3', bid_reference: 'BID-2026-03', status: 'submitted', company_name: 'Crescent Urban Developers Ltd', completion_days: 210, amount_inr: 85000000, submitted_at: '2026-08-30T11:00:00Z' },
+        ];
+      } else {
+        bidsCount = 0;
+        unsealedBids = [];
+      }
 
-      recommendations = [
-        { id: 'rec-1', rank: 1, composite_score: 87.6, bid_reference: 'BID-2026-01', company_name: 'Apex Infra Buildtech Ltd', recommendation_type: 'STRONGLY_RECOMMENDED' },
-        { id: 'rec-2', rank: 2, composite_score: 74.1, bid_reference: 'BID-2026-02', company_name: 'Bharat Civil Works & Const. Co.', recommendation_type: 'ACCEPTABLE_L1_RISK' },
-        { id: 'rec-3', rank: 3, composite_score: 73.4, bid_reference: 'BID-2026-03', company_name: 'Crescent Urban Developers Ltd', recommendation_type: 'QUALIFIED' },
-      ];
+      recommendations = unsealedBids.map((b, i) => ({
+        id: `rec-${i + 1}`,
+        rank: i + 1,
+        composite_score: Number((88.5 - i * 4).toFixed(1)),
+        bid_reference: b.bid_reference,
+        company_name: b.company_name,
+        recommendation_type: i === 0 ? 'STRONGLY_RECOMMENDED' : 'QUALIFIED',
+      }));
+    }
+
+    const localDecision = getLocalDecision(tender.id);
+    if (localDecision) {
+      tender.status = localDecision.final_decision === 'award' ? 'AWARDED' : 'DECISION_MADE';
+      tender.awarded_bid_id = localDecision.selected_bid_id;
+      tender.awarded_company_name = localDecision.selected_bidder;
+      (tender as any).decision = localDecision;
     }
 
     const statusNorm = normalizeStatus(tender.status);

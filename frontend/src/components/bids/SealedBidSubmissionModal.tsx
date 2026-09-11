@@ -30,6 +30,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
   const [declarationAccepted, setDeclarationAccepted] = useState(false);
 
   const [companyProfile, setCompanyProfile] = useState<any | null>(null);
+  const [companyName, setCompanyName] = useState('Apex Infra Buildtech Ltd');
   const [companyDocs, setCompanyDocs] = useState<any[]>([]);
   const [eligibilityPassed, setEligibilityPassed] = useState<boolean | null>(null);
   const [eligibilityChecking, setEligibilityChecking] = useState(false);
@@ -52,6 +53,9 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
       if (profileRes.success && profileRes.data) {
         setCompanyProfile(profileRes.data.company);
+        if (profileRes.data.company?.name) {
+          setCompanyName(profileRes.data.company.name);
+        }
         setCompanyDocs(profileRes.data.documents || []);
       }
 
@@ -90,6 +94,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
     const payload = {
       tenderId: tender.id,
+      companyName: companyName.trim(),
       bidAmountInr: Number(bidAmountInr),
       completionDays: Number(completionDays),
       technicalProposal,
@@ -178,6 +183,23 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
             {/* Submission Form */}
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-4 pr-1 text-xs">
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <label className="text-[10px] text-slate-400 font-mono block">
+                  BIDDING COMPANY NAME
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="e.g. Apex Infra Buildtech Ltd, Bharat Civil Works, Crescent Urban..."
+                  className="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 font-medium text-xs focus:outline-none focus:border-emerald-500"
+                />
+                <span className="text-[10px] text-slate-500 block">
+                  Official registered entity name submitted on this tender.
+                </span>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] text-slate-400 font-mono block mb-1">

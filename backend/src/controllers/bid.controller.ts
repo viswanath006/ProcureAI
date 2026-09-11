@@ -105,6 +105,7 @@ export async function submitSealedBid(
       notes,
       documents = [],
       declarationAccepted,
+      companyName,
     } = req.body;
 
     // Step 1: Validate declaration acceptance
@@ -182,8 +183,9 @@ export async function submitSealedBid(
     } catch {
       // DB offline - check local bids
       const localBids = loadLocalBids();
+      const customCompName = (companyName || '').trim();
       existingBid = localBids.find(
-        (b) => b.tender_id === tenderId && b.company_id === effectiveCompanyId && b.status !== 'withdrawn'
+        (b) => b.tender_id === tenderId && (customCompName ? b.company_name?.toLowerCase() === customCompName.toLowerCase() : b.company_id === effectiveCompanyId) && b.status !== 'withdrawn'
       );
     }
 
@@ -214,12 +216,18 @@ export async function submitSealedBid(
       // Database offline mode - fallback company
     }
 
+    const resolvedCompanyName = (companyName && typeof companyName === 'string' && companyName.trim())
+      ? companyName.trim()
+      : (company?.name || 'Apex Infra Buildtech Ltd');
+
     if (!company) {
       company = {
         id: effectiveCompanyId,
-        name: 'Apex Infra Buildtech Ltd',
+        name: resolvedCompanyName,
         status: 'verified',
       };
+    } else {
+      company.name = resolvedCompanyName;
     }
 
     // Step 6: Generate unique bid reference

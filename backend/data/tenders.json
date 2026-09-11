@@ -1,9 +1,170 @@
 [
   {
-    "id": "63de6786-8fc1-4825-91a1-a618cd8da6a1",
-    "reference_number": "T1",
-    "title": "Bridge",
+    "id": "121eec47-874f-4321-b70d-54f09728523c",
+    "reference_number": "TT1",
+    "title": "HB1",
     "description": "Highway Bridge",
+    "category": "infrastructure",
+    "department": "Ministry of Infrastructure & Urban Development",
+    "estimated_budget_paisa": 45000000000,
+    "currency": "INR",
+    "submission_start_at": "2026-09-11T00:00:00.000Z",
+    "submission_deadline_at": "2026-10-11T00:00:00.000Z",
+    "status": "AWARDED",
+    "created_at": "2026-09-11T09:35:17.086Z",
+    "creator_name": "admin.rajesh@procureai.gov.in",
+    "creator_email": "admin.rajesh@procureai.gov.in",
+    "tags": [],
+    "contact_email": "admin.rajesh@procureai.gov.in",
+    "contact_phone": null,
+    "eligibility_requirements": [
+      {
+        "requirement_type": "financial",
+        "title": "Minimum Annual Turnover",
+        "description": "Audited annual turnover of at least ₹50 Crore in the last 3 financial years.",
+        "is_mandatory": true,
+        "threshold_value": 500000000,
+        "threshold_unit": "INR"
+      },
+      {
+        "requirement_type": "technical",
+        "title": "Tier-3 Data Center Deployment Experience",
+        "description": "Successfully deployed and managed at least 2 Tier-3 mission critical data centers.",
+        "is_mandatory": true,
+        "threshold_value": 2,
+        "threshold_unit": "projects"
+      },
+      {
+        "requirement_type": "legal",
+        "title": "Non-Debarment Statutory Affidavit",
+        "description": "Sworn affidavit confirming bidder is not debarred or blacklisted by any Government agency.",
+        "is_mandatory": true
+      }
+    ],
+    "evaluation_criteria": [
+      {
+        "criteria_type": "technical",
+        "name": "Technical Architecture & Methodology",
+        "description": "Proposed system architecture, resilience, scalability, and integration plan.",
+        "weight": 40,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "financial",
+        "name": "Financial Cost Proposal & Price Competitiveness",
+        "description": "Total evaluated cost of ownership, transparent bill of quantities, and fee structure.",
+        "weight": 30,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "experience",
+        "name": "Past Performance & Proven Track Record",
+        "description": "Documented track record on similar government/enterprise deployments with reference letters.",
+        "weight": 20,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "delivery_timeline",
+        "name": "Implementation Timeline & SLA Commitments",
+        "description": "Feasibility of work breakdown schedule and committed SLA response thresholds.",
+        "weight": 10,
+        "max_score": 100,
+        "is_ai_scored": true
+      }
+    ],
+    "required_documents": [
+      {
+        "name": "Audited Financial Statements (Last 3 Years)",
+        "description": "Balance sheet and P&L",
+        "required": true
+      },
+      {
+        "name": "Technical Methodology & Solution Blueprint",
+        "description": "PDF technical proposal",
+        "required": true
+      },
+      {
+        "name": "ISO 27001 / SOC 2 Compliance Certificates",
+        "description": "Security accreditations",
+        "required": false
+      },
+      {
+        "name": "Non-Debarment Sworn Declaration",
+        "description": "Legal affidavit on stamp paper",
+        "required": true
+      }
+    ],
+    "awarded_bid_id": "efbf764d-8f80-4392-b056-824775f4ae14",
+    "awarded_company_name": "Apex Infra Buildtech Ltd",
+    "decision": {
+      "id": "6ca98986-0ec9-4331-bd87-44ef1312ca6d",
+      "tender_id": "121eec47-874f-4321-b70d-54f09728523c",
+      "decided_by": "00000001-0000-0000-0000-000000000011",
+      "officer_name": "officer.suresh@finance.gov.in",
+      "timestamp": "2026-09-11T09:36:00.907Z",
+      "ai_recommendation": "Apex Infra Buildtech Ltd",
+      "final_decision": "award",
+      "selected_bidder": "Apex Infra Buildtech Ltd",
+      "selected_bid_id": "efbf764d-8f80-4392-b056-824775f4ae14",
+      "override_status": "NO",
+      "reason": "Official procurement award confirmed following evaluation of technical capability, financial viability, and statutory compliance.",
+      "supporting_note": null,
+      "integrity_hash": "d6d802d598d376ec34713a2866d5235283c89290c4711688f54ab542fd0f4d53",
+      "is_locked": true,
+      "created_at": "2026-09-11T09:36:00.907Z"
+    },
+    "updated_at": "2026-09-11T09:36:00.907Z"
+  },
+  {
+    "id": "39e09686-2a11-48d3-a636-f2944c1839dc",
+    "reference_number": "METRO-SIG-2026-99",
+    "title": "Automated Metro Rail Signaling System 2026",
+    "description": "Procurement of advanced CBTC signaling for urban metro extension",
+    "category": "infrastructure",
+    "department": "Ministry of Railways",
+    "estimated_budget_paisa": 8500000000,
+    "currency": "INR",
+    "submission_start_at": "2026-09-11T09:34:25.507Z",
+    "submission_deadline_at": "2026-09-26T09:34:25.506Z",
+    "status": "AWARDED",
+    "created_at": "2026-09-11T09:34:25.512Z",
+    "creator_name": "officer.suresh@finance.gov.in",
+    "creator_email": "officer.suresh@finance.gov.in",
+    "tags": [],
+    "contact_email": "officer.suresh@finance.gov.in",
+    "contact_phone": null,
+    "eligibility_requirements": [],
+    "evaluation_criteria": [],
+    "required_documents": [],
+    "awarded_bid_id": "28001e6f-0a0b-4f55-afb8-acde7bc0953c",
+    "awarded_company_name": "Larsen Alpha Rail Dynamics Ltd",
+    "decision": {
+      "id": "116c6b7a-016c-40bf-aae7-3edb58ad939d",
+      "tender_id": "39e09686-2a11-48d3-a636-f2944c1839dc",
+      "decided_by": "00000001-0000-0000-0000-000000000011",
+      "officer_name": "officer.suresh@finance.gov.in",
+      "timestamp": "2026-09-11T09:34:25.587Z",
+      "ai_recommendation": "Larsen Alpha Rail Dynamics Ltd",
+      "final_decision": "award",
+      "selected_bidder": "Larsen Alpha Rail Dynamics Ltd",
+      "selected_bid_id": "28001e6f-0a0b-4f55-afb8-acde7bc0953c",
+      "override_status": "NO",
+      "reason": "Selected bidder demonstrates highest technical compliance (SIL-4 certified) with competitive financial quotation within approved budget constraints.",
+      "supporting_note": "Approved by Officer Suresh.",
+      "integrity_hash": "80de529b19f8927b95ca4de17354b3b65eca7a2605abfc5b0c80671f3834a446",
+      "is_locked": true,
+      "created_at": "2026-09-11T09:34:25.587Z"
+    },
+    "updated_at": "2026-09-11T09:34:25.587Z"
+  },
+  {
+    "id": "212b22be-e57f-4bcb-9854-9e8ffbac2689",
+    "reference_number": "T1",
+    "title": "Highway",
+    "description": "Bridge",
     "category": "infrastructure",
     "department": "Ministry of Infrastructure & Urban Development",
     "estimated_budget_paisa": 25000000000,
@@ -11,7 +172,7 @@
     "submission_start_at": "2026-09-11T00:00:00.000Z",
     "submission_deadline_at": "2026-10-15T00:00:00.000Z",
     "status": "AWARDED",
-    "created_at": "2026-09-11T07:43:36.983Z",
+    "created_at": "2026-09-11T09:18:06.459Z",
     "creator_name": "officer.suresh@finance.gov.in",
     "creator_email": "officer.suresh@finance.gov.in",
     "tags": [],
@@ -97,7 +258,7 @@
         "required": true
       }
     ],
-    "updated_at": "2026-09-11T07:44:49.041Z",
+    "updated_at": "2026-09-11T09:18:36.073Z",
     "closed_at": "2026-09-11T07:44:28.809Z"
   },
   {
