@@ -30,6 +30,8 @@ services:
         value: 3.11.9
       - key: ENVIRONMENT
         value: production
+      - key: MCA_OGD_API_KEY
+        sync: false  # Set this manually in Render dashboard
 
   # ── 2. Node.js Express Backend API ─────────────────────────────────────────
   - type: web
@@ -39,7 +41,7 @@ services:
     plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: npm run db:migrate && npm start
+    startCommand: node dist/scripts/migrate.js ; npm start
     healthCheckPath: /api/v1/health
     envVars:
       - key: NODE_ENV
@@ -51,7 +53,7 @@ services:
       - key: AI_SERVICE_URL
         value: https://procureai-ai-service.onrender.com
       - key: CORS_ORIGIN
-        value: "*"
+        value: "https://procureai-frontend.onrender.com"
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
@@ -60,13 +62,16 @@ services:
         generateValue: true
       - key: COOKIE_SECURE
         value: "true"
+      - key: MCA_OGD_API_KEY
+        sync: false  # Set this manually in Render dashboard
 
   # ── 3. React Vite Single Page Application (Static Site) ────────────────────
   - type: web
     name: procureai-frontend
     runtime: static
+    region: oregon
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && npx vite build
     staticPublishPath: dist
     routes:
       - type: rewrite
