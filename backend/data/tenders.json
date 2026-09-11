@@ -1,5 +1,106 @@
 [
   {
+    "id": "63de6786-8fc1-4825-91a1-a618cd8da6a1",
+    "reference_number": "T1",
+    "title": "Bridge",
+    "description": "Highway Bridge",
+    "category": "infrastructure",
+    "department": "Ministry of Infrastructure & Urban Development",
+    "estimated_budget_paisa": 25000000000,
+    "currency": "INR",
+    "submission_start_at": "2026-09-11T00:00:00.000Z",
+    "submission_deadline_at": "2026-10-15T00:00:00.000Z",
+    "status": "AWARDED",
+    "created_at": "2026-09-11T07:43:36.983Z",
+    "creator_name": "officer.suresh@finance.gov.in",
+    "creator_email": "officer.suresh@finance.gov.in",
+    "tags": [],
+    "contact_email": "officer.suresh@finance.gov.in",
+    "contact_phone": null,
+    "eligibility_requirements": [
+      {
+        "requirement_type": "financial",
+        "title": "Minimum Annual Turnover",
+        "description": "Audited annual turnover of at least ₹50 Crore in the last 3 financial years.",
+        "is_mandatory": true,
+        "threshold_value": 500000000,
+        "threshold_unit": "INR"
+      },
+      {
+        "requirement_type": "technical",
+        "title": "Tier-3 Data Center Deployment Experience",
+        "description": "Successfully deployed and managed at least 2 Tier-3 mission critical data centers.",
+        "is_mandatory": true,
+        "threshold_value": 2,
+        "threshold_unit": "projects"
+      },
+      {
+        "requirement_type": "legal",
+        "title": "Non-Debarment Statutory Affidavit",
+        "description": "Sworn affidavit confirming bidder is not debarred or blacklisted by any Government agency.",
+        "is_mandatory": true
+      }
+    ],
+    "evaluation_criteria": [
+      {
+        "criteria_type": "technical",
+        "name": "Technical Architecture & Methodology",
+        "description": "Proposed system architecture, resilience, scalability, and integration plan.",
+        "weight": 40,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "financial",
+        "name": "Financial Cost Proposal & Price Competitiveness",
+        "description": "Total evaluated cost of ownership, transparent bill of quantities, and fee structure.",
+        "weight": 30,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "experience",
+        "name": "Past Performance & Proven Track Record",
+        "description": "Documented track record on similar government/enterprise deployments with reference letters.",
+        "weight": 20,
+        "max_score": 100,
+        "is_ai_scored": true
+      },
+      {
+        "criteria_type": "delivery_timeline",
+        "name": "Implementation Timeline & SLA Commitments",
+        "description": "Feasibility of work breakdown schedule and committed SLA response thresholds.",
+        "weight": 10,
+        "max_score": 100,
+        "is_ai_scored": true
+      }
+    ],
+    "required_documents": [
+      {
+        "name": "Audited Financial Statements (Last 3 Years)",
+        "description": "Balance sheet and P&L",
+        "required": true
+      },
+      {
+        "name": "Technical Methodology & Solution Blueprint",
+        "description": "PDF technical proposal",
+        "required": true
+      },
+      {
+        "name": "ISO 27001 / SOC 2 Compliance Certificates",
+        "description": "Security accreditations",
+        "required": false
+      },
+      {
+        "name": "Non-Debarment Sworn Declaration",
+        "description": "Legal affidavit on stamp paper",
+        "required": true
+      }
+    ],
+    "updated_at": "2026-09-11T07:44:49.041Z",
+    "closed_at": "2026-09-11T07:44:28.809Z"
+  },
+  {
     "id": "00000000-0000-0000-0000-000000000100",
     "reference_number": "PROC-2026-EDU-SCH-01",
     "title": "Government School Infrastructure Project - Phase 2",
