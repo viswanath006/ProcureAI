@@ -186,13 +186,39 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   <input
                     type="number"
                     required
-                    value={bidAmountInr}
-                    onChange={(e) => setBidAmountInr(Number(e.target.value))}
+                    min={1}
+                    value={bidAmountInr || ''}
+                    onChange={(e) => setBidAmountInr(e.target.value === '' ? 0 : Number(e.target.value))}
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-emerald-400 font-mono font-bold text-sm"
                   />
                   <span className="text-[10px] text-emerald-400 mt-1 block font-mono">
-                    ≈ ₹{(bidAmountInr / 10000000).toFixed(2)} Crore
+                    ≈ ₹{((bidAmountInr || 0) / 10000000).toFixed(2)} Crore
                   </span>
+                  {/* Quick Select Preset Buttons */}
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[10px] text-slate-400 font-mono">Quick Amounts:</span>
+                    {[
+                      { label: '₹40 Cr', value: 400000000 },
+                      { label: '₹42 Cr', value: 420000000 },
+                      { label: '₹45 Cr', value: 450000000 },
+                      { label: '₹48 Cr', value: 480000000 },
+                      { label: '₹50 Cr', value: 500000000 },
+                      { label: '₹55 Cr', value: 550000000 },
+                    ].map((preset) => (
+                      <button
+                        key={preset.value}
+                        type="button"
+                        onClick={() => setBidAmountInr(preset.value)}
+                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium transition-all cursor-pointer ${
+                          bidAmountInr === preset.value
+                            ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500 font-bold shadow-xs'
+                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
@@ -202,13 +228,38 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   <input
                     type="number"
                     required
-                    value={completionDays}
-                    onChange={(e) => setCompletionDays(Number(e.target.value))}
+                    min={1}
+                    value={completionDays || ''}
+                    onChange={(e) => setCompletionDays(e.target.value === '' ? 0 : Number(e.target.value))}
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 font-mono"
                   />
                   <span className="text-[10px] text-slate-400 mt-1 block font-mono">
-                    ≈ {(completionDays / 30).toFixed(1)} Months to Delivery
+                    ≈ {((completionDays || 0) / 30).toFixed(1)} Months to Delivery
                   </span>
+                  {/* Quick Schedule Presets */}
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[10px] text-slate-400 font-mono">Quick Schedule:</span>
+                    {[
+                      { label: '90d (3m)', value: 90 },
+                      { label: '120d (4m)', value: 120 },
+                      { label: '180d (6m)', value: 180 },
+                      { label: '240d (8m)', value: 240 },
+                      { label: '365d (1yr)', value: 365 },
+                    ].map((dPreset) => (
+                      <button
+                        key={dPreset.value}
+                        type="button"
+                        onClick={() => setCompletionDays(dPreset.value)}
+                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium transition-all cursor-pointer ${
+                          completionDays === dPreset.value
+                            ? 'bg-blue-500/30 text-blue-300 border border-blue-500 font-bold shadow-xs'
+                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
+                        }`}
+                      >
+                        {dPreset.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 

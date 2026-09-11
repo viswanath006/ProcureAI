@@ -1,0 +1,26 @@
+[
+  {
+    "id": "afe491d4-dab8-4dbb-959d-76fd4a485d45",
+    "tender_id": "00000000-0000-0000-0000-000000000100",
+    "tender_reference": "PROC-2026-EDU-SCH-01",
+    "tender_title": "Government School Infrastructure Project - Phase 2",
+    "company_id": "00000000-0000-0000-0000-000000000101",
+    "company_name": "Apex Infra Buildtech Ltd",
+    "created_by": "00000001-0000-0000-0000-000000000012",
+    "bid_reference": "BID-2026-PROC-2026-EDU-SCH-01-001",
+    "bid_amount_enc": "SEALED_v1:06a46f1c87f7631c1e851104:97478f8678545697bb0dc33e9e5699b3:830081f7620bb1a14738b07be256adfe0984055cd8d82474918add7da5f32626c2c2e0c6804b3d41908495e88817398d565eff6283d740e5d9264644392db0ef3ad11387acae70d01569ca4459a2403c460417173e31fa7b701b0c0a8a89517838702116f9cbfb16f28723c05254aee321360dfb0d45bcfd87f8e569278980ec09884144a79b04c5f91f4d5ce2e966436f495ec112a81e37dbc60c50db0190f60ce2154a09179b3ecc224beefbef540448361c97bed69b91d9e32afc735aa9d6399d545225471ec2595611f4cdecaeee7578c77a37229f235f37e99582aa7027d3c98b356c571ba7046ca4abbabdebd8873c266aaade979ba104edfbf15abbfdb8e3dfb438c2d5fb29243d21fdcb9ab351f227bbb57b5035c8580ba65635c8c69224cc086744292f51ddfcde37d641e7c6c87848137432d527bb02f58ecfec1ed2af2d0d789178bcf9ccd335a583b70a42",
+    "amount_inr": 420000000,
+    "amountPaisa": 42000000000,
+    "completion_days": 180,
+    "status": "SEALED",
+    "submitted_at": "2026-09-11T01:49:24.591Z",
+    "encryption_key_id": "KMS_DEV_AES256GCM_V1",
+    "is_locked": true,
+    "integrity_status": "MATCH",
+    "canonical_hash": "aa0922c6a73e0fb997a4e6c806ac682a7d6bff1b77984435e7ad11f0e50a37da",
+    "receipt_token": "REC-2026-AA0922C6A73E0FB9-C7998CD3",
+    "technical_proposal": "Tier-3 Compliant Cloud Infrastructure Architecture Specification v2.4",
+    "financial_proposal": "Itemized Commercial Schedule: Hardware, Licensing, 5-Year Comprehensive SLA",
+    "cover_letter": "We hereby submit our formal, sealed bid proposal adhering strictly to all tender guidelines."
+  }
+]
