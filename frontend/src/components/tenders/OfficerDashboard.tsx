@@ -72,7 +72,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 1: Active Tenders */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/Active Tenders.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/Active Tenders.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Active Tenders</span>
@@ -99,7 +99,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 2: Locked Bids */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/Locked Bids.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/Locked Bids.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Locked Bids</span>
@@ -127,7 +127,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 3: AI Reports */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/AI Reports.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/AI Reports.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">AI Reports</span>
@@ -159,7 +159,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 4: Risk Alerts */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/Risk Alerts.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/Risk Alerts.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Risk Alerts</span>
@@ -184,7 +184,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 5: Decisions Needed */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/Decisions Needed.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/Decisions Needed.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Decisions Needed</span>
@@ -211,7 +211,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 6: Audit History */}
         <div
           className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
-          style={{ backgroundImage: "url('/Audit History.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.65),rgba(255,255,255,0.65)), url('/Audit History.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="flex justify-between items-start">
             <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Audit History</span>
