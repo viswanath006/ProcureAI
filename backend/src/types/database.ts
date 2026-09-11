@@ -689,3 +689,49 @@ export interface BidEvaluationBundle {
   recommendation: AiRecommendation | null;
   risks: RiskAssessment[];
 }
+
+// ─── OSINT Enrichment Types ───────────────────────────────────────────────────
+
+export type OsintVerificationStatus = 'verified' | 'mismatch' | 'unavailable';
+
+export interface OsintDirector {
+  name: string;
+  din?: string | null;
+  designation?: string | null;
+  appointed_date?: string | null;
+}
+
+export interface OsintCompanyCache {
+  cin: string;
+  company_name: string;
+  company_status: string;
+  incorporation_date: string | null;
+  registered_address: string | null;
+  directors: OsintDirector[];
+  authorized_capital: number;
+  paid_up_capital: number;
+  raw_response: Record<string, unknown>;
+  fetched_at: Date | string;
+  expires_at: Date | string;
+  created_at?: Date | string;
+  updated_at?: Date | string;
+}
+
+export interface BidderOsintProfile {
+  id?: string;
+  bidder_id: string;
+  cin: string;
+  mca_status: string | null;
+  incorporation_date: string | null;
+  registered_address: string | null;
+  directors: OsintDirector[];
+  authorized_capital?: number;
+  last_verified_at: string;
+  verification_status: OsintVerificationStatus;
+  discrepancy_details?: Record<string, unknown>;
+  collusion_flags?: string[];
+  raw_payload?: Record<string, unknown>;
+  created_at?: string;
+  updated_at?: string;
+}
+

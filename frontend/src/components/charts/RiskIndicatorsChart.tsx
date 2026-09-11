@@ -15,7 +15,7 @@ interface RiskIndicatorsChartProps {
 export const RiskIndicatorsChart: React.FC<RiskIndicatorsChartProps> = ({
   items = [
     { bidder: 'Alpha Enterprise Solutions Ltd', priceDeviationPct: -8.0, anomalyScore: 0.12, riskTier: 'NORMAL' },
-    { bidder: 'Beta Cloudworks Pvt Ltd', priceDeviationPct: -42.0, anomalyScore: -0.22, riskTier: 'HIGH RISK', flagText: 'Abnormal low dumping bid (-42%)' },
+    { bidder: 'Beta Cloudworks Pvt Ltd', priceDeviationPct: -42.0, anomalyScore: -0.22, riskTier: 'HIGH RISK', flagText: 'Unusually low bid price (-42%)' },
     { bidder: 'Gamma National Technologies Corp', priceDeviationPct: -1.0, anomalyScore: 0.03, riskTier: 'LOW RISK', flagText: 'Unusual pricing pattern' },
   ],
 }) => {
@@ -40,10 +40,10 @@ export const RiskIndicatorsChart: React.FC<RiskIndicatorsChartProps> = ({
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           <h4 className="font-bold text-gray-900 uppercase tracking-wider text-xs">
-            Isolation Forest Anomaly & Risk Dispersion
+            Unusual Activity & Risk Alerts
           </h4>
         </div>
-        <span className="text-xs text-gray-400 font-medium">Unsupervised Outlier Ensemble</span>
+        <span className="text-xs text-gray-400 font-medium">Smart Risk Detection</span>
       </div>
 
       <div className="space-y-2.5">
@@ -59,10 +59,10 @@ export const RiskIndicatorsChart: React.FC<RiskIndicatorsChartProps> = ({
             <div className="space-y-1">
               <div className="font-bold text-gray-900 text-xs">{it.bidder}</div>
               <div className="text-xs text-gray-500">
-                Budget Deviation: <strong className={it.priceDeviationPct < -30 ? 'text-rose-600 font-semibold' : 'text-gray-700 font-medium'}>
+                Price vs Budget: <strong className={it.priceDeviationPct < -30 ? 'text-rose-600 font-semibold' : 'text-gray-700 font-medium'}>
                   {it.priceDeviationPct > 0 ? `+${it.priceDeviationPct}%` : `${it.priceDeviationPct}%`}
                 </strong>
-                {' · '}Anomaly Score: <strong className="text-gray-800 font-semibold text-xs">{it.anomalyScore.toFixed(2)}</strong>
+                {' · '}Risk Score: <strong className="text-gray-800 font-semibold text-xs">{it.anomalyScore.toFixed(2)}</strong>
               </div>
               {it.flagText && (
                 <div className="text-[11px] font-medium text-rose-600 flex items-center gap-1 mt-0.5">

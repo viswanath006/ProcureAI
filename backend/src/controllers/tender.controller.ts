@@ -31,46 +31,266 @@ export const DEFAULT_LOCAL_TENDERS = [
     id: '00000000-0000-0000-0000-000000000100',
     reference_number: 'PROC-2026-EDU-SCH-01',
     title: 'Government School Infrastructure Project - Phase 2',
-    description: 'Construction of 25 modern prefabricated rural schools with seismic design and smart classrooms.',
+    description: 'Construction of 25 modern prefabricated rural schools with seismic design, smart digital classrooms, solar energy, and rainwater harvesting.',
     category: 'infrastructure',
     department: 'Department of School Education & Literacy',
     estimated_budget_paisa: 10000000000,
     currency: 'INR',
-    submission_start_at: '2026-09-06T00:00:00.000Z',
-    submission_deadline_at: '2026-09-21T18:00:00.000Z',
-    status: 'OPEN',
+    submission_start_at: '2026-08-25T09:00:00.000Z',
+    submission_deadline_at: '2026-09-08T18:00:00.000Z',
+    status: 'RECOMMENDATION_READY',
     creator_name: 'Suresh Kumar (Director of Procurement)',
     creator_email: 'officer.suresh@finance.gov.in',
+    tags: ['Education', 'Prefab', 'Seismic', 'Smart Classroom'],
+    contact_email: 'procurement.edu@finance.gov.in',
+    contact_phone: '+91-11-2309-8801',
+    eligibility_requirements: [
+      {
+        id: 'req-1',
+        requirement_type: 'financial',
+        title: 'Minimum Annual Turnover',
+        description: 'Audited annual turnover of at least ₹25 Crore in the last 3 financial years.',
+        is_mandatory: true,
+        threshold_value: 250000000,
+        threshold_unit: 'INR',
+        verification_method: 'Audited P&L Balance Sheets',
+      },
+      {
+        id: 'req-2',
+        requirement_type: 'technical',
+        title: 'Prefabricated Institutional Construction Experience',
+        description: 'Completed at least 3 prefabricated institutional building projects with seismic zone IV compliance.',
+        is_mandatory: true,
+        threshold_value: 3,
+        threshold_unit: 'projects',
+        verification_method: 'Client Completion Certificates',
+      },
+      {
+        id: 'req-3',
+        requirement_type: 'legal',
+        title: 'Non-Debarment Statutory Affidavit',
+        description: 'Sworn affidavit confirming bidder is not debarred or blacklisted by any Central/State Government agency.',
+        is_mandatory: true,
+        verification_method: 'Notarized Stamp Paper Affidavit',
+      },
+    ],
+    evaluation_criteria: [
+      {
+        id: 'crit-1',
+        criterion_code: 'TECHNICAL',
+        criteria_type: 'technical',
+        name: 'Technical Architecture & Seismic Design',
+        description: 'Structural resilience, modular construction methodology, and safety engineering.',
+        weight: 40,
+        max_score: 100,
+        is_ai_scored: true,
+      },
+      {
+        id: 'crit-2',
+        criterion_code: 'PRICE',
+        criteria_type: 'financial',
+        name: 'Commercial Price Competitiveness (L1 relative)',
+        description: 'Evaluated bid price comparison against fair benchmark and bill of quantities.',
+        weight: 30,
+        max_score: 100,
+        is_ai_scored: true,
+      },
+      {
+        id: 'crit-3',
+        criterion_code: 'EXPERIENCE',
+        criteria_type: 'experience',
+        name: 'Track Record in Rural Infrastructure Deployments',
+        description: 'Demonstrated execution capability in remote locations with zero defect liability.',
+        weight: 20,
+        max_score: 100,
+        is_ai_scored: true,
+      },
+      {
+        id: 'crit-4',
+        criterion_code: 'DELIVERY',
+        criteria_type: 'delivery_timeline',
+        name: 'Timeline & Milestone SLA Commitments',
+        description: 'Commitment to 180-day handover with liquidated damages compliance.',
+        weight: 10,
+        max_score: 100,
+        is_ai_scored: true,
+      },
+    ],
+    required_documents: [
+      { name: 'Audited Financial Statements (Last 3 Years)', required: true },
+      { name: 'Seismic Structural Certification & Engineering Drawings', required: true },
+      { name: 'Client Completion Certificates for Prefab Projects', required: true },
+      { name: 'Non-Debarment Affidavit on ₹100 Stamp Paper', required: true },
+    ],
   },
   {
     id: '00000000-0000-0000-0000-000000000200',
     reference_number: 'PROC-2026-HLT-OXY-02',
     title: 'District Hospital Oxygen Generation Plant Setup',
-    description: 'Procurement and turnkey installation of 500 LPM PSA Medical Oxygen Generation Plants.',
+    description: 'Procurement, turnkey civil installation, medical pipeline integration, and 5-year comprehensive maintenance of 500 LPM PSA Medical Oxygen Generation Plants across 12 district hospitals.',
     category: 'healthcare',
     department: 'Ministry of Health & Family Welfare',
     estimated_budget_paisa: 4500000000,
     currency: 'INR',
     submission_start_at: '2026-08-15T00:00:00.000Z',
     submission_deadline_at: '2026-09-05T18:00:00.000Z',
-    status: 'CLOSED',
+    status: 'UNDER_EVALUATION',
     creator_name: 'Dr. Anita Desai (Medical Superintendent)',
     creator_email: 'officer.anita@health.gov.in',
+    tags: ['Healthcare', 'Oxygen Plant', 'Medical Gas', 'Hospital'],
+    contact_email: 'procurement.health@gov.in',
+    contact_phone: '+91-11-2306-1122',
+    eligibility_requirements: [
+      {
+        id: 'req-h1',
+        requirement_type: 'technical',
+        title: 'ISO 13485 Medical Device Certification',
+        description: 'Manufacturer must hold active ISO 13485 certification for medical oxygen equipment.',
+        is_mandatory: true,
+      },
+      {
+        id: 'req-h2',
+        requirement_type: 'financial',
+        title: 'Minimum Net Worth',
+        description: 'Positive net worth of at least ₹10 Crore in latest audited balance sheet.',
+        is_mandatory: true,
+        threshold_value: 100000000,
+        threshold_unit: 'INR',
+      },
+    ],
+    evaluation_criteria: [
+      { id: 'crit-h1', criterion_code: 'OXY_PURITY', criteria_type: 'technical', name: 'Oxygen Purity & Flow Rate SLA (93% ± 3%)', weight: 35, max_score: 100, is_ai_scored: true },
+      { id: 'crit-h2', criterion_code: 'PRICE', criteria_type: 'financial', name: 'Commercial Price & 5-Year Maintenance Cost', weight: 35, max_score: 100, is_ai_scored: true },
+      { id: 'crit-h3', criterion_code: 'WARRANTY', criteria_type: 'quality', name: 'Telemetry Monitoring & 24/7 Breakdown Response', weight: 20, max_score: 100, is_ai_scored: true },
+      { id: 'crit-h4', criterion_code: 'EXP', criteria_type: 'experience', name: 'Prior Government Hospital Installations', weight: 10, max_score: 100, is_ai_scored: true },
+    ],
+    required_documents: [
+      { name: 'ISO 13485 & CE/FDA Medical Certifications', required: true },
+      { name: 'OEM Authorization Letter', required: true },
+      { name: 'Annual Maintenance SLA Agreement Form', required: true },
+    ],
   },
   {
     id: '00000000-0000-0000-0000-000000000300',
     reference_number: 'PROC-2026-AGR-COLD-03',
     title: 'Solar Powered Agricultural Cold Storage Units',
-    description: 'Deployment of 100 decentralized off-grid solar cold storage units across rural mandis.',
+    description: 'Deployment of 100 decentralized off-grid solar-powered cold storage units (5 MT capacity) for perishable farmer produce at rural APMC mandis.',
     category: 'agriculture',
     department: 'Ministry of Agriculture & Farmers Welfare',
     estimated_budget_paisa: 3200000000,
     currency: 'INR',
-    submission_start_at: '2026-09-10T00:00:00.000Z',
+    submission_start_at: '2026-09-01T00:00:00.000Z',
     submission_deadline_at: '2026-10-15T18:00:00.000Z',
-    status: 'DRAFT',
+    status: 'OPEN',
     creator_name: 'Rajesh Verma (Joint Secretary)',
     creator_email: 'officer.rajesh@agri.gov.in',
+    tags: ['Agriculture', 'Solar', 'Cold Storage', 'Farmers'],
+    contact_email: 'coldchain.agri@gov.in',
+    contact_phone: '+91-11-2338-4455',
+    eligibility_requirements: [
+      { id: 'req-a1', requirement_type: 'technical', title: 'MNRE Certified Solar Inverter & Battery Bank', description: 'Components must be approved by Ministry of New and Renewable Energy testing labs.', is_mandatory: true },
+      { id: 'req-a2', requirement_type: 'capacity', title: 'Monthly Manufacturing Capacity', description: 'Production facility with certified capacity of ≥ 25 cold storage units/month.', is_mandatory: true, threshold_value: 25, threshold_unit: 'units/month' },
+    ],
+    evaluation_criteria: [
+      { id: 'crit-a1', criterion_code: 'SOLAR_EFF', criteria_type: 'technical', name: 'Solar Efficiency & Thermal Retention Hours', weight: 40, max_score: 100, is_ai_scored: true },
+      { id: 'crit-a2', criterion_code: 'PRICE', criteria_type: 'financial', name: 'Competitive Supply & Commissioning Price', weight: 35, max_score: 100, is_ai_scored: true },
+      { id: 'crit-a3', criterion_code: 'WARRANTY', criteria_type: 'quality', name: '3-Year On-Site Farmer Support & Remote IoT Monitoring', weight: 25, max_score: 100, is_ai_scored: true },
+    ],
+    required_documents: [
+      { name: 'MNRE Lab Test Reports', required: true },
+      { name: 'Factory Production Capacity Certificate', required: true },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000400',
+    reference_number: 'PROC-2026-IT-BHARAT-04',
+    title: 'Bharat National Optical Backbone & Rural Cloud Connectivity',
+    description: 'Turnkey optical fiber trenching, DWDM transmission equipment, and rural cloud access nodes to connect 2,500 Gram Panchayats with high-speed digital public infrastructure.',
+    category: 'information_technology',
+    department: 'Department of Telecommunications',
+    estimated_budget_paisa: 15000000000,
+    currency: 'INR',
+    submission_start_at: '2026-09-05T00:00:00.000Z',
+    submission_deadline_at: '2026-10-25T18:00:00.000Z',
+    status: 'OPEN',
+    creator_name: 'Priya Sundaram (Deputy Director General)',
+    creator_email: 'ddg.dot@nic.in',
+    tags: ['Telecom', 'Broadband', 'Optical Fiber', 'Digital India'],
+    contact_email: 'procure.telecom@nic.in',
+    contact_phone: '+91-11-2371-9988',
+    eligibility_requirements: [
+      { id: 'req-it1', requirement_type: 'technical', title: 'Tier-3 Data Center & Optical Fiber Laying Experience', description: 'Proven deployment of at least 1,500 km optical fiber backbone for telecom or defense.', is_mandatory: true, threshold_value: 1500, threshold_unit: 'km' },
+      { id: 'req-it2', requirement_type: 'financial', title: 'Annual Financial Turnover', description: 'Average annual turnover > ₹50 Crore across last 3 financial years.', is_mandatory: true, threshold_value: 500000000, threshold_unit: 'INR' },
+    ],
+    evaluation_criteria: [
+      { id: 'crit-it1', criterion_code: 'ARCH', criteria_type: 'technical', name: 'Network Resilience & Redundant Fiber Topology', weight: 40, max_score: 100, is_ai_scored: true },
+      { id: 'crit-it2', criterion_code: 'PRICE', criteria_type: 'financial', name: 'Commercial Price & 10-Year O&M Rate', weight: 30, max_score: 100, is_ai_scored: true },
+      { id: 'crit-it3', criterion_code: 'SLA', criteria_type: 'delivery_timeline', name: 'Committed Rollout Timeline & 99.9% Uptime SLA', weight: 30, max_score: 100, is_ai_scored: true },
+    ],
+    required_documents: [
+      { name: 'DoT Infrastructure Provider IP-1 License', required: true },
+      { name: 'ISO 27001 Information Security Certificate', required: true },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000500',
+    reference_number: 'PROC-2026-TRN-HWAY-05',
+    title: 'Smart Expressway Multi-Sensor Highway Traffic & EV Network',
+    description: 'Deployment of automated number plate recognition (ANPR) cameras, weigh-in-motion sensors, and multi-bay 180kW DC EV fast chargers along 350 km of National Highway 44.',
+    category: 'transport',
+    department: 'Ministry of Road Transport & Highways',
+    estimated_budget_paisa: 8500000000,
+    currency: 'INR',
+    submission_start_at: '2026-09-08T00:00:00.000Z',
+    submission_deadline_at: '2026-10-30T18:00:00.000Z',
+    status: 'OPEN',
+    creator_name: 'Sunil Mehrotra (Chief Engineer, NHAI)',
+    creator_email: 'ce.nhai@morth.nic.in',
+    tags: ['Highways', 'Smart Transport', 'EV Charging', 'NHAI'],
+    contact_email: 'tenders.nhai@nic.in',
+    contact_phone: '+91-11-2507-4100',
+    eligibility_requirements: [
+      { id: 'req-tr1', requirement_type: 'technical', title: 'Prior Intelligent Transport Systems (ITS) Deployment', description: 'Successful execution of at least 2 highway tolling/ITS automation projects.', is_mandatory: true },
+    ],
+    evaluation_criteria: [
+      { id: 'crit-tr1', criterion_code: 'TECH', criteria_type: 'technical', name: 'Sensor Accuracy & AI ANPR Recognition Accuracy (>99%)', weight: 45, max_score: 100, is_ai_scored: true },
+      { id: 'crit-tr2', criterion_code: 'PRICE', criteria_type: 'financial', name: 'Turnkey Supply & Installation Price', weight: 35, max_score: 100, is_ai_scored: true },
+      { id: 'crit-tr3', criterion_code: 'TIME', criteria_type: 'delivery_timeline', name: 'Execution Schedule & Traffic Non-Disruption Guarantee', weight: 20, max_score: 100, is_ai_scored: true },
+    ],
+    required_documents: [
+      { name: 'OEM Authorization for ANPR Cameras & High-Power DC Chargers', required: true },
+      { name: 'ISO 9001 Quality Management Certificate', required: true },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000600',
+    reference_number: 'PROC-2026-ENG-SOLAR-06',
+    title: 'Smart Solar Streetlight Installation & Grid Integration',
+    description: 'Supply, smart IoT telemetry integration, and 7-year performance warranty for 50,000 solar LED streetlights across semi-urban municipal wards.',
+    category: 'energy',
+    department: 'Ministry of New & Renewable Energy',
+    estimated_budget_paisa: 4200000000,
+    currency: 'INR',
+    submission_start_at: '2026-09-12T00:00:00.000Z',
+    submission_deadline_at: '2026-11-15T18:00:00.000Z',
+    status: 'DRAFT',
+    creator_name: 'Vikram Joshi (Director, Solar Municipal)',
+    creator_email: 'dir.solar@mnre.gov.in',
+    tags: ['Solar', 'LED Lighting', 'Energy', 'Municipal'],
+    contact_email: 'solar.procure@mnre.gov.in',
+    contact_phone: '+91-11-2436-0707',
+    eligibility_requirements: [
+      { id: 'req-e1', requirement_type: 'technical', title: 'BIS Certified LED Luminaires & PV Modules', description: 'Valid Bureau of Indian Standards (BIS) test certificates for all components.', is_mandatory: true },
+    ],
+    evaluation_criteria: [
+      { id: 'crit-e1', criterion_code: 'LUMEN_EFF', criteria_type: 'technical', name: 'Luminous Efficacy (>160 lm/W) & Smart Dimming Telemetry', weight: 40, max_score: 100, is_ai_scored: true },
+      { id: 'crit-e2', criterion_code: 'PRICE', criteria_type: 'financial', name: 'Commercial Bid Price & 7-Year Replacement Guarantee', weight: 40, max_score: 100, is_ai_scored: true },
+      { id: 'crit-e3', criterion_code: 'EXP', criteria_type: 'experience', name: 'Prior Municipal LED Lighting Deployments', weight: 20, max_score: 100, is_ai_scored: true },
+    ],
+    required_documents: [
+      { name: 'BIS Registration Certificates', required: true },
+      { name: 'NABL Accredited Luminaire Photometric Test Report', required: true },
+    ],
   },
 ];
 
@@ -95,18 +315,27 @@ export function loadLocalTenders(): any[] {
 
 export function getLocalTender(id: string): any {
   const list = loadLocalTenders();
-  const found = list.find((t: any) => t.id === id || t.reference_number === id);
+  const found = list.find(
+    (t: any) =>
+      t.id === id ||
+      t.reference_number === id ||
+      String(t.id).toLowerCase() === String(id).toLowerCase() ||
+      String(t.reference_number).toLowerCase() === String(id).toLowerCase()
+  );
   if (found) return found;
-  const def = { ...DEFAULT_LOCAL_TENDERS[0], id };
-  list.push(def);
-  saveLocalTender(def);
-  return def;
+  return null;
 }
 
 export function saveLocalTender(tender: any): void {
   ensureDataDir();
   const list = loadLocalTenders();
-  const idx = list.findIndex((t: any) => t.id === tender.id || t.reference_number === tender.reference_number);
+  const idx = list.findIndex(
+    (t: any) =>
+      t.id === tender.id ||
+      t.reference_number === tender.reference_number ||
+      (t.id && tender.id && String(t.id).toLowerCase() === String(tender.id).toLowerCase()) ||
+      (t.reference_number && tender.reference_number && String(t.reference_number).toLowerCase() === String(tender.reference_number).toLowerCase())
+  );
   if (idx >= 0) {
     list[idx] = { ...list[idx], ...tender };
   } else {
@@ -151,63 +380,47 @@ export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
 // ─── Schemas ─────────────────────────────────────────────────────────────────
 
 const eligibilityRequirementSchema = z.object({
-  requirement_type: z.enum(['financial', 'technical', 'legal', 'capacity']),
-  title: z.string().min(3),
-  description: z.string().min(5),
+  id: z.string().optional(),
+  requirement_type: z.string().default('technical'),
+  title: z.string().min(1, 'Requirement title is required'),
+  description: z.string().default(''),
   is_mandatory: z.boolean().default(true),
-  threshold_value: z.number().optional(),
-  threshold_unit: z.string().optional(),
-  verification_method: z.string().optional(),
+  threshold_value: z.union([z.number(), z.string()]).optional().nullable(),
+  threshold_unit: z.string().optional().nullable(),
+  verification_method: z.string().optional().nullable(),
 });
 
 const evaluationCriteriaSchema = z.object({
-  criteria_type: z.enum([
-    'technical',
-    'financial',
-    'experience',
-    'delivery_timeline',
-    'quality',
-    'social_impact',
-    'environmental',
-  ]),
-  name: z.string().min(3),
-  description: z.string().optional(),
-  weight: z.number().min(1).max(100),
+  id: z.string().optional(),
+  criterion_code: z.string().optional(),
+  criteria_type: z.string().default('technical'),
+  name: z.string().min(1, 'Criteria name is required'),
+  description: z.string().optional().nullable(),
+  weight: z.number().min(0).max(100),
   max_score: z.number().positive().default(100),
-  scoring_rubric: z.record(z.string(), z.string()).optional(),
+  scoring_rubric: z.record(z.string(), z.string()).optional().nullable(),
   is_ai_scored: z.boolean().default(true),
 });
 
 const requiredDocumentSchema = z.object({
-  name: z.string().min(2),
-  description: z.string().optional(),
+  name: z.string().min(1),
+  description: z.string().optional().nullable(),
   required: z.boolean().default(true),
 });
 
 const createTenderSchema = z.object({
   reference_number: z.string().optional(),
-  title: z.string().min(5, 'Title must be at least 5 characters'),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
-  category: z.enum([
-    'infrastructure',
-    'information_technology',
-    'healthcare',
-    'education',
-    'defense',
-    'agriculture',
-    'energy',
-    'transport',
-    'environment',
-    'other',
-  ]),
+  title: z.string().min(3, 'Title must be at least 3 characters'),
+  description: z.string().min(5, 'Description must be at least 5 characters'),
+  category: z.string().default('infrastructure'),
   department: z.string().min(2, 'Department is required'),
-  estimated_project_value: z.number().positive('Project value must be positive').optional(),
+  estimated_project_value: z.union([z.number(), z.string()]).optional().nullable(),
   currency: z.string().default('INR'),
-  opening_date: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}/)),
-  closing_date: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}/)),
-  status: z.enum(['DRAFT', 'PUBLISHED']).default('DRAFT'),
-  contact_email: z.string().email().optional(),
-  contact_phone: z.string().optional(),
+  opening_date: z.string().optional().nullable(),
+  closing_date: z.string().optional().nullable(),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'OPEN']).default('DRAFT'),
+  contact_email: z.string().email().optional().nullable(),
+  contact_phone: z.string().optional().nullable(),
   tags: z.array(z.string()).default([]),
   eligibility_requirements: z.array(eligibilityRequirementSchema).default([]),
   evaluation_criteria: z.array(evaluationCriteriaSchema).default([]),
@@ -217,15 +430,61 @@ const createTenderSchema = z.object({
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function normalizeStatus(st: string): string {
-  return st.toUpperCase();
+  return (st || '').toUpperCase();
 }
 
-function calculatePaisa(inrValue?: number): bigint | null {
+function calculatePaisa(inrValue?: number | string | null): bigint | null {
   if (!inrValue) return null;
-  return BigInt(Math.round(inrValue * 100));
+  const num = typeof inrValue === 'string' ? parseFloat(inrValue) : inrValue;
+  if (isNaN(num) || num <= 0) return null;
+  return BigInt(Math.round(num * 100));
 }
 
 // ─── Controllers ─────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/v1/tenders
+ * List tenders filtered by user role and status.
+ */
+export async function listTenders(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const user = req.user!;
+    let tenders: any[] = [];
+
+    try {
+      if (['GOVT_OFFICER', 'ADMIN', 'AUDITOR'].includes(user.roleCode)) {
+        tenders = await queryRows(
+          `SELECT id, reference_number, title, category, department,
+                  estimated_budget_paisa, currency, submission_start_at, submission_deadline_at,
+                  status, created_at, description
+           FROM tenders
+           ORDER BY created_at DESC`
+        );
+      } else {
+        tenders = await queryRows(
+          `SELECT id, reference_number, title, category, department,
+                  estimated_budget_paisa, currency, submission_start_at, submission_deadline_at,
+                  status, created_at, description
+           FROM tenders
+           WHERE UPPER(status::text) IN ('PUBLISHED', 'OPEN', 'CLARIFICATION', 'CLOSED', 'UNDER_EVALUATION', 'RECOMMENDATION_READY', 'DECISION_MADE', 'COMPLETED', 'AWARDED')
+           ORDER BY submission_deadline_at ASC`
+        );
+      }
+    } catch {
+      // Local persistent store fallback
+      const allLocal = loadLocalTenders();
+      if (['GOVT_OFFICER', 'ADMIN', 'AUDITOR'].includes(user.roleCode)) {
+        tenders = allLocal;
+      } else {
+        tenders = allLocal.filter((t: any) => normalizeStatus(t.status) !== 'DRAFT');
+      }
+    }
+
+    res.json({ success: true, data: { tenders } });
+  } catch (error) {
+    next(error);
+  }
+}
 
 /**
  * POST /api/v1/tenders
@@ -236,8 +495,10 @@ export async function createTender(req: Request, res: Response, next: NextFuncti
     const validated = createTenderSchema.parse(req.body);
     const user = req.user!;
 
-    const openingDate = new Date(validated.opening_date);
-    const closingDate = new Date(validated.closing_date);
+    const openingDate = validated.opening_date ? new Date(validated.opening_date) : new Date();
+    const closingDate = validated.closing_date
+      ? new Date(validated.closing_date)
+      : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
     if (closingDate <= openingDate) {
       throw new ValidationError('Closing date must be after opening date', 'INVALID_DATES');
@@ -364,6 +625,10 @@ export async function createTender(req: Request, res: Response, next: NextFuncti
       });
     } catch {
       // Database offline fallback
+      const estVal = validated.estimated_project_value
+        ? (typeof validated.estimated_project_value === 'string' ? parseFloat(validated.estimated_project_value) : validated.estimated_project_value)
+        : null;
+
       result = {
         id: crypto.randomUUID(),
         reference_number: refNum,
@@ -371,14 +636,20 @@ export async function createTender(req: Request, res: Response, next: NextFuncti
         description: validated.description,
         category: validated.category,
         department: validated.department,
-        estimated_budget_paisa: budgetPaisa ? Number(budgetPaisa) : 10000000000,
-        currency: validated.currency,
+        estimated_budget_paisa: budgetPaisa ? Number(budgetPaisa) : (estVal ? Math.round(estVal * 100) : 10000000000),
+        currency: validated.currency || 'INR',
         submission_start_at: openingDate.toISOString(),
         submission_deadline_at: closingDate.toISOString(),
         status: initialStatus,
         created_at: new Date().toISOString(),
-        creator_name: user.email,
+        creator_name: (user as any)?.fullName || user.email,
         creator_email: user.email,
+        tags: validated.tags || [],
+        contact_email: validated.contact_email || user.email,
+        contact_phone: validated.contact_phone || null,
+        eligibility_requirements: validated.eligibility_requirements || [],
+        evaluation_criteria: validated.evaluation_criteria || [],
+        required_documents: validated.required_documents || [],
       };
       saveLocalTender(result);
     }
@@ -768,34 +1039,76 @@ export async function getTenderDetails(req: Request, res: Response, next: NextFu
     }
 
     if (!tender) {
-      const local = getLocalTender(String(id));
+      let local = getLocalTender(String(id));
+      if (!local) {
+        const all = loadLocalTenders();
+        local = all.find(
+          (t) =>
+            t.id === id ||
+            t.reference_number === id ||
+            String(t.id).toLowerCase() === String(id).toLowerCase() ||
+            String(t.reference_number).toLowerCase() === String(id).toLowerCase()
+        );
+      }
+
+      if (!local) {
+        throw new NotFoundError(`Tender '${id}' not found`, 'TENDER_NOT_FOUND');
+      }
+
       tender = {
-        id: local.id || id || '00000000-0000-0000-0000-000000000100',
-        reference_number: local.reference_number || 'PROC-2026-EDU-SCH-01',
-        title: local.title || 'Government School Infrastructure Project - Phase 2',
-        description: local.description || 'Construction of 25 modern prefabricated rural schools with seismic design and smart classrooms.',
+        id: local.id || id,
+        reference_number: local.reference_number || 'TENDER-UNKNOWN',
+        title: local.title || 'Untitled Tender',
+        description: local.description || '',
         category: local.category || 'infrastructure',
-        department: local.department || 'Department of School Education & Literacy',
+        department: local.department || 'Government Department',
         estimated_budget_paisa: local.estimated_budget_paisa || 10000000000,
-        submission_start_at: local.submission_start_at || new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        submission_deadline_at: local.submission_deadline_at || new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+        currency: local.currency || 'INR',
+        submission_start_at: local.submission_start_at || new Date().toISOString(),
+        submission_deadline_at: local.submission_deadline_at || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         status: local.status || 'OPEN',
-        creator_name: local.creator_name || 'Suresh Kumar (Director of Procurement)',
-        creator_email: local.creator_email || 'officer.suresh@finance.gov.in',
+        creator_name: local.creator_name || 'Procurement Officer',
+        creator_email: local.creator_email || user.email,
+        tags: local.tags || [],
+        contact_email: local.contact_email || user.email,
+        contact_phone: local.contact_phone || null,
+        required_documents: local.required_documents || [],
       };
-      requirements = [
-        { id: 'req-1', requirement_type: 'financial_turnover', title: 'Minimum Annual Turnover', threshold_value: '200000000', threshold_unit: 'INR', is_mandatory: true },
-        { id: 'req-2', requirement_type: 'past_experience', title: 'Prior School/Prefab Projects', threshold_value: '3', threshold_unit: 'projects', is_mandatory: true },
-        { id: 'req-3', requirement_type: 'technical_certification', title: 'Seismic Structural Certification', is_mandatory: true },
-      ];
-      criteria = [
-        { id: 'crit-1', criterion_code: 'PRICE', name: 'Commercial Price (L1 relative)', weight: 40 },
-        { id: 'crit-2', criterion_code: 'TECHNICAL', name: 'Technical Capability & Equipment', weight: 20 },
-        { id: 'crit-3', criterion_code: 'EXPERIENCE', name: 'Demonstrated School Infrastructure Experience', weight: 15 },
-        { id: 'crit-4', criterion_code: 'FINANCIAL', name: 'Financial Liquidity & Working Capital', weight: 10 },
-        { id: 'crit-5', criterion_code: 'PERFORMANCE', name: 'Past Track Record & Zero Delay Rating', weight: 10 },
-        { id: 'crit-6', criterion_code: 'RISK', name: 'Risk & Anomaly Penalty Deduction', weight: 5 },
-      ];
+
+      requirements = (local.eligibility_requirements && Array.isArray(local.eligibility_requirements) && local.eligibility_requirements.length > 0)
+        ? local.eligibility_requirements.map((r: any, idx: number) => ({
+            id: r.id || `req-${idx + 1}`,
+            requirement_type: r.requirement_type || 'technical',
+            title: r.title,
+            description: r.description || '',
+            is_mandatory: r.is_mandatory ?? true,
+            threshold_value: r.threshold_value,
+            threshold_unit: r.threshold_unit,
+            verification_method: r.verification_method,
+          }))
+        : [
+            { id: 'req-1', requirement_type: 'financial_turnover', title: 'Minimum Annual Turnover', threshold_value: '200000000', threshold_unit: 'INR', is_mandatory: true },
+            { id: 'req-2', requirement_type: 'past_experience', title: 'Prior Infrastructure Projects', threshold_value: '3', threshold_unit: 'projects', is_mandatory: true },
+            { id: 'req-3', requirement_type: 'technical_certification', title: 'Technical Capability & Quality Certification', is_mandatory: true },
+          ];
+
+      criteria = (local.evaluation_criteria && Array.isArray(local.evaluation_criteria) && local.evaluation_criteria.length > 0)
+        ? local.evaluation_criteria.map((c: any, idx: number) => ({
+            id: c.id || `crit-${idx + 1}`,
+            criterion_code: c.criterion_code || c.criteria_type?.toUpperCase() || `CRIT-${idx + 1}`,
+            name: c.name,
+            description: c.description || '',
+            weight: Number(c.weight) || 0,
+            max_score: Number(c.max_score) || 100,
+          }))
+        : [
+            { id: 'crit-1', criterion_code: 'PRICE', name: 'Commercial Price (L1 relative)', weight: 40 },
+            { id: 'crit-2', criterion_code: 'TECHNICAL', name: 'Technical Capability & Equipment', weight: 20 },
+            { id: 'crit-3', criterion_code: 'EXPERIENCE', name: 'Demonstrated Infrastructure Experience', weight: 15 },
+            { id: 'crit-4', criterion_code: 'FINANCIAL', name: 'Financial Liquidity & Working Capital', weight: 10 },
+            { id: 'crit-5', criterion_code: 'PERFORMANCE', name: 'Past Track Record & Zero Delay Rating', weight: 10 },
+            { id: 'crit-6', criterion_code: 'RISK', name: 'Risk & Anomaly Penalty Deduction', weight: 5 },
+          ];
 
       const localBids = loadLocalBids().filter((b) => b.tender_id === tender.id || b.tender_reference === tender.reference_number);
       bidsCount = Math.max(3, localBids.length);

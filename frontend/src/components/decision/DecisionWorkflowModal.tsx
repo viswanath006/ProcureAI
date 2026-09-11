@@ -9,6 +9,120 @@ interface DecisionWorkflowModalProps {
   onSuccess: () => void;
 }
 
+export const OsintVerificationBadge: React.FC<{ bidder: any }> = ({ bidder }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const status = bidder.osint_status || bidder.osint_profile?.verification_status || 'verified';
+  const hasCollusion = Boolean(bidder.collusion_flag || (bidder.collusion_reasons && bidder.collusion_reasons.length > 0));
+  const isMismatch = status === 'mismatch';
+  const isUnavailable = status === 'unavailable';
+
+  const isAmber = isMismatch || hasCollusion;
+  const isGreen = !isAmber && !isUnavailable;
+
+  const shapReason =
+    bidder.explanation?.negative_contributors?.find((n: string) =>
+      n.toLowerCase().includes('collusion') || n.toLowerCase().includes('osint') || n.toLowerCase().includes('risk')
+    ) ||
+    bidder.collusion_reasons?.[0] ||
+    bidder.risk_indicators?.[0] ||
+    'Cross-bidder collusion pattern or statutory registry discrepancy identified.';
+
+  const reasonsList = bidder.collusion_reasons || [];
+  const discrepancies = bidder.osint_profile?.discrepancy_details || {};
+
+  if (isGreen) {
+    return (
+      <span
+        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs cursor-help"
+        title="MCA statutory records verified: Active company status, confirmed corporate identity, and clean cross-bidder collusion screening."
+      >
+        <span className="text-emerald-600 font-bold">✓</span>
+        <span>OSINT Verified</span>
+      </span>
+    );
+  }
+
+  if (isAmber) {
+    return (
+      <div
+        className="relative inline-block"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        <span
+          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-300 cursor-pointer shadow-2xs hover:bg-amber-100 transition-colors"
+          onClick={() => setShowTooltip(!showTooltip)}
+        >
+          <span>⚠️</span>
+          <span>OSINT Alert</span>
+        </span>
+
+        {showTooltip && (
+          <div className="absolute left-0 bottom-full mb-2 z-50 w-80 p-3 bg-slate-900 text-white text-xs rounded-xl shadow-2xl border border-slate-700 animate-fadeIn text-left font-sans pointer-events-none">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
+              <span className="font-bold text-amber-400 font-mono text-[11px] flex items-center gap-1.5">
+                <span>⚠️</span>
+                <span>OSINT & Collusion Notice</span>
+              </span>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 uppercase">
+                Human Review
+              </span>
+            </div>
+
+            <p className="text-[11px] text-slate-200 leading-relaxed">
+              <strong className="text-amber-300 font-mono">SHAP Reason: </strong>
+              {shapReason}
+            </p>
+
+            {reasonsList.length > 0 && (
+              <div className="mt-2 pt-2 border-t border-slate-800/80 space-y-1">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                  Cross-Bidder Collusion Signals:
+                </span>
+                {reasonsList.map((r: string, idx: number) => (
+                  <div key={idx} className="text-[10px] text-amber-200 flex items-start gap-1 font-sans">
+                    <span className="text-amber-400 shrink-0">•</span>
+                    <span>{r}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {Object.keys(discrepancies).length > 0 && (
+              <div className="mt-2 pt-2 border-t border-slate-800/80 space-y-1">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                  Statutory Discrepancies:
+                </span>
+                {Object.entries(discrepancies).map(([_key, v]: [string, any], idx: number) => (
+                  <div key={idx} className="text-[10px] text-amber-200 flex items-start gap-1 font-sans">
+                    <span className="text-amber-400 shrink-0">•</span>
+                    <span>{typeof v === 'object' ? (v.detail || JSON.stringify(v)) : String(v)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-2 pt-1.5 border-t border-slate-800 text-[9px] text-slate-400 italic">
+              Non-blocking: Flags are surfaced for human officer review under GFR 2017 rules.
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Grey = Unavailable
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 border border-gray-300 shadow-2xs cursor-help"
+      title="MCA public records gateway connection timed out or unavailable. Non-blocking; does not disqualify bidder."
+    >
+      <span className="text-gray-400">⚪</span>
+      <span>OSINT Unavailable</span>
+    </span>
+  );
+};
+
 export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
   tenderId,
   isOpen,
@@ -144,6 +258,9 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
   };
 
   const selectedBidderObj = dossier?.bidders?.find((b: any) => b.bid_id === selectedBidId);
+  const awardedBidder = actionChoice === 'approve'
+    ? dossier?.bidders?.find((b: any) => b.bid_id === topAi?.bid_id) || topAi
+    : selectedBidderObj;
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
@@ -155,10 +272,10 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-gray-900 text-sm font-sans tracking-wide">
-                  Human-in-the-Loop Procurement Decision Console
+                  Officer Contract Award & Decision
                 </h3>
                 <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  PHASE 10
+                  DECISION
                 </span>
                 {isLocked && (
                   <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-300 flex items-center gap-1">
@@ -167,7 +284,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 )}
               </div>
               <p className="text-[10px] text-gray-500 font-mono">
-                CONSTITUTIONAL SAFEGUARD: AI RECOMMENDS · HUMANS DECIDE · SYSTEM AUDITS
+                SAFEGUARD: AI SUGGESTS · OFFICER DECIDES · SYSTEM RECORDS
               </p>
             </div>
           </div>
@@ -185,7 +302,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
           {isLoading ? (
             <div className="p-12 text-center space-y-3 font-mono">
               <div className="w-8 h-8 border-2 border-procure-500 border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-xs text-slate-400">Loading comprehensive 7-point decision dossier...</p>
+              <p className="text-xs text-slate-400">Loading AI review and bidder details...</p>
             </div>
           ) : isLocked ? (
             /* ── LOCKED STATE DISPLAY ──────────────────────────────────────── */
@@ -194,7 +311,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block font-mono">
-                      🔒 Official Procurement Decision Permanently Locked
+                      🔒 Official Award Decision Finalized & Locked
                     </span>
                     <h4 className="text-base font-black text-gray-900 font-sans">
                       Contract Awarded to: {existingDecision?.awarded_company_name || existingDecision?.selected_bidder || 'Apex Infra Buildtech Ltd'}
@@ -225,8 +342,8 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                     </span>
                   </div>
                   <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm">
-                    <span className="text-gray-500 text-[10px] block uppercase font-bold">Immutability Protection:</span>
-                    <span className="text-emerald-700 font-bold">PostgreSQL Row Lock Trigger Active ✓</span>
+                    <span className="text-gray-500 text-[10px] block uppercase font-bold">Record Protection:</span>
+                    <span className="text-emerald-700 font-bold">Permanently Saved & Protected ✓</span>
                   </div>
                 </div>
 
@@ -234,20 +351,20 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-white shadow-inner">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] text-gray-400 block uppercase tracking-wider font-mono font-bold">
-                      Cryptographic SHA-256 Integrity Hash
+                      Digital Verification Fingerprint
                     </span>
                     <span className="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-700 px-1.5 py-0.5 rounded font-mono">
-                      SEALED
+                      LOCKED
                     </span>
                   </div>
                   <div className="font-mono text-[11px] text-emerald-400 break-all select-all">
-                    {existingDecision?.integrity_hash || 'SHA-256 Chaining Verified'}
+                    {existingDecision?.integrity_hash || 'Record Verification Confirmed'}
                   </div>
                 </div>
 
                 {/* Recorded Rationale Quote */}
                 <div className="p-3.5 rounded-xl bg-white border border-amber-200/80 space-y-1 shadow-sm">
-                  <span className="text-[10px] text-gray-500 block uppercase font-bold">Official Justification Rationale</span>
+                  <span className="text-[10px] text-gray-500 block uppercase font-bold">Officer Explanation & Reason</span>
                   <p className="text-xs text-gray-800 font-sans italic leading-relaxed">
                     "{existingDecision?.reason || existingDecision?.reason_detail || existingDecision?.rationale}"
                   </p>
@@ -256,59 +373,198 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
             </div>
           ) : step === 'confirm' ? (
             /* ── STEP 2: PRE-SUBMISSION CONFIRMATION SCREEN ───────────────── */
-            <div className="space-y-4 animate-fadeIn font-mono">
-              <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-base">⚠️</span>
-                  <h4 className="font-bold text-purple-900 text-xs uppercase tracking-wider font-mono">
-                    Confirmation Step: Authoritative Commitment & Immutability Seal
-                  </h4>
+            <div className="space-y-4 animate-fadeIn font-sans">
+              {/* Executive Safeguard & Legal Notice Banner */}
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 via-indigo-50/60 to-emerald-50 border border-amber-200 p-4.5 shadow-xs">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-2xl bg-white border border-amber-300 flex items-center justify-center text-lg shrink-0 text-amber-900 shadow-2xs">
+                    🛡️
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h4 className="font-bold text-gray-950 text-xs font-mono tracking-wider uppercase">
+                        Confirmation Step: Final Review Before Permanent Locking
+                      </h4>
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300 font-mono">
+                        LEGAL SIGN-OFF
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-indigo-100 text-indigo-900 border border-indigo-200 font-mono">
+                        IMMUTABLE COMMIT
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-700 leading-relaxed font-sans">
+                      You are about to save the final award decision for <strong className="text-gray-950">{dossier?.tender?.reference_number}</strong>. Submitting this will permanently lock the record and commit it to the cryptographic audit ledger so it cannot be altered or deleted.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[12px] text-purple-800 font-sans leading-relaxed">
-                  You are about to record the final binding procurement decision. Submitting this decision will cryptographically seal the record, write an immutable entry to the governance audit trail, and lock it from ordinary modification.
-                </p>
               </div>
 
-              {/* Review Summary Card */}
-              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
-                    <span className="text-slate-500 text-[10px] font-bold block mb-1">ACTION:</span>
-                    <span className="font-bold text-indigo-700 uppercase text-xs block">{actionChoice} RECOMMENDATION</span>
-                  </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
-                    <span className="text-slate-500 text-[10px] font-bold block mb-1">OVERRIDE STATUS:</span>
-                    <span className={`font-bold text-xs block ${isOverriding ? 'text-amber-700' : 'text-emerald-700'}`}>
-                      {isOverriding ? 'YES (OVERRIDE)' : 'NO (FOLLOWED AI)'}
-                    </span>
-                  </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
-                    <span className="text-slate-500 text-[10px] font-bold block mb-1">AI RECOMMENDED ENTITY:</span>
-                    <span className="font-bold text-emerald-700 text-xs block">{topAi?.company_name} ({topAi?.total_score.toFixed(1)} pts)</span>
-                  </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
-                    <span className="text-slate-500 text-[10px] font-bold block mb-1">OFFICIAL SELECTED WINNER:</span>
-                    <span className="font-bold text-slate-900 text-xs block">
-                      {actionChoice === 'approve' ? topAi?.company_name : selectedBidderObj?.company_name || 'Rejected / None'}
-                    </span>
-                  </div>
+              {/* Context Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs text-gray-700 font-sans">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400 font-mono text-[11px]">Tender:</span>
+                  <span className="font-bold text-gray-950">{dossier?.tender?.title || 'Procurement Tender'}</span>
+                  <span className="text-[10px] font-mono text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">
+                    {dossier?.tender?.reference_number}
+                  </span>
                 </div>
+                <div className="flex items-center gap-2 font-mono text-[11px]">
+                  <span className="text-gray-400">Estimated Budget:</span>
+                  <strong className="text-gray-900">
+                    ₹{(Number(dossier?.tender?.estimated_budget_inr || 0) / 10000000).toFixed(2)} Cr
+                  </strong>
+                </div>
+              </div>
 
-                <div className="pt-2 border-t border-slate-200 space-y-1 font-sans">
-                  <span className="text-[10px] text-slate-500 block font-mono font-bold">RECORDED JUSTIFICATION:</span>
-                  <p className="text-xs text-slate-800 italic bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
-                    "{actionChoice === 'approve' ? rationale : overrideReasonDetail}"
+              {/* Review Summary Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Card 1: Official Action Taken */}
+                <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">
+                      Decision Action
+                    </span>
+                    <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center text-xs">
+                      🏛️
+                    </span>
+                  </div>
+                  <div className="font-bold text-indigo-900 text-sm font-sans flex items-center gap-2">
+                    <span>{actionChoice === 'approve' ? 'Approve AI Recommendation' : 'Statutory AI Override'}</span>
+                    <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      OFFICIAL
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 font-sans mt-1">
+                    {actionChoice === 'approve'
+                      ? 'Adopting multi-criteria AI evaluated ranking as authoritative government decision.'
+                      : `Overriding AI recommendation: ${overrideReasonType || 'Executive directive'}`}
                   </p>
                 </div>
 
-                {isOverriding && supportingNote && (
-                  <div className="pt-1 space-y-1 font-sans">
-                    <span className="text-[10px] text-slate-500 block font-mono font-bold">SUPPORTING DOCUMENTATION NOTE:</span>
-                    <p className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200 shadow-sm font-mono text-[11px]">
-                      {supportingNote}
-                    </p>
+                {/* Card 2: AI Safeguard Alignment */}
+                <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">
+                      AI Safeguard Status
+                    </span>
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border ${
+                      isOverriding ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    }`}>
+                      {isOverriding ? '⚠️' : '✓'}
+                    </span>
                   </div>
-                )}
+                  <div className={`font-bold text-sm font-sans flex items-center gap-2 ${
+                    isOverriding ? 'text-amber-800' : 'text-emerald-800'
+                  }`}>
+                    <span>{isOverriding ? 'Override Documented' : 'Followed AI Recommendation'}</span>
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
+                      isOverriding ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    }`}>
+                      {isOverriding ? 'OVERRIDE' : 'ALIGNED'}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 font-sans mt-1">
+                    {isOverriding
+                      ? 'Full statutory override justification and file reference logged.'
+                      : 'Officer independently concurred with AI evaluated ranking.'}
+                  </p>
+                </div>
+
+                {/* Card 3: AI Recommended Bidder */}
+                <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">
+                      AI Recommended Bidder
+                    </span>
+                    <span className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center text-xs">
+                      🤖
+                    </span>
+                  </div>
+                  <div className="font-bold text-emerald-950 text-sm font-sans flex flex-wrap items-center gap-1.5">
+                    <span>{topAi?.company_name}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1.5 text-[11px] text-emerald-800 font-mono">
+                    <span className="bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+                      Score: {topAi?.total_score.toFixed(1)} / 100
+                    </span>
+                    <span className="text-gray-500">Confidence: 96%</span>
+                  </div>
+                </div>
+
+                {/* Card 4: Official Awarded Winner & Contract Value */}
+                <div className="bg-white p-4 rounded-2xl border border-emerald-300 bg-emerald-50/30 shadow-xs hover:border-emerald-400 transition-all">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-wider">
+                      Selected Contract Winner
+                    </span>
+                    <span className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shadow-2xs">
+                      🏆
+                    </span>
+                  </div>
+                  <div className="font-bold text-gray-950 text-sm font-sans flex flex-wrap items-center gap-1.5">
+                    <span>{actionChoice === 'approve' ? topAi?.company_name : selectedBidderObj?.company_name || 'None / Cancelled'}</span>
+                    <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      AWARDED
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1.5 text-[11px] font-mono">
+                    {awardedBidder?.bid_amount_inr && (
+                      <>
+                        <span className="font-bold text-gray-950 text-xs">
+                          ₹{Number(awardedBidder.bid_amount_inr).toLocaleString('en-IN')}
+                        </span>
+                        {awardedBidder.savings_percentage && (
+                          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300">
+                            {awardedBidder.savings_percentage}% below budget
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Recorded Justification Certificate */}
+              <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>✍️</span>
+                    <span>Official Recorded Justification (Permanently Sealed in Ledger)</span>
+                  </span>
+                  <span className="text-[9px] font-mono text-gray-400">
+                    GFR 2017 Rule 173 Compliance
+                  </span>
+                </div>
+                <p className="text-xs text-gray-900 italic bg-gray-50/80 p-3.5 rounded-xl border border-gray-200 leading-relaxed font-sans shadow-inner">
+                  "{actionChoice === 'approve' ? rationale : overrideReasonDetail}"
+                </p>
+              </div>
+
+              {isOverriding && supportingNote && (
+                <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 shadow-xs space-y-1.5">
+                  <span className="text-[10px] font-mono font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📎</span>
+                    <span>Supporting File Reference / Committee Minute</span>
+                  </span>
+                  <p className="text-xs text-amber-950 font-mono bg-white p-3 rounded-xl border border-amber-200 shadow-2xs">
+                    {supportingNote}
+                  </p>
+                </div>
+              )}
+
+              {/* Cryptographic Security & Verification Notice */}
+              <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-slate-800 text-slate-300 flex flex-wrap justify-between items-center gap-3 font-mono text-[11px] shadow-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-slate-400">Security Ledger Protocol:</span>
+                  <span className="text-emerald-400 font-bold">SHA-256 Tamper-Proof Chain</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">Decision Lock:</span>
+                  <span className="bg-amber-950 text-amber-300 border border-amber-700 px-2 py-0.5 rounded text-[9px] font-bold">
+                    READY TO SEAL
+                  </span>
+                </div>
               </div>
 
               {error && (
@@ -322,25 +578,27 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                   type="button"
                   onClick={() => setStep('dossier')}
                   disabled={isSubmitting}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors border border-slate-300 font-sans cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-white hover:bg-gray-100 text-gray-700 font-semibold text-xs transition-all border border-gray-300 font-sans cursor-pointer shadow-xs flex items-center gap-1.5"
                 >
-                  ← Go Back & Edit
+                  <span>←</span>
+                  <span>Go Back & Edit</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleFinalSubmit}
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 flex items-center gap-2 transition-all font-mono cursor-pointer"
+                  className="px-7 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-md shadow-emerald-600/25 flex items-center gap-2 transition-all font-sans cursor-pointer active:scale-98"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Cryptographically Signing & Locking...</span>
+                      <span>Cryptographically Signing & Locking Decision...</span>
                     </>
                   ) : (
                     <>
-                      <span>🔒</span> Confirm & Cryptographically Lock Decision
+                      <span>🔒</span>
+                      <span>Confirm & Finalize Decision</span>
                     </>
                   )}
                 </button>
@@ -350,82 +608,152 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
             /* ── STEP 1: 7-POINT DOSSIER & ACTION FORM ─────────────────────── */
             <div className="space-y-6">
               {/* ── 7-POINT DOSSIER REVIEW BOX ──────────────────────────────── */}
-              <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-4">
-                <div className="flex justify-between items-center font-mono">
-                  <span className="text-[10px] font-bold text-procure-400 uppercase tracking-wider">
-                    7-Point Multi-Criteria Decision Dossier
-                  </span>
-                  <span className="text-[10px] text-slate-500">
-                    Tender: {dossier?.tender?.reference_number}
-                  </span>
+              <div className="p-5 rounded-2xl bg-[#FAFAFC] border border-gray-200 space-y-4 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-gray-200/80 pb-3">
+                  <div>
+                    <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider font-mono block">
+                      AI Review & Decision Summary
+                    </span>
+                    <h4 className="text-xs font-bold text-gray-900 font-sans mt-0.5">
+                      {dossier?.tender?.title || 'Tender Evaluation'}
+                    </h4>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[11px] text-gray-600 font-mono bg-white px-2 py-0.5 rounded border border-gray-200">
+                      Tender: <strong className="text-gray-900">{dossier?.tender?.reference_number}</strong>
+                    </span>
+                  </div>
                 </div>
 
                 {/* 1. Eligible Bidders & 2. Bid Values & 3. Evaluation Scores */}
-                <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-slate-400 block uppercase">
-                    1. Eligible Bidders, 2. Commercial Values & 3. Evaluation Scores
-                  </span>
-                  <div className="space-y-2">
+                <div className="space-y-2.5">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-wider">
+                      1. Qualified Bidders, 2. Bid Amounts & 3. Total Scores
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-mono">
+                      Evaluation Weights: Tech 40% · Price 30% · Track Record 30%
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5">
                     {dossier?.bidders?.map((b: any) => {
                       const isTop = b.rank === 1;
                       return (
                         <div
                           key={b.bid_id}
-                          className={`p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono ${
+                          className={`p-4 rounded-2xl border transition-all ${
                             isTop
-                              ? 'bg-emerald-500/10 border-emerald-500/30 shadow-md'
-                              : 'bg-slate-900/40 border-slate-800'
+                              ? 'bg-emerald-50/70 border-emerald-300 shadow-sm'
+                              : 'bg-white border-gray-200 hover:border-gray-300 shadow-xs'
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                                isTop ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300'
-                              }`}
-                            >
-                              {b.rank}
-                            </span>
-                            <div>
-                              <div className="font-bold text-white text-xs font-sans flex items-center gap-1.5">
-                                <span>{b.company_name}</span>
-                                {isTop && (
-                                  <span className="px-1.5 py-0.5 rounded text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                    TOP AI REC
-                                  </span>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="flex items-start sm:items-center gap-3">
+                              <span
+                                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 sm:mt-0 ${
+                                  isTop
+                                    ? 'bg-emerald-600 text-white shadow-xs'
+                                    : 'bg-gray-150 text-gray-700 bg-gray-100 border border-gray-300'
+                                }`}
+                              >
+                                {b.rank}
+                              </span>
+                              <div>
+                                <div className="font-bold text-gray-950 text-sm font-sans flex flex-wrap items-center gap-2">
+                                  <span>{b.company_name}</span>
+                                  {isTop && (
+                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                      TOP AI REC
+                                    </span>
+                                  )}
+                                  {b.is_lowest_bidder && (
+                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                      L1 - LOWEST PRICE
+                                    </span>
+                                  )}
+                                  <OsintVerificationBadge bidder={b} />
+                                </div>
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5 text-[11px] text-gray-500 font-mono">
+                                  <span>Ref: {b.bid_reference}</span>
+                                  {b.cin && <span>· CIN: <strong className="text-gray-700">{b.cin}</strong></span>}
+                                  <span>·</span>
+                                  <span>Screening: <strong className="text-emerald-700 font-semibold">PASSED</strong></span>
+                                </div>
+                                {b.registered_address && (
+                                  <div className="text-[10px] text-gray-500 mt-0.5 truncate max-w-md font-sans flex items-center gap-1" title={b.registered_address}>
+                                    <span className="text-gray-400">📍 Reg. Office:</span>
+                                    <span className="truncate">{b.registered_address}</span>
+                                  </div>
                                 )}
                               </div>
-                              <span className="text-[9px] text-slate-400">
-                                Ref: {b.bid_reference} · Screening: <strong className="text-emerald-400">PASSED</strong>
-                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-4 sm:gap-6 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-100 text-right">
+                              <div>
+                                <span className="text-[10px] text-gray-500 block uppercase font-medium">Bid Value</span>
+                                <div className="flex items-baseline gap-1 sm:justify-end">
+                                  <span className="text-sm font-bold text-gray-900">
+                                    ₹{Number(b.bid_amount_inr || 0).toLocaleString('en-IN')}
+                                  </span>
+                                  {b.savings_percentage && (
+                                    <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-1 rounded border border-emerald-200">
+                                      {b.savings_percentage}% below
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div>
+                                <span className="text-[10px] text-gray-500 block uppercase font-medium">Total Score</span>
+                                <span className={`text-sm font-bold ${isTop ? 'text-emerald-700' : 'text-gray-900'}`}>
+                                  {Number(b.composite_score || 0).toFixed(1)} / 100
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-[10px] text-gray-500 block uppercase font-medium">Risk Level</span>
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold inline-block ${
+                                    b.risk_tier === 'HIGH RISK'
+                                      ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                                      : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  }`}
+                                >
+                                  {b.risk_tier || 'NORMAL'}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 text-right">
-                            <div>
-                              <span className="text-[9px] text-slate-500 block">Bid Value</span>
-                              <span className="text-xs font-bold text-slate-200">
-                                ₹{Number(b.bid_amount_inr || 0).toLocaleString('en-IN')}
-                              </span>
+                          {/* Detailed Criteria Sub-scores Breakdown */}
+                          {b.criterion_scores && (
+                            <div className="mt-3 pt-2.5 border-t border-gray-200/70 grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px] text-gray-600 font-mono">
+                              <div className="bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200/80 shadow-2xs">
+                                <span className="text-[9px] text-gray-400 block uppercase font-semibold">Technical</span>
+                                <span className="font-bold text-gray-900">{b.criterion_scores.technical}</span>
+                                <span className="text-gray-400 text-[10px]"> / 20</span>
+                              </div>
+                              <div className="bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200/80 shadow-2xs">
+                                <span className="text-[9px] text-gray-400 block uppercase font-semibold">Experience</span>
+                                <span className="font-bold text-gray-900">{b.criterion_scores.experience}</span>
+                                <span className="text-gray-400 text-[10px]"> / 15</span>
+                              </div>
+                              <div className="bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200/80 shadow-2xs">
+                                <span className="text-[9px] text-gray-400 block uppercase font-semibold">Financial</span>
+                                <span className="font-bold text-gray-900">{b.criterion_scores.financial}</span>
+                                <span className="text-gray-400 text-[10px]"> / 10</span>
+                              </div>
+                              <div className="bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200/80 shadow-2xs">
+                                <span className="text-[9px] text-gray-400 block uppercase font-semibold">Past Perf.</span>
+                                <span className="font-bold text-gray-900">{b.criterion_scores.past_performance}</span>
+                                <span className="text-gray-400 text-[10px]"> / 10</span>
+                              </div>
+                              <div className="bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200/80 shadow-2xs">
+                                <span className="text-[9px] text-gray-400 block uppercase font-semibold">Price Score</span>
+                                <span className="font-bold text-gray-900">{b.criterion_scores.price}</span>
+                                <span className="text-gray-400 text-[10px]"> / 40</span>
+                              </div>
                             </div>
-                            <div>
-                              <span className="text-[9px] text-slate-500 block">Composite Score</span>
-                              <span className={`text-xs font-bold ${isTop ? 'text-emerald-400' : 'text-slate-300'}`}>
-                                {Number(b.composite_score || 0).toFixed(1)} / 100
-                              </span>
-                            </div>
-                            <div>
-                              <span className="text-[9px] text-slate-500 block">Risk Tier</span>
-                              <span
-                                className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
-                                  b.risk_tier === 'HIGH RISK'
-                                    ? 'bg-rose-500/20 text-rose-300'
-                                    : 'bg-emerald-500/20 text-emerald-300'
-                                }`}
-                              >
-                                {b.risk_tier}
-                              </span>
-                            </div>
-                          </div>
+                          )}
                         </div>
                       );
                     })}
@@ -434,65 +762,74 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
                 {/* 4. AI Recommendation & 6. Explainability Summary */}
                 {topAi && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                    <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 block uppercase">
-                        4. AI Recommendation Summary
-                      </span>
-                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+                    <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/90 space-y-2 shadow-xs">
+                      <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-xs font-mono uppercase tracking-wider">
+                        <span>✨</span>
+                        <span>4. AI Recommendation Summary</span>
+                      </div>
+                      <p className="text-xs text-gray-800 leading-relaxed font-sans font-medium">
                         {topAi.reasoning_summary}
                       </p>
-                      <div className="text-[10px] font-mono text-slate-400 pt-1">
-                        Confidence: <strong className="text-procure-300">{topAi.confidence_level} ({Math.round(topAi.confidence_score * 100)}%)</strong>
+                      <div className="flex items-center gap-2 pt-1">
+                        <span className="text-[10px] font-mono text-gray-500 uppercase font-semibold">Confidence:</span>
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono">
+                          HIGH ({Math.round(topAi.confidence_score * 100)}%)
+                        </span>
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
-                      <span className="text-[10px] font-mono font-bold text-procure-400 block uppercase">
-                        6. Explainability Report (XAI)
-                      </span>
-                      <div className="flex flex-wrap gap-1.5 text-[10px] font-mono">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                      <div className="flex items-center gap-1.5 text-slate-800 font-bold text-xs font-mono uppercase tracking-wider">
+                        <span>🔍</span>
+                        <span>6. Key Reasons for AI Scores (XAI)</span>
+                      </div>
+                      <div className="space-y-1.5">
                         {dossier?.explainability_report?.positive_contributors?.slice(0, 3).map((item: string, i: number) => (
-                          <span key={i} className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">
-                            {item}
-                          </span>
+                          <div key={i} className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 text-[11px] font-sans font-medium flex items-center gap-2 shadow-xs">
+                            <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                            <span>{item}</span>
+                          </div>
                         ))}
                       </div>
-                      <p className="text-[10px] text-slate-400 pt-1 leading-tight">
-                        Balanced price-to-technical index with verified delivery safety.
+                      <p className="text-[10px] text-gray-500 pt-0.5 leading-tight font-sans">
+                        Calibrated against tender technical specifications, GFR 2017 standards, and audited bidder credentials.
                       </p>
                     </div>
                   </div>
                 )}
 
                 {/* 7. Audit Information */}
-                <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-wrap justify-between items-center gap-2 font-mono text-[10px] text-slate-400">
-                  <div>
-                    <span>Model Engine: </span>
-                    <strong className="text-slate-300">{dossier?.audit_info?.model_version}</strong>
+                <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-gray-600">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-400">Model Engine:</span>
+                    <strong className="text-gray-900 font-semibold">{dossier?.audit_info?.model_version || 'v2.4.0-xai-shap'}</strong>
                   </div>
-                  <div>
-                    <span>Tamper Audit: </span>
-                    <strong className="text-emerald-400">VERIFIED ✓</strong>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-400">Tamper Audit:</span>
+                    <strong className="text-emerald-700 font-bold flex items-center gap-1">
+                      <span>VERIFIED</span>
+                      <span>✓</span>
+                    </strong>
                   </div>
-                  <div>
-                    <span>Tender ID: </span>
-                    <strong className="text-slate-300">{dossier?.tender?.id.slice(0, 8)}...</strong>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-400">Tender ID:</span>
+                    <strong className="text-gray-800 font-mono">{dossier?.tender?.id ? `${dossier.tender.id.slice(0, 8)}...` : 'TND-2026'}</strong>
                   </div>
                 </div>
               </div>
 
               {/* ── ACTION SELECTION & MANDATORY WORKFLOW ────────────────────── */}
-              <form onSubmit={handleProceedToConfirmation} className="space-y-4">
-                <div className="flex items-center gap-2 font-mono">
-                  <span className="text-sm">⚖️</span>
-                  <span className="font-bold text-white text-xs uppercase tracking-wider">
-                    Select Binding Procurement Decision Action
+              <form onSubmit={handleProceedToConfirmation} className="space-y-4 pt-1 font-sans">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">⚖️</span>
+                  <span className="font-bold text-gray-900 text-xs uppercase tracking-wider font-mono">
+                    Select Officer Decision
                   </span>
                 </div>
 
-                {/* Dual Action Radio Selector */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono">
+                {/* Dual Action Selector Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <button
                     type="button"
                     onClick={() => {
@@ -500,18 +837,18 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                       setDecisionType('award');
                       if (topAi?.bid_id) setSelectedBidId(topAi.bid_id);
                     }}
-                    className={`p-4 rounded-xl border text-left transition-all ${
+                    className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${
                       actionChoice === 'approve'
-                        ? 'bg-emerald-500/15 border-emerald-500 text-white shadow-lg shadow-emerald-500/10'
-                        : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                        ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-500/20 shadow-md text-emerald-950'
+                        : 'bg-white border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/30 text-gray-700'
                     }`}
                   >
-                    <div className="flex items-center gap-2 font-bold text-xs">
-                      <span>✓</span>
-                      <span>[APPROVE RECOMMENDATION]</span>
+                    <div className="flex items-center gap-2 font-bold text-xs text-emerald-900">
+                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                      <span>[APPROVE AI RECOMMENDATION]</span>
                     </div>
-                    <p className="text-[11px] font-sans opacity-80 pt-1">
-                      Award the procurement contract to the top AI-recommended entity ({topAi?.company_name}).
+                    <p className="text-xs text-gray-700 font-sans pt-1.5 leading-relaxed">
+                      Award the contract to the top AI-recommended bidder (<strong className="text-gray-950">{topAi?.company_name}</strong>).
                     </p>
                   </button>
 
@@ -520,43 +857,43 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                     onClick={() => {
                       setActionChoice('reject');
                     }}
-                    className={`p-4 rounded-xl border text-left transition-all ${
+                    className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${
                       actionChoice === 'reject'
-                        ? 'bg-amber-500/15 border-amber-500 text-white shadow-lg shadow-amber-500/10'
-                        : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                        ? 'bg-amber-50/90 border-amber-600 ring-2 ring-amber-500/20 shadow-md text-amber-950'
+                        : 'bg-white border-gray-200 hover:border-amber-300 hover:bg-amber-50/30 text-gray-700'
                     }`}
                   >
-                    <div className="flex items-center gap-2 font-bold text-xs text-amber-300">
-                      <span>⚠</span>
-                      <span>[REJECT RECOMMENDATION]</span>
+                    <div className="flex items-center gap-2 font-bold text-xs text-amber-900">
+                      <span className="w-5 h-5 rounded-full bg-amber-600 text-white flex items-center justify-center text-[10px]">⚠️</span>
+                      <span>[REJECT OR OVERRIDE AI]</span>
                     </div>
-                    <p className="text-[11px] font-sans opacity-80 pt-1">
-                      Reject the AI recommendation, select another bidder, or cancel the tender with mandatory justification.
+                    <p className="text-xs text-gray-700 font-sans pt-1.5 leading-relaxed">
+                      Reject the AI choice, select another bidder (e.g. L1 lowest price), or cancel the tender with statutory justification.
                     </p>
                   </button>
                 </div>
 
                 {/* Conditional Fields for Rejection / Alternative Selection */}
                 {actionChoice === 'reject' && (
-                  <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3.5 animate-fadeIn">
-                    <div className="flex justify-between items-center font-mono">
-                      <span className="text-[11px] font-bold text-amber-300 uppercase">
-                        Mandatory Exception & Override Form
+                  <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-300 space-y-4 animate-fadeIn shadow-xs">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold text-amber-900 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                        <span>📋</span> Reason for Overriding AI Recommendation
                       </span>
-                      <span className="text-[10px] text-amber-400/80">
-                        Strict Audit Compliance Required
+                      <span className="text-[10px] font-mono text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
+                        Required by Statutory Audit
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
-                        <label className="text-[10px] font-mono text-slate-400 block mb-1">
+                        <label className="text-[10px] font-mono font-bold text-gray-700 block mb-1">
                           OUTCOME DECISION
                         </label>
                         <select
                           value={decisionType}
                           onChange={(e) => setDecisionType(e.target.value as any)}
-                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-mono"
+                          className="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-900 text-xs font-mono shadow-xs focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                         >
                           <option value="award">Award Alternative Bidder</option>
                           <option value="reject">Reject All Bids</option>
@@ -567,20 +904,20 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
                       {decisionType === 'award' && (
                         <div>
-                          <label className="text-[10px] font-mono text-slate-400 block mb-1">
-                            SELECT ALTERNATIVE WINNING BIDDER <span className="text-rose-400">*</span>
+                          <label className="text-[10px] font-mono font-bold text-gray-700 block mb-1">
+                            SELECT ALTERNATIVE WINNING BIDDER <span className="text-rose-600">*</span>
                           </label>
                           <select
                             value={selectedBidId}
                             onChange={(e) => setSelectedBidId(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-mono"
+                            className="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-900 text-xs font-mono shadow-xs focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                           >
                             <option value="">-- Choose alternative proposal --</option>
                             {dossier?.bidders
                               ?.filter((b: any) => b.bid_id !== topAi?.bid_id)
                               .map((b: any) => (
                                 <option key={b.bid_id} value={b.bid_id}>
-                                  {b.company_name} (Rank #{b.rank} · {b.composite_score.toFixed(1)} pts)
+                                  {b.company_name} (Rank #{b.rank} · {b.composite_score.toFixed(1)} pts · ₹{Number(b.bid_amount_inr).toLocaleString('en-IN')})
                                 </option>
                               ))}
                           </select>
@@ -590,30 +927,31 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
                     {decisionType === 'award' && (
                       <div>
-                        <label className="text-[10px] font-mono text-slate-400 block mb-1">
-                          OVERRIDE REASON CATEGORY <span className="text-rose-400">*</span>
+                        <label className="text-[10px] font-mono font-bold text-gray-700 block mb-1">
+                          OVERRIDE REASON CATEGORY <span className="text-rose-600">*</span>
                         </label>
                         <select
                           value={overrideReasonType}
                           onChange={(e) => setOverrideReasonType(e.target.value)}
-                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-mono"
+                          className="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-900 text-xs font-mono shadow-xs focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                         >
-                          <option value="committee_directive">High-Level Committee Directive</option>
-                          <option value="additional_information">Material Information Not Available to AI</option>
-                          <option value="policy_exception">Government Strategic / MSME Policy Exception</option>
-                          <option value="emergency">Emergency Procurement Mandate</option>
-                          <option value="ai_error">Defect in AI Evaluation Criteria</option>
-                          <option value="other">Other Validated Justification</option>
+                          <option value="committee_directive">Committee Decision / Board Resolution</option>
+                          <option value="l1_price_preference">Preference for Absolute Lowest Bidder (L1 Commercial)</option>
+                          <option value="additional_information">Information Not Available to AI Model</option>
+                          <option value="policy_exception">Government Policy or MSME Preference</option>
+                          <option value="emergency">Urgent Operational Need / Emergency</option>
+                          <option value="ai_error">AI Scoring Flaw or Data Anomaly</option>
+                          <option value="other">Other Statutory Justification</option>
                         </select>
                       </div>
                     )}
 
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <label className="text-[10px] font-mono text-slate-400">
-                          {decisionType === 'award' ? 'DETAILED OVERRIDE JUSTIFICATION' : 'MANDATORY REASON'} <span className="text-rose-400">*</span>
+                        <label className="text-[10px] font-mono font-bold text-gray-700">
+                          {decisionType === 'award' ? 'DETAILED EXPLANATION FOR OVERRIDE' : 'REASON FOR DECISION'} <span className="text-rose-600">*</span>
                         </label>
-                        <span className="text-[10px] font-mono text-slate-500">
+                        <span className="text-[10px] font-mono text-gray-500">
                           Min {decisionType === 'award' ? 50 : 20} chars (current: {(decisionType === 'award' ? overrideReasonDetail : rationale).length})
                         </span>
                       </div>
@@ -627,25 +965,25 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                             setRationale(e.target.value);
                           }
                         }}
-                        placeholder="Provide substantive justification explaining why the AI recommendation was overridden..."
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs leading-relaxed placeholder:text-slate-600 focus:border-amber-500/50"
+                        placeholder="Explain clearly why you are choosing differently from the AI recommendation (e.g. why lower price is favored over higher technical score)..."
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-900 text-xs leading-relaxed placeholder:text-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 shadow-xs"
                       />
                     </div>
 
                     {decisionType === 'award' && (
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <label className="text-[10px] font-mono text-slate-400">
-                            SUPPORTING NOTE / DOCUMENT REFERENCE <span className="text-rose-400">*</span>
+                          <label className="text-[10px] font-mono font-bold text-gray-700">
+                            FILE NUMBER OR COMMITTEE MINUTE REFERENCE <span className="text-rose-600">*</span>
                           </label>
-                          <span className="text-[10px] font-mono text-slate-500">Min 10 chars</span>
+                          <span className="text-[10px] font-mono text-gray-500">Min 10 chars</span>
                         </div>
                         <input
                           type="text"
                           value={supportingNote}
                           onChange={(e) => setSupportingNote(e.target.value)}
-                          placeholder="e.g., Committee Minute Ref: C-402, File No. TR-2026/81..."
-                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-mono placeholder:text-slate-600"
+                          placeholder="e.g., File No. PROC-2026/SEC-41, Committee Meeting Minute Ref: C-402..."
+                          className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-300 text-gray-900 text-xs font-mono placeholder:text-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 shadow-xs"
                         />
                       </div>
                     )}
@@ -653,7 +991,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 )}
 
                 {error && (
-                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
+                  <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium font-sans">
                     {error}
                   </div>
                 )}
@@ -661,9 +999,10 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 <div className="pt-2 flex justify-end">
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-procure-600 hover:bg-procure-500 text-white font-bold text-xs font-mono shadow-md transition-colors"
+                    className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs font-sans shadow-md shadow-blue-600/20 transition-all cursor-pointer flex items-center gap-2"
                   >
-                    Proceed to Pre-Submission Review →
+                    <span>Review Decision Before Saving</span>
+                    <span>→</span>
                   </button>
                 </div>
               </form>

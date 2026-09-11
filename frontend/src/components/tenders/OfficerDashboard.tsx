@@ -40,7 +40,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
       <div className="rounded-2xl bg-white border border-gray-200 p-12 text-center space-y-3 shadow-xs animate-pulse">
         <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin mx-auto" />
         <p className="text-xs text-gray-500 font-medium">
-          Aggregating government procurement intelligence & lifecycle pipelines...
+          Loading tender information and updates...
         </p>
       </div>
     );
@@ -98,7 +98,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 2: Bids Awaiting Evaluation */}
         <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Sealed Bids</span>
+            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Locked Bids</span>
             <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100/80 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -115,7 +115,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              Locked in vault
+              Safe in vault
             </span>
           </div>
         </div>
@@ -123,7 +123,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 3: AI Recommendations */}
         <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">AI Dossiers</span>
+            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">AI Reports</span>
             <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100/80 flex items-center justify-center text-purple-600 transition-transform group-hover:scale-110">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -144,7 +144,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           </div>
           <div className="mt-2.5">
             <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-purple-700 bg-purple-50/80 px-2 py-0.5 rounded-full border border-purple-200/60">
-              Multi-factor scored
+              Scored by AI
             </span>
           </div>
         </div>
@@ -152,7 +152,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 4: High-Risk Tenders */}
         <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Risk Flags</span>
+            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Risk Alerts</span>
             <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100/80 flex items-center justify-center text-rose-600 transition-transform group-hover:scale-110">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
@@ -166,7 +166,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           </div>
           <div className="mt-2.5">
             <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-rose-700 bg-rose-50/80 px-2 py-0.5 rounded-full border border-rose-200/60">
-              Anomaly screening
+              Checked for unusual activity
             </span>
           </div>
         </div>
@@ -174,7 +174,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 5: Pending Decisions */}
         <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Officer Actions</span>
+            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Decisions Needed</span>
             <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-amber-600 transition-transform group-hover:scale-110">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 3v18" />
@@ -190,7 +190,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           </div>
           <div className="mt-2.5">
             <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-700 bg-amber-50/80 px-2 py-0.5 rounded-full border border-amber-200/60">
-              Sovereign approval
+              Officer review needed
             </span>
           </div>
         </div>
@@ -198,7 +198,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         {/* Card 6: CAG Audit Ledger */}
         <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">CAG Audit Ledger</span>
+            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Audit History</span>
             <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -211,7 +211,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           </div>
           <div className="mt-2.5">
             <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded-full border border-emerald-200/60">
-              ✓ Verified SHA-256
+              ✓ Tamper-proof log
             </span>
           </div>
         </div>
@@ -234,10 +234,10 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
               <path d="M5 21V7l7-4 7 4v14" />
               <path d="M9 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11" />
             </svg>
-            <span>Executive Government Officer Console</span>
+            <span>Officer Management Dashboard</span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            Real-time pipeline monitoring, sealed envelope unsealing, and authoritative procurement awards.
+            Monitor open tenders, reveal locked bids after deadlines, and award contracts fairly.
           </p>
         </div>
 
@@ -272,10 +272,10 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Active Tenders Open For Submissions ({activeTenders.length})</span>
+                  <span>Open Tenders ({activeTenders.length})</span>
                 </h4>
                 <span className="text-xs text-gray-400">
-                  Accepting Cryptographic Sealed Bids
+                  Accepting Secret Bids
                 </span>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -342,10 +342,10 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  <span>Closed Tenders & Unsealing Pipeline ({closedTenders.length})</span>
+                  <span>Closed Tenders & Ready to Open ({closedTenders.length})</span>
                 </h4>
                 <span className="text-xs text-gray-400">
-                  Bidding concluded. Submissions ready for post-deadline decryption.
+                  Bidding has ended. Locked bids can now be opened.
                 </span>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">
@@ -378,7 +378,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                         {t.title}
                       </div>
                       <div className="text-[11px] text-gray-400">
-                        {t.bid_count} submissions locked in sealed vault
+                        {t.bid_count} bids safely locked in vault
                       </div>
                     </div>
 
@@ -389,7 +389,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                       }}
                       className="px-3.5 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-medium shadow-xs transition-all cursor-pointer flex items-center gap-1"
                     >
-                      <span>Inspect & Unseal</span>
+                      <span>Open & Review Bids</span>
                       <span>→</span>
                     </button>
                   </div>
@@ -411,10 +411,10 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                     <line x1="9" y1="20" x2="9" y2="23" />
                     <line x1="15" y1="20" x2="15" y2="23" />
                   </svg>
-                  <span>Evaluation Status Pipeline ({evaluatingTenders.length})</span>
+                  <span>Tenders Being Evaluated ({evaluatingTenders.length})</span>
                 </h4>
                 <span className="text-xs text-gray-400">
-                  AI scoring models & eligibility verification in progress
+                  AI scoring and requirement checks in progress
                 </span>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">
@@ -447,7 +447,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                         {t.title}
                       </div>
                       <div className="text-[11px] text-gray-400">
-                        {t.bid_count} proposals under AI rubrics
+                        {t.bid_count} bids being scored by AI
                       </div>
                     </div>
 
@@ -458,7 +458,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                       }}
                       className="px-3.5 py-1.5 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-medium shadow-xs transition-all cursor-pointer flex items-center gap-1"
                     >
-                      <span>Inspect Scoring</span>
+                      <span>Review Scores</span>
                       <span>→</span>
                     </button>
                   </div>
@@ -565,10 +565,10 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
                     <line x1="12" y1="9" x2="12" y2="13" />
                     <line x1="12" y1="17" x2="12.01" y2="17" />
                   </svg>
-                  <span>High Risk & Anomaly Flags ({highRiskTenders.length})</span>
+                  <span>High Risk & Suspicious Bid Alerts ({highRiskTenders.length})</span>
                 </h4>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 uppercase">
-                  Audit Required
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 uppercase">
+                  Review Required
                 </span>
               </div>
 

@@ -2,25 +2,25 @@
   font-family: 'SF Pro Display';
   font-style: normal;
   font-weight: 400;
-  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYREGULAR.woff') format('woff');
+  src: local('SF Pro Display Regular'), local('SF Pro Display'), local('SF Pro Text'), local('-apple-system'), local('BlinkMacSystemFont'), local('San Francisco'), url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYREGULAR.woff') format('woff');
 }
 @font-face {
   font-family: 'SF Pro Display';
   font-style: normal;
   font-weight: 500;
-  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYMEDIUM.woff') format('woff');
+  src: local('SF Pro Display Medium'), local('SF Pro Display'), local('SF Pro Text'), local('-apple-system'), local('BlinkMacSystemFont'), local('San Francisco'), url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYMEDIUM.woff') format('woff');
 }
 @font-face {
   font-family: 'SF Pro Display';
   font-style: normal;
   font-weight: 600;
-  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYSEMIBOLDITALIC.woff') format('woff');
+  src: local('SF Pro Display Semibold'), local('SF Pro Text Semibold'), local('SF Pro Display'), local('SF Pro Text'), local('-apple-system'), local('BlinkMacSystemFont'), local('San Francisco'), url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYMEDIUM.woff') format('woff');
 }
 @font-face {
   font-family: 'SF Pro Display';
   font-style: normal;
   font-weight: 700;
-  src: url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYBOLD.woff') format('woff');
+  src: local('SF Pro Display Bold'), local('SF Pro Text Bold'), local('SF Pro Display'), local('SF Pro Text'), local('-apple-system'), local('BlinkMacSystemFont'), local('San Francisco'), url('https://fonts.cdnfonts.com/s/59278/SFPRODISPLAYBOLD.woff') format('woff');
 }
 
 @tailwind base;
@@ -341,18 +341,29 @@ div.fixed.bg-slate-950\/80 {
   }
 }
 
-@keyframes tabPaneFadeIn {
-  from {
+@keyframes tabPaneSmooth {
+  0% {
     opacity: 0;
+    transform: translate3d(0, 8px, 0);
   }
-  to {
+  100% {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .tab-pane-fade {
-  animation: tabPaneFadeIn 0.15s ease-out forwards;
-  will-change: opacity;
+  animation: tabPaneSmooth 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-pane-fade {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @keyframes modalScaleUp {

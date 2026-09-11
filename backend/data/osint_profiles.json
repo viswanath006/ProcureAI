@@ -1,0 +1,26 @@
+{
+  "test-bidder-001": {
+    "bidder_id": "test-bidder-001",
+    "cin": "U72200DL2018PTC334455",
+    "mca_status": null,
+    "incorporation_date": "2018-04-15",
+    "registered_address": "Plot 45, Okhla Industrial Area Phase III, New Delhi 110020",
+    "directors": [
+      {
+        "name": "Rajesh Sharma",
+        "din": "01234567"
+      }
+    ],
+    "authorized_capital": 0,
+    "last_verified_at": "2026-09-11T07:03:30.271Z",
+    "verification_status": "unavailable",
+    "discrepancy_details": {},
+    "collusion_flags": [],
+    "raw_payload": {
+      "cin": "U72200DL2018PTC334455",
+      "verification_status": "unavailable",
+      "reason": "OSINT verification unavailable (connection error)"
+    },
+    "updated_at": "2026-09-11T07:03:30.271Z"
+  }
+}

@@ -36,7 +36,7 @@ class BidderEvaluationInput(BaseModel):
     company_id: str
     company_name: str
     bid_amount_inr: float = Field(gt=0, description="Commercial bid figure in INR")
-    completion_days: int = Field(gt=0, description="Proposed timeline in calendar days")
+    completion_days: int = Field(default=180, gt=0, description="Proposed timeline in calendar days")
     technical_proposal: Optional[str] = ""
     financial_proposal: Optional[str] = ""
     annual_turnover_inr: Optional[float] = 0.0
@@ -48,6 +48,11 @@ class BidderEvaluationInput(BaseModel):
     past_performance: Optional[Dict[str, Any]] = {}
     eligibility_passed: bool = True
     is_synthetic: bool = False
+    cin: Optional[str] = None
+    registered_address: Optional[str] = None
+    directors: Optional[List[Dict[str, Any]]] = []
+    incorporation_date: Optional[str] = None
+    osint_profile: Optional[Dict[str, Any]] = None
 
 
 class TenderEvaluationContext(BaseModel):

@@ -28,6 +28,7 @@ from .engine.ranker import BidderRanker
 from .engine.anomaly import IsolationForestAnomalyDetector
 from .engine.collusion import CollusionPatternDetector
 from .models.anomaly import TenderRiskAnalysisResponse
+from .osint.mca_lookup import MCALookupService, OSINTLookupResult
 from .synthetic.generator import SyntheticBenchmarkGenerator
 
 app = FastAPI(
@@ -283,3 +284,23 @@ async def analyze_tender_risks(request: EvaluationRequest) -> TenderRiskAnalysis
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Risk analysis engine failed: {str(e)}",
         )
+
+
+@app.get("/osint/lookup/{cin}", response_model=OSINTLookupResult)
+async def lookup_cin(
+    cin: str,
+    declared_company_name: str = None,
+    declared_inc_date: str = None
+) -> OSINTLookupResult:
+    """
+    Statutory OSINT public record verification against MCA Company Master Data (data.gov.in).
+    - Caches responses in PostgreSQL (30-day TTL) with in-memory fallback.
+    - Handles timeouts and failures gracefully without raising unhandled errors.
+    - Compares declared company credentials against public registry.
+    """
+    return MCALookupService.lookup_cin(
+        cin=cin,
+        declared_company_name=declared_company_name,
+        declared_inc_date=declared_inc_date
+    )
+

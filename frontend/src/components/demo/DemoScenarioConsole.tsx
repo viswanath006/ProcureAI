@@ -53,7 +53,7 @@ export const DemoScenarioConsole: React.FC = () => {
   if (!data) {
     return (
       <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs animate-pulse text-center text-xs text-gray-400 font-medium">
-        Loading synthetic demonstration state...
+        Loading demo example...
       </div>
     );
   }
@@ -68,9 +68,9 @@ export const DemoScenarioConsole: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 tracking-wider uppercase inline-flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              SIH Judging Interactive Demo
+              Live Interactive Demo
             </span>
-            <span className="text-[11px] text-gray-400 font-medium">Phase 14 End-to-End Workflow</span>
+            <span className="text-[11px] text-gray-400 font-medium">Complete Step-by-Step Example</span>
           </div>
           <h3 className="text-base font-bold text-gray-900 mt-1.5 flex items-center gap-2">
             {tender.title}
@@ -93,7 +93,7 @@ export const DemoScenarioConsole: React.FC = () => {
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <span>Run 17-Step Demo (Scenario 1: AI Award)</span>
+            <span>Run Demo (Scenario 1: Follow AI Choice)</span>
           </button>
 
           <button
@@ -108,7 +108,7 @@ export const DemoScenarioConsole: React.FC = () => {
               <path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" />
               <path d="M4 21h16" />
             </svg>
-            <span>Run Scenario 2: Override to Company C</span>
+            <span>Run Scenario 2: Officer Overrides AI</span>
           </button>
 
           <button

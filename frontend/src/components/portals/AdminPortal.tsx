@@ -48,7 +48,7 @@ export const AdminPortal: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-gray-900 tracking-tight">Platform Administration</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              Manage system users, inspect live telemetry, and supervise cryptographic data ledgers.
+              Manage users, monitor system status, and supervise activity records.
             </p>
           </div>
         </div>
@@ -62,11 +62,11 @@ export const AdminPortal: React.FC = () => {
 
       {isLoading ? (
         <div className="rounded-2xl bg-white border border-gray-200 p-12 text-center text-xs text-gray-400 shadow-xs animate-pulse">
-          Loading system telemetry...
+          Loading system status...
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Telemetry Cards */}
+          {/* Status Cards */}
           {systemInfo && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="rounded-2xl bg-white border border-gray-200/90 p-5 shadow-xs">
@@ -79,7 +79,7 @@ export const AdminPortal: React.FC = () => {
                 <span className="text-2xl font-bold text-blue-600">
                   {systemInfo.activeSessions}
                 </span>
-                <span className="text-[11px] text-gray-400 block mt-1">Real-time HTTP / JWT</span>
+                <span className="text-[11px] text-gray-400 block mt-1">Logged In Now</span>
               </div>
 
               <div className="rounded-2xl bg-white border border-gray-200/90 p-5 shadow-xs">
@@ -94,7 +94,7 @@ export const AdminPortal: React.FC = () => {
                 </span>
                 <span className="text-[11px] text-emerald-600 font-medium block mt-1 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>99.98% High Availability</span>
+                  <span>Online & Stable</span>
                 </span>
               </div>
 
@@ -108,7 +108,7 @@ export const AdminPortal: React.FC = () => {
                 <span className="text-2xl font-bold text-purple-600">
                   {systemInfo.tableStats?.length || 22}
                 </span>
-                <span className="text-[11px] text-gray-400 block mt-1">PostgreSQL Schemas</span>
+                <span className="text-[11px] text-gray-400 block mt-1">Data Tables</span>
               </div>
 
               <div className="rounded-2xl bg-white border border-gray-200/90 p-5 shadow-xs">
@@ -121,7 +121,7 @@ export const AdminPortal: React.FC = () => {
                 <span className="text-2xl font-bold text-amber-600">
                   {users.length}
                 </span>
-                <span className="text-[11px] text-gray-400 block mt-1">Across 4 Persona Roles</span>
+                <span className="text-[11px] text-gray-400 block mt-1">Across 4 Roles</span>
               </div>
             </div>
           )}

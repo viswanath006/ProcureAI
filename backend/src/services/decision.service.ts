@@ -36,7 +36,8 @@ import path from 'path';
 import { query, queryOne, queryRows } from '../config/database';
 import { ValidationError, NotFoundError } from '../utils/errors';
 import { recordChainEvent } from './auditChain.service';
-import { saveLocalTender } from '../controllers/tender.controller';
+import { saveLocalTender, getLocalTender } from '../controllers/tender.controller';
+import { OsintService } from './osint.service';
 
 const DATA_DIR = path.resolve(__dirname, '../../data');
 const DECISIONS_FILE = path.join(DATA_DIR, 'decisions.json');
@@ -110,6 +111,13 @@ export interface DecisionDossier {
     risk_tier: string;
     risk_indicators: string[];
     explanation?: any;
+    osint_status?: 'verified' | 'mismatch' | 'unavailable';
+    osint_profile?: any;
+    collusion_flag?: boolean;
+    collusion_reasons?: string[];
+    cin?: string;
+    registered_address?: string;
+    directors?: any[];
   }>;
   // 4. AI recommendation
   ai_recommendation: {
@@ -267,7 +275,7 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
         }
       : null;
 
-    const bidders = recommendations.map((r) => {
+    const rawBidders = recommendations.map((r) => {
       const rawPrice = r.bid_amount_paisa ? Number(r.bid_amount_paisa) / 100 : budgetInr * 0.9;
       const isHighRisk = r.rank > 1 && (rawPrice < budgetInr * 0.65 || rawPrice > budgetInr * 1.25);
 
@@ -288,6 +296,8 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
         explanation: r.explanation_object,
       };
     });
+
+    const bidders = await OsintService.enrichBiddersWithOsint(rawBidders);
 
     // Check if a decision already exists
     const existingDecision = await queryOne<any>(
@@ -328,60 +338,147 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
       },
     };
   } catch {
-    // Database offline mode — synthesize complete 7-point decision dossier from demo scenario
+    // Database offline mode — synthesize complete 7-point decision dossier adapted to the tender
     const localDec = getLocalDecision(tenderId);
-    const compA = DEMO_CONSTANTS.COMPANIES[0];
-    return {
-      tender: {
-        id: tenderId,
-        reference_number: DEMO_CONSTANTS.TENDER_REF,
-        title: DEMO_CONSTANTS.TENDER_TITLE,
-        estimated_budget_inr: DEMO_CONSTANTS.ESTIMATED_BUDGET_INR,
-        status: localDec?.is_locked ? (localDec.final_decision === 'award' ? 'AWARDED' : 'DECISION_MADE') : 'RECOMMENDATION_READY',
-        closing_at: new Date(Date.now() + 86400000 * 5).toISOString(),
-        created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
-      },
-      bidders: DEMO_CONSTANTS.COMPANIES.map((c, i) => ({
+    const localTender = getLocalTender(tenderId);
+
+    const budgetInr = localTender?.estimated_budget_paisa
+      ? Number(localTender.estimated_budget_paisa) / 100
+      : DEMO_CONSTANTS.ESTIMATED_BUDGET_INR;
+    const tenderRef = localTender?.reference_number || DEMO_CONSTANTS.TENDER_REF;
+    const tenderTitle = localTender?.title || DEMO_CONSTANTS.TENDER_TITLE;
+    const category = (localTender?.category || '').toLowerCase();
+    const dept = localTender?.department || 'Government Procurement';
+    const budgetCr = (budgetInr / 10000000).toFixed(2);
+
+    // Domain-specific company names
+    let companyNames = [
+      'Company A (Apex Infra Buildtech Ltd)',
+      'Company B (Bharat Civil Works & Const. Co.)',
+      'Company C (Crescent Urban Developers Ltd)',
+    ];
+
+    if (category.includes('health') || tenderTitle.toLowerCase().includes('oxygen') || tenderTitle.toLowerCase().includes('hospital')) {
+      companyNames = [
+        'Company A (Medix Cryogenics & Healthcare Solutions Ltd)',
+        'Company B (National Oxygen & Gas Infra Ltd)',
+        'Company C (Apex LifeCare Systems Pvt Ltd)',
+      ];
+    } else if (category.includes('agri') || tenderTitle.toLowerCase().includes('pump') || tenderTitle.toLowerCase().includes('kusum')) {
+      companyNames = [
+        'Company A (Kisan Urja Smart Pumps & Agro Ltd)',
+        'Company B (Krishi Solar Irrigation Infra Pvt Ltd)',
+        'Company C (Gramin Tech Agrosystems Ltd)',
+      ];
+    } else if (category.includes('telecom') || category.includes('cloud') || tenderTitle.toLowerCase().includes('compute') || tenderTitle.toLowerCase().includes('data')) {
+      companyNames = [
+        'Company A (DataGrid Sovereign Cloud & IT Infra Ltd)',
+        'Company B (NetCore National Communications Ltd)',
+        'Company C (Bharat CyberTech Systems Ltd)',
+      ];
+    } else if (category.includes('transport') || tenderTitle.toLowerCase().includes('ev') || tenderTitle.toLowerCase().includes('highway')) {
+      companyNames = [
+        'Company A (VoltExpress EV Corridors & Microgrid Ltd)',
+        'Company B (Bharat Highway Electrification Co.)',
+        'Company C (GreenGrid Express Mobility Ltd)',
+      ];
+    } else if (category.includes('waste') || category.includes('energy') || category.includes('solar') || tenderTitle.toLowerCase().includes('solar')) {
+      companyNames = [
+        'Company A (SunShakti Renewables & Solar Grid Ltd)',
+        'Company B (Vikram Green Power Technologies Ltd)',
+        'Company C (Bharat Urja Solutions Pvt Ltd)',
+      ];
+    }
+
+    const rawBidders = DEMO_CONSTANTS.COMPANIES.map((c, i) => {
+      const multiplier = i === 0 ? 0.82 : i === 1 ? 0.78 : 0.85;
+      const calculatedBid = Math.round(budgetInr * multiplier);
+      const isL1 = i === 1;
+
+      return {
         bid_id: c.id,
         bid_reference: `BID-2026-0${i + 1}`,
         company_id: c.id,
-        company_name: c.name,
-        bid_amount_inr: c.bidAmountInr,
+        company_name: companyNames[i] || c.name,
+        bid_amount_inr: calculatedBid,
+        is_lowest_bidder: isL1,
+        savings_percentage: Math.round((1 - multiplier) * 100),
         is_eligible: true,
         composite_score: c.compositeScore,
         rank: c.rank,
         criterion_scores: {
           technical: c.technicalCapabilityScore,
+          max_technical: 20,
           experience: c.experienceScore,
+          max_experience: 15,
           financial: c.financialCapacityScore,
+          max_financial: 10,
           past_performance: c.pastPerformanceScore,
+          max_past_performance: 10,
           risk: c.riskIndicatorsScore,
+          max_risk: 5,
           price: c.priceScore,
+          max_price: 40,
         },
         risk_tier: c.riskAnalysis.riskTier,
         risk_indicators: c.riskAnalysis.flagText ? [c.riskAnalysis.flagText] : [],
         explanation: c.explanation,
-      })),
+      };
+    });
+
+    const bidders = await OsintService.enrichBiddersWithOsint(rawBidders);
+
+    const compA = bidders[0];
+    const compB = bidders[1];
+    const whySummary = `Best overall balance of high technical capability (${compA.criterion_scores.technical}/20), proven track record in ${dept}, and strong past performance (${compA.criterion_scores.past_performance}/10) with competitive pricing (${compA.savings_percentage}% below ₹${budgetCr} Cr estimated budget). Recommended over L1 due to superior technical compliance.`;
+
+    return {
+      tender: {
+        id: tenderId,
+        reference_number: tenderRef,
+        title: tenderTitle,
+        estimated_budget_inr: budgetInr,
+        status: localDec?.is_locked
+          ? (localDec.final_decision === 'award' ? 'AWARDED' : 'DECISION_MADE')
+          : (localTender?.status || 'RECOMMENDATION_READY'),
+        closing_at: localTender?.submission_deadline_at || new Date(Date.now() + 86400000 * 5).toISOString(),
+        created_at: localTender?.created_at || new Date(Date.now() - 86400000 * 10).toISOString(),
+      },
+      bidders,
       ai_recommendation: {
-        bid_id: compA.id,
-        company_name: compA.name,
+        bid_id: compA.bid_id,
+        company_name: compA.company_name,
         bid_reference: 'BID-2026-01',
-        total_score: compA.compositeScore,
+        total_score: compA.composite_score,
         confidence_level: 'HIGH',
         confidence_score: 0.96,
         recommendation_type: 'award',
-        reasoning_summary: compA.explanation.whySummary,
+        reasoning_summary: whySummary,
       },
       explainability_report: {
-        why_summary: compA.explanation.whySummary,
-        ratings: compA.explanation.ratings,
-        positive_contributors: compA.explanation.positiveContributors,
-        negative_contributors: compA.explanation.negativeContributors,
+        why_summary: whySummary,
+        ratings: {
+          'Price': 'Competitive',
+          'Technical Capability': 'Exceptional',
+          'Experience': 'Strong',
+          'Financial Capacity': 'Good',
+          'Past Performance': 'Outstanding (0 Delays)',
+          'Risk': 'Low',
+        },
+        positive_contributors: [
+          `Exceptional technical capability (${compA.criterion_scores.technical}/20) with certified domain engineers`,
+          `Extensive verified execution track record aligned with ${dept}`,
+          `Outstanding delivery reliability (${compA.criterion_scores.past_performance}/10) with 0 recorded defects`,
+          `Substantial fiscal savings: bid at ₹${(compA.bid_amount_inr / 10000000).toFixed(2)} Cr (${compA.savings_percentage}% below ₹${budgetCr} Cr budget)`,
+        ],
+        negative_contributors: [
+          `Commercial quote is slightly higher than L1 bidder (${compB.company_name} at ₹${(compB.bid_amount_inr / 10000000).toFixed(2)} Cr)`,
+        ],
         shap_attributions: {
-          'Technical Capability': 0.35,
-          'Past Performance': 0.28,
-          'Pricing Competitiveness': 0.22,
-          'Execution Timeline': 0.15,
+          'Technical Architecture & Engineering': 0.38,
+          'Past Performance & Zero-Defects': 0.28,
+          'Competitive Commercial Pricing': 0.22,
+          'Timeline & SLA Commitments': 0.12,
         },
       },
       audit_info: {

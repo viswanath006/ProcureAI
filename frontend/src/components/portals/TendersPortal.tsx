@@ -8,15 +8,29 @@ import { SealedBidSubmissionModal } from '../bids/SealedBidSubmissionModal';
 
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 
-export const TendersPortal: React.FC = () => {
+interface TendersPortalProps {
+  initialMode?: 'dashboard' | 'registry';
+  hideSwitcher?: boolean;
+}
+
+export const TendersPortal: React.FC<TendersPortalProps> = ({
+  initialMode = 'dashboard',
+  hideSwitcher = false,
+}) => {
   const { user } = useAuth();
-  const [viewMode, setViewMode] = useState<'dashboard' | 'registry'>('dashboard');
+  const [viewMode, setViewMode] = useState<'dashboard' | 'registry'>(initialMode);
   const [tenders, setTenders] = useState<any[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [actionError, setActionError] = useState<string | null>(null);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialMode) {
+      setViewMode(initialMode);
+    }
+  }, [initialMode]);
 
   // Modals
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -61,16 +75,15 @@ export const TendersPortal: React.FC = () => {
   return (
     <div style={{ fontFamily: FONT }} className="space-y-6">
       {/* View Switcher for Officers/Admins */}
-      {isOfficerOrAdmin && (
+      {!hideSwitcher && isOfficerOrAdmin && (
         <div className="flex flex-wrap justify-between items-center gap-3 border-b border-gray-200/90 pb-4">
           <div className="inline-flex p-1 rounded-full bg-[#F4F4F5] border border-gray-200/90 gap-1">
             <button
               onClick={() => setViewMode('dashboard')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out flex items-center gap-2 cursor-pointer select-none ${
-                viewMode === 'dashboard'
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out flex items-center gap-2 cursor-pointer select-none ${viewMode === 'dashboard'
                   ? 'bg-white text-gray-900 shadow-xs'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
-              }`}
+                }`}
             >
               <svg className="w-3.5 h-3.5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -78,16 +91,15 @@ export const TendersPortal: React.FC = () => {
                 <rect x="14" y="14" width="7" height="7" rx="1.5" />
                 <rect x="3" y="14" width="7" height="7" rx="1.5" />
               </svg>
-              <span>Executive Dashboard</span>
+              <span>Overview</span>
             </button>
 
             <button
               onClick={() => setViewMode('registry')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out flex items-center gap-2 cursor-pointer select-none ${
-                viewMode === 'registry'
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,box-shadow] duration-150 ease-out flex items-center gap-2 cursor-pointer select-none ${viewMode === 'registry'
                   ? 'bg-white text-gray-900 shadow-xs'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
-              }`}
+                }`}
             >
               <svg className="w-3.5 h-3.5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -96,7 +108,7 @@ export const TendersPortal: React.FC = () => {
                 <line x1="16" y1="17" x2="8" y2="17" />
                 <line x1="10" y1="9" x2="8" y2="9" />
               </svg>
-              <span>Full Registry ({tenders.length})</span>
+              <span>All Tenders ({tenders.length})</span>
             </button>
           </div>
 
@@ -104,7 +116,7 @@ export const TendersPortal: React.FC = () => {
             <button
               onClick={loadTenders}
               className="p-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs transition-colors shadow-xs cursor-pointer"
-              title="Refresh Registry"
+              title="Refresh Tenders"
             >
               <svg className="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.19" />
@@ -159,20 +171,40 @@ export const TendersPortal: React.FC = () => {
           <div className="space-y-6">
             {/* Controls Bar: Search & Status Filters */}
             <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-              <div className="relative flex-1 max-w-md">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search tender reference, title, or department..."
-                  className="w-full pl-9 pr-4 py-2 rounded-full bg-white border border-gray-200 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#22C55E] shadow-xs transition-colors"
-                  onFocus={(e) => { e.currentTarget.style.borderColor = '#22C55E'; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E7EB'; }}
-                />
-                <svg className="w-3.5 h-3.5 text-gray-400 absolute left-3.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
+              <div className="flex items-center gap-2 flex-1 max-w-xl">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search tender reference, title, or department..."
+                    className="w-full pl-9 pr-4 py-2 rounded-full bg-white border border-gray-200 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#22C55E] shadow-xs transition-colors"
+                    onFocus={(e) => { e.currentTarget.style.borderColor = '#22C55E'; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E7EB'; }}
+                  />
+                  <svg className="w-3.5 h-3.5 text-gray-400 absolute left-3.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </div>
+                <button
+                  onClick={loadTenders}
+                  className="p-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs transition-colors shadow-xs cursor-pointer shrink-0"
+                  title="Refresh Tenders"
+                >
+                  <svg className="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.19" />
+                  </svg>
+                </button>
+                {isOfficerOrAdmin && (
+                  <button
+                    onClick={() => setIsFormModalOpen(true)}
+                    className="px-3.5 py-2 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-medium shadow-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+                  >
+                    <span className="text-sm leading-none">+</span>
+                    <span>Create Tender</span>
+                  </button>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-1.5 text-xs">
@@ -181,11 +213,10 @@ export const TendersPortal: React.FC = () => {
                     <button
                       key={st}
                       onClick={() => setStatusFilter(st)}
-                      className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-colors duration-150 cursor-pointer select-none ${
-                        statusFilter === st
+                      className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-colors duration-150 cursor-pointer select-none ${statusFilter === st
                           ? 'bg-[#18181B] text-white shadow-xs'
                           : 'bg-white text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200'
-                      }`}
+                        }`}
                     >
                       {st}
                     </button>
@@ -193,189 +224,187 @@ export const TendersPortal: React.FC = () => {
                 )}
               </div>
             </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Tenders List */}
-            <div className="lg:col-span-1 space-y-3">
-              <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
-                <span>Tenders ({filteredTenders.length})</span>
-                <span>Click to inspect</span>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Tenders List */}
+              <div className="lg:col-span-1 space-y-3">
+                <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                  <span>Tenders ({filteredTenders.length})</span>
+                  <span>Click to inspect</span>
+                </div>
+
+                {isLoading ? (
+                  <div className="card-glass p-8 text-center text-xs text-slate-400 animate-pulse">
+                    Loading tenders...
+                  </div>
+                ) : filteredTenders.length === 0 ? (
+                  <div className="card-glass p-8 text-center text-xs text-slate-500">
+                    No tenders matching current filter.
+                  </div>
+                ) : (
+                  <div className="space-y-2.5">
+                    {filteredTenders.map((t) => (
+                      <div
+                        key={t.id}
+                        onClick={() => {
+                          setInlineSelectedTender(t);
+                          if (isOfficerOrAdmin) {
+                            setSelectedTenderIdForDetail(t.id);
+                          }
+                        }}
+                        className={`p-4 rounded-2xl border transition-all cursor-pointer ${inlineSelectedTender?.id === t.id
+                            ? 'bg-blue-50/60 border-blue-500 shadow-xs ring-1 ring-blue-500/30'
+                            : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xs'
+                          }`}
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                          <span className="text-[11px] font-semibold text-blue-600">
+                            {t.reference_number}
+                          </span>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase ${t.status === 'published' || t.status === 'open' || t.status === 'OPEN' || t.status === 'PUBLISHED'
+                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                : t.status === 'draft' || t.status === 'DRAFT'
+                                  ? 'bg-gray-100 text-gray-600 border border-gray-200'
+                                  : t.status === 'closed' || t.status === 'CLOSED'
+                                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                              }`}
+                          >
+                            {t.status}
+                          </span>
+                        </div>
+
+                        <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">{t.title}</h4>
+
+                        <div className="text-[11px] text-gray-500 mt-2 flex justify-between">
+                          <span className="truncate max-w-[140px] font-medium">{t.department}</span>
+                          <span className="text-gray-400">
+                            {t.submission_deadline_at
+                              ? `Closes ${new Date(t.submission_deadline_at).toLocaleDateString()}`
+                              : 'Open'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {isLoading ? (
-                <div className="card-glass p-8 text-center text-xs text-slate-400 animate-pulse">
-                  Loading tenders...
-                </div>
-              ) : filteredTenders.length === 0 ? (
-                <div className="card-glass p-8 text-center text-xs text-slate-500">
-                  No tenders matching current filter.
-                </div>
-              ) : (
-                <div className="space-y-2.5">
-                  {filteredTenders.map((t) => (
-                    <div
-                      key={t.id}
-                      onClick={() => {
-                        setInlineSelectedTender(t);
-                        if (isOfficerOrAdmin) {
-                          setSelectedTenderIdForDetail(t.id);
-                        }
-                      }}
-                      className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                        inlineSelectedTender?.id === t.id
-                          ? 'bg-blue-50/60 border-blue-500 shadow-xs ring-1 ring-blue-500/30'
-                          : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xs'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <span className="text-[11px] font-semibold text-blue-600">
-                          {t.reference_number}
+              {/* Right Pane: Selected Tender Overview / Actions */}
+              <div className="lg:col-span-2 space-y-6">
+                {inlineSelectedTender ? (
+                  <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-xs space-y-6">
+                    <div className="border-b border-gray-100 pb-5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-semibold text-blue-600">
+                          {inlineSelectedTender.reference_number}
                         </span>
-                        <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase ${
-                            t.status === 'published' || t.status === 'open' || t.status === 'OPEN' || t.status === 'PUBLISHED'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : t.status === 'draft' || t.status === 'DRAFT'
-                              ? 'bg-gray-100 text-gray-600 border border-gray-200'
-                              : t.status === 'closed' || t.status === 'CLOSED'
-                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                              : 'bg-amber-50 text-amber-700 border border-amber-200'
-                          }`}
-                        >
-                          {t.status}
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200 uppercase">
+                          {inlineSelectedTender.category}
                         </span>
                       </div>
 
-                      <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">{t.title}</h4>
-
-                      <div className="text-[11px] text-gray-500 mt-2 flex justify-between">
-                        <span className="truncate max-w-[140px] font-medium">{t.department}</span>
-                        <span className="text-gray-400">
-                          {t.submission_deadline_at
-                            ? `Closes ${new Date(t.submission_deadline_at).toLocaleDateString()}`
-                            : 'Open'}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Right Pane: Selected Tender Overview / Actions */}
-            <div className="lg:col-span-2 space-y-6">
-              {inlineSelectedTender ? (
-                <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-xs space-y-6">
-                  <div className="border-b border-gray-100 pb-5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs font-semibold text-blue-600">
-                        {inlineSelectedTender.reference_number}
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200 uppercase">
-                        {inlineSelectedTender.category}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-900 mt-2">
-                      {inlineSelectedTender.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                      {inlineSelectedTender.description}
-                    </p>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-gray-100 text-xs">
-                      <div>
-                        <span className="text-[10px] text-gray-400 font-medium block">STATUS</span>
-                        <span className="font-semibold text-gray-900 uppercase">
-                          {inlineSelectedTender.status}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-gray-400 font-medium block">BUDGET</span>
-                        <span className="font-bold text-emerald-600">
-                          {inlineSelectedTender.estimated_budget_paisa
-                            ? `₹${(Number(inlineSelectedTender.estimated_budget_paisa) / 10000000).toFixed(2)} Cr`
-                            : 'Confidential'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-gray-400 font-medium block">DEADLINE</span>
-                        <span className="font-semibold text-amber-700">
-                          {inlineSelectedTender.submission_deadline_at
-                            ? new Date(inlineSelectedTender.submission_deadline_at).toLocaleDateString()
-                            : '—'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-gray-400 font-medium block">DEPARTMENT</span>
-                        <span className="text-gray-700 font-medium truncate block">
-                          {inlineSelectedTender.department}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Officer Actions: Open Full Dossier */}
-                  {isOfficerOrAdmin && (
-                    <div className="p-4 rounded-xl bg-[#FBFBFD] border border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
-                      <div>
-                        <span className="text-xs font-bold text-gray-900">
-                          Tender Lifecycle Controller
-                        </span>
-                        <p className="text-[11px] text-gray-500 mt-0.5">
-                          Inspect AI criteria, sealed bidder envelopes, and execute sovereign award transitions.
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={() => setSelectedTenderIdForDetail(inlineSelectedTender.id)}
-                        className="px-4 py-2 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <span>Inspect Dossier & Lifecycle</span>
-                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Bidder Action: Submit Sealed Bid */}
-                  {user?.role_code === 'BIDDER' && (
-                    <div className="p-5 rounded-xl bg-blue-50/60 border border-blue-200 space-y-3">
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                        <h4 className="text-sm font-bold text-blue-900">
-                          Submit Your Cryptographic Sealed Bid
-                        </h4>
-                      </div>
-                      <p className="text-xs text-blue-800/80">
-                        Your bid will be mathematically encrypted (AES-256) and cannot be inspected until the official deadline passes.
+                      <h3 className="text-xl font-bold text-gray-900 mt-2">
+                        {inlineSelectedTender.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                        {inlineSelectedTender.description}
                       </p>
 
-                      <button
-                        onClick={() => setIsSealedBidModalOpen(true)}
-                        className="w-full py-2.5 px-4 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <span>Submit Sealed Bid Envelope</span>
-                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </button>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-gray-100 text-xs">
+                        <div>
+                          <span className="text-[10px] text-gray-400 font-medium block">STATUS</span>
+                          <span className="font-semibold text-gray-900 uppercase">
+                            {inlineSelectedTender.status}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-gray-400 font-medium block">BUDGET</span>
+                          <span className="font-bold text-emerald-600">
+                            {inlineSelectedTender.estimated_budget_paisa
+                              ? `₹${(Number(inlineSelectedTender.estimated_budget_paisa) / 10000000).toFixed(2)} Cr`
+                              : 'Confidential'}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-gray-400 font-medium block">DEADLINE</span>
+                          <span className="font-semibold text-amber-700">
+                            {inlineSelectedTender.submission_deadline_at
+                              ? new Date(inlineSelectedTender.submission_deadline_at).toLocaleDateString()
+                              : '—'}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-gray-400 font-medium block">DEPARTMENT</span>
+                          <span className="text-gray-700 font-medium truncate block">
+                            {inlineSelectedTender.department}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center text-xs text-gray-400 shadow-xs">
-                  Select a tender from the registry to view its details.
-                </div>
-              )}
+
+                    {/* Officer Actions: Open Full Details */}
+                    {isOfficerOrAdmin && (
+                      <div className="p-4 rounded-xl bg-[#FBFBFD] border border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                        <div>
+                          <span className="text-xs font-bold text-gray-900">
+                            Tender Management & Actions
+                          </span>
+                          <p className="text-[11px] text-gray-500 mt-0.5">
+                            Check AI scoring rules, review submitted bids, and finalize tender decisions.
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={() => setSelectedTenderIdForDetail(inlineSelectedTender.id)}
+                          className="px-4 py-2 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <span>Open Tender Details</span>
+                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Bidder Action: Submit Sealed Bid */}
+                    {user?.role_code === 'BIDDER' && (
+                      <div className="p-5 rounded-xl bg-blue-50/60 border border-blue-200 space-y-3">
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                          </svg>
+                          <h4 className="text-sm font-bold text-blue-900">
+                            Submit Your Secret Bid
+                          </h4>
+                        </div>
+                        <p className="text-xs text-blue-800/80">
+                          Your bid is safely locked and cannot be seen by anyone until the bidding deadline passes.
+                        </p>
+
+                        <button
+                          onClick={() => setIsSealedBidModalOpen(true)}
+                          className="w-full py-2.5 px-4 rounded-full bg-[#18181B] hover:bg-black text-white font-medium text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>Submit Locked Bid</span>
+                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center text-xs text-gray-400 shadow-xs">
+                    Select a tender from the registry to view its details.
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
       {/* Tender Creation / Edit Modal */}
       <TenderFormModal
         isOpen={isFormModalOpen}

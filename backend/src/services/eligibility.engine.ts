@@ -12,7 +12,7 @@
  * of company owners/directors are strictly prohibited and programmatically filtered.
  */
 
-import { Company, CompanyDocument, TenderRequirement } from '../types/database';
+import { Company, CompanyDocument, TenderRequirement, BidderOsintProfile } from '../types/database';
 
 export interface SingleCheckResult {
   requirementId: string;
@@ -39,6 +39,7 @@ export interface BidderEligibilityReport {
   checks: SingleCheckResult[];
   evaluatedAt: string;
   nonDiscriminationVerified: boolean;
+  osintProfile?: BidderOsintProfile;
 }
 
 // Prohibited non-corporate attributes to guarantee zero discrimination

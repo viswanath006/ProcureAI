@@ -11,18 +11,53 @@ Analyzes:
 Output: NORMAL | LOW RISK | MEDIUM RISK | HIGH RISK
 """
 
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
+from datetime import datetime, timezone
 import numpy as np
 from sklearn.ensemble import IsolationForest
 
 from ..models.anomaly import BidAnomalyProfile, BidAnomalyFactor
 from ..models.evaluation import BidderEvaluationInput, TenderEvaluationContext
+from .collusion import CollusionPatternDetector
+
+
+def _calculate_company_age_days(bid: BidderEvaluationInput) -> float:
+    """Calculates company age in days at evaluation time from incorporation_date or operations."""
+    if bid.incorporation_date:
+        raw = str(bid.incorporation_date).strip()
+        if "T" in raw:
+            raw = raw.split("T")[0]
+        for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d", "%d.%m.%Y"):
+            try:
+                dt = datetime.strptime(raw[:10], fmt)
+                age = (datetime.now(timezone.utc).date() - dt.date()).days
+                return max(0.0, float(age))
+            except ValueError:
+                continue
+
+    if bid.osint_profile and isinstance(bid.osint_profile, dict):
+        inc = bid.osint_profile.get("incorporation_date")
+        if inc:
+            raw = str(inc).strip()
+            if "T" in raw:
+                raw = raw.split("T")[0]
+            for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d", "%d.%m.%Y"):
+                try:
+                    dt = datetime.strptime(raw[:10], fmt)
+                    age = (datetime.now(timezone.utc).date() - dt.date()).days
+                    return max(0.0, float(age))
+                except ValueError:
+                    continue
+
+    years = float(bid.years_in_operation) if bid.years_in_operation is not None else 5.0
+    return max(0.0, years * 365.0)
 
 
 class IsolationForestAnomalyDetector:
     """
     Evaluates multi-dimensional bid features using scikit-learn Isolation Forest
     and heuristic validation to classify bids into standard risk tiers.
+    Extended with OSINT features: cross-bidder collusion flag and statutory company age.
     """
 
     @classmethod
@@ -30,10 +65,11 @@ class IsolationForestAnomalyDetector:
         cls,
         bid: BidderEvaluationInput,
         all_bids: List[BidderEvaluationInput],
-        tender: TenderEvaluationContext
+        tender: TenderEvaluationContext,
+        collusion_flag: bool = False
     ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
-        Extracts 7 analytical dimensions for a bid:
+        Extracts 9 analytical dimensions (10 features) for a bid:
         1. Price deviation vs median and budget
         2. Unusual pricing digits / roundness
         3. Repeated bid margin
@@ -41,6 +77,8 @@ class IsolationForestAnomalyDetector:
         5. Submission timing anomaly
         6. Nearest price similarity ratio
         7. Historical operational track record deviation
+        8. Cross-bidder collusion flag (shared address/directors)
+        9. Company age in days at bid time
         """
         prices = [b.bid_amount_inr for b in all_bids if b.bid_amount_inr > 0]
         median_price = float(np.median(prices)) if prices else float(bid.bid_amount_inr)
@@ -88,6 +126,10 @@ class IsolationForestAnomalyDetector:
         rating = float(perf.get("avg_rating", 4.0))
         historical_feature = 1.0 if (rating < 3.5 and dev_vs_budget < -0.3) else 0.0
 
+        # 8 & 9: OSINT Enrichment Features
+        collusion_val = 1.0 if (collusion_flag or getattr(bid, "collusion_flag", False)) else 0.0
+        company_age_days = _calculate_company_age_days(bid)
+
         feature_vector = np.array([
             abs(dev_vs_budget),
             abs(dev_vs_median),
@@ -97,6 +139,8 @@ class IsolationForestAnomalyDetector:
             timing_anomaly,
             similarity_feature,
             historical_feature,
+            collusion_val,
+            company_age_days,
         ], dtype=np.float64)
 
         metadata = {
@@ -106,6 +150,8 @@ class IsolationForestAnomalyDetector:
             "timing_anomaly": bool(timing_anomaly > 0),
             "min_dist_pct": round(min_dist_pct * 100, 2) if other_prices else 20.0,
             "is_price_similar": bool(similarity_feature > 0),
+            "collusion_flag": bool(collusion_val > 0),
+            "company_age_days": round(company_age_days, 1),
         }
 
         return feature_vector, metadata
@@ -118,27 +164,35 @@ class IsolationForestAnomalyDetector:
     ) -> List[BidAnomalyProfile]:
         """
         Executes Isolation Forest anomaly detection on all bids in the tender.
+        Includes cross-bidder collusion verification and statutory company age features.
         """
         if not bids:
             return []
 
-        # Extract features for all bids
+        # 1. Run cross-bidder OSINT collusion detection upfront
+        collusion_map, collusion_indicators = CollusionPatternDetector.detect_cross_bidder_osint_collusion(bids)
+
+        # 2. Extract 10 features for all bids
         vectors = []
         metas = []
         for bid in bids:
-            vec, meta = cls.extract_features(bid, bids, tender)
+            c_info = collusion_map.get(bid.bid_id, {})
+            is_c = bool(c_info.get("collusion_flag", False) or getattr(bid, "collusion_flag", False))
+            vec, meta = cls.extract_features(bid, bids, tender, collusion_flag=is_c)
             vectors.append(vec)
             metas.append(meta)
 
         X = np.array(vectors)
 
-        # Synthesize typical procurement background distribution for calibration
+        # 3. Synthesize typical procurement background distribution for calibration (10 dims)
         np.random.seed(42)
         n_background = 40
-        X_bg = np.random.normal(loc=[0.08, 0.05, 0.0, 0.0, 2.5, 0.0, 0.0, 0.0],
-                                scale=[0.05, 0.04, 0.1, 0.1, 1.0, 0.1, 0.05, 0.05],
-                                size=(n_background, 8))
-        X_bg = np.clip(X_bg, 0.0, 10.0)
+        # Background baseline: typical tender with 0 collusion, average company age ~3650 days (~10 yrs)
+        bg_loc = [0.08, 0.05, 0.0, 0.0, 2.5, 0.0, 0.0, 0.0, 0.0, 3650.0]
+        bg_scale = [0.05, 0.04, 0.1, 0.1, 1.0, 0.1, 0.05, 0.05, 0.05, 1500.0]
+        X_bg = np.random.normal(loc=bg_loc, scale=bg_scale, size=(n_background, 10))
+        X_bg[:, 0:9] = np.clip(X_bg[:, 0:9], 0.0, 10.0)
+        X_bg[:, 9] = np.clip(X_bg[:, 9], 100.0, 30000.0)
 
         # Combine background and current bids
         X_train = np.vstack([X_bg, X])
@@ -210,9 +264,46 @@ class IsolationForestAnomalyDetector:
                 description=f"Nearest competing bid is within {meta['min_dist_pct']:.2f}% proximity."
             ))
 
+            # 5. Cross-bidder collusion factor
+            c_info = collusion_map.get(bid.bid_id, {})
+            is_collusion = meta["collusion_flag"] or c_info.get("collusion_flag", False)
+            c_reasons = c_info.get("reasons", [])
+            if is_collusion:
+                for cr in c_reasons:
+                    risks.append(f"Risk Indicator: Collusion pattern — {cr}.")
+                if not c_reasons:
+                    risks.append("Risk Indicator: Potential collusion detected — shared corporate identity/ties.")
+            factors.append(BidAnomalyFactor(
+                name="Cross-Bidder Collusion Indicator",
+                code="collusion_indicator",
+                value=1.0 if is_collusion else 0.0,
+                is_anomaly=is_collusion,
+                description=(
+                    f"Collusion signals identified: {'; '.join(c_reasons)}"
+                    if is_collusion
+                    else "No shared corporate address, director, or cartel ties detected."
+                )
+            ))
+
+            # 6. Company statutory age factor
+            age_days = meta["company_age_days"]
+            is_new_co = age_days < 180.0
+            if is_new_co:
+                risks.append(f"Risk Indicator: Recently incorporated entity ({int(age_days)} days old at tender evaluation).")
+            factors.append(BidAnomalyFactor(
+                name="Company Statutory Age",
+                code="company_age_days",
+                value=age_days,
+                is_anomaly=is_new_co,
+                description=f"Company age: {int(age_days)} days ({round(age_days/365.0, 1)} years since incorporation)."
+            ))
+
             # Determine Risk Tier based on Isolation Forest score + specific risks
             # Output MUST be one of: NORMAL | LOW RISK | MEDIUM RISK | HIGH RISK
-            if score < -0.10 or len(risks) >= 3 or abs(price_dev) >= 38.0:
+            if is_collusion:
+                risk_tier = "HIGH RISK"
+                is_outlier = True
+            elif score < -0.10 or len(risks) >= 3 or abs(price_dev) >= 38.0:
                 risk_tier = "HIGH RISK"
                 is_outlier = True
             elif score < 0.00 or len(risks) == 2 or abs(price_dev) >= 25.0 or meta["is_price_similar"]:
@@ -224,6 +315,11 @@ class IsolationForestAnomalyDetector:
             else:
                 risk_tier = "NORMAL"
                 is_outlier = False
+
+            osint_prof = getattr(bid, "osint_profile", None)
+            osint_status = getattr(bid, "osint_verification_status", None)
+            if not osint_status and isinstance(osint_prof, dict):
+                osint_status = osint_prof.get("verification_status", "verified")
 
             profiles.append(BidAnomalyProfile(
                 bid_id=bid.bid_id,
@@ -237,6 +333,10 @@ class IsolationForestAnomalyDetector:
                 unusual_pricing_flag=meta["unusual_pricing"],
                 timing_anomaly_flag=meta["timing_anomaly"],
                 price_similarity_flag=meta["is_price_similar"],
+                collusion_flag=is_collusion,
+                collusion_reasons=c_reasons,
+                osint_verification_status=osint_status or "verified",
+                osint_details=osint_prof,
                 factors=factors,
                 risk_indicators=risks
             ))

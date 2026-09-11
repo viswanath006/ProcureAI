@@ -258,11 +258,11 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                {initialData ? 'Update Procurement Tender' : 'Create Government Procurement Tender'}
+                {initialData ? 'Edit Tender' : 'Create New Tender'}
               </h3>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Author tender specifications, configure strict eligibility gates, and calibrate weighted evaluation criteria.
+              Set tender details, required conditions for bidders, and AI scoring weights.
             </p>
           </div>
           <button
@@ -288,7 +288,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            1. General Info & Budget
+            1. Basic Info & Budget
           </button>
           <button
             type="button"
@@ -299,7 +299,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            2. Eligibility Criteria ({requirements.length})
+            2. Bidder Requirements ({requirements.length})
           </button>
           <button
             type="button"
@@ -310,7 +310,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            <span>3. Evaluation Weights ({totalWeight}%)</span>
+            <span>3. Scoring Rules & Weights ({totalWeight}%)</span>
             {isWeightBalanced ? (
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
             ) : (

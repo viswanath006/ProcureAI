@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/auth.middleware';
 import { authorize } from '../middleware/rbac.middleware';
 import {
+  listTenders,
   createTender,
   updateTenderDraft,
   publishTender,
@@ -25,6 +26,12 @@ router.get(
 );
 
 // ── Tender Management Endpoints ───────────────────────────────────────────────
+router.get(
+  '/',
+  authorize('BIDDER', 'GOVT_OFFICER', 'AUDITOR', 'ADMIN', 'EVALUATOR'),
+  listTenders
+);
+
 router.post(
   '/',
   authorize('GOVT_OFFICER', 'ADMIN'),

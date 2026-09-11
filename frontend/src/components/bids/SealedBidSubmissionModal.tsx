@@ -80,13 +80,13 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
     setErrorMessage(null);
 
     // Visual sealing pipeline simulation
-    setSealingStep('1/3: Encrypting commercial proposal with AES-256-GCM...');
+    setSealingStep('1/3: Safely locking your bid details...');
     await new Promise((r) => setTimeout(r, 600));
 
-    setSealingStep('2/3: Computing canonical SHA-256 integrity hash...');
+    setSealingStep('2/3: Creating a tamper-proof digital fingerprint...');
     await new Promise((r) => setTimeout(r, 600));
 
-    setSealingStep('3/3: Locking sealed envelope into cryptographic registry...');
+    setSealingStep('3/3: Securely storing your sealed bid in the vault...');
 
     const payload = {
       tenderId: tender.id,
@@ -134,7 +134,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🔒</span>
                   <h3 className="text-lg font-bold text-slate-100 font-mono">
-                    Submit Cryptographically Sealed Bid
+                    Submit Sealed (Secret) Bid
                   </h3>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
@@ -152,7 +152,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
             {/* Eligibility Gate Banner */}
             <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center text-xs">
               <div>
-                <span className="text-[10px] text-slate-400 font-mono block">BIDDER QUALIFICATION GATE</span>
+                <span className="text-[10px] text-slate-400 font-mono block">ELIGIBILITY CHECK</span>
                 <span className="font-bold text-slate-200">{companyProfile?.name || 'Your Company'}</span>
               </div>
               <div>
@@ -160,11 +160,11 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   <span className="text-slate-400 font-mono">Checking qualifications...</span>
                 ) : eligibilityPassed ? (
                   <span className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">
-                    ✓ ELIGIBILITY VERIFIED
+                    ✓ ELIGIBLE TO APPLY
                   </span>
                 ) : (
                   <span className="px-2.5 py-1 rounded bg-red-500/20 text-red-300 font-mono font-bold">
-                    ❌ ELIGIBILITY DEFICIT
+                    ❌ DOES NOT MEET REQUIREMENTS YET
                   </span>
                 )}
               </div>
@@ -181,7 +181,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] text-slate-400 font-mono block mb-1">
-                    TOTAL COMMERCIAL OFFER (INR ₹)
+                    YOUR BID PRICE (INR ₹)
                   </label>
                   <input
                     type="number"
@@ -223,7 +223,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
                 <div>
                   <label className="text-[10px] text-slate-400 font-mono block mb-1">
-                    EXECUTION SCHEDULE (DAYS)
+                    TIME TO COMPLETE WORK (DAYS)
                   </label>
                   <input
                     type="number"
@@ -265,7 +265,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
               <div>
                 <label className="text-[10px] text-slate-400 font-mono block mb-1">
-                  TECHNICAL PROPOSAL HIGHLIGHTS
+                  TECHNICAL SPECIFICATION SUMMARY
                 </label>
                 <textarea
                   rows={2}
@@ -302,14 +302,13 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
               {/* Document Vault attachments info */}
               <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
                 <div className="flex justify-between items-center font-mono text-[10px]">
-                  <span className="text-slate-400 uppercase">Attached Compliance Dossier</span>
-                  <span className="text-procure-400">{companyDocs.length} SHA-256 Hashed Documents</span>
+                  <span className="text-slate-400 uppercase">Attached Supporting Documents</span>
+                  <span className="text-procure-400">{companyDocs.length} Verified Documents</span>
                 </div>
                 <div className="space-y-1">
                   {companyDocs.map((doc, idx) => (
                     <div key={idx} className="flex justify-between text-[11px] font-mono text-slate-400">
                       <span className="truncate max-w-xs">• {doc.file_name}</span>
-                      <span className="text-[9px] text-slate-500 truncate max-w-[120px]">{doc.sha256_hash}</span>
                     </div>
                   ))}
                 </div>
@@ -327,9 +326,9 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   />
                   <div className="text-[11px] text-slate-300 leading-relaxed font-sans">
                     <span className="font-bold text-slate-100 block mb-0.5">
-                      Statutory Sealed-Bid Declaration & Finality Agreement
+                      Official Submission Declaration
                     </span>
-                    I solemnly declare that this submission is final, legally binding, and will be cryptographically sealed using AES-256-GCM. I acknowledge that once submitted, this proposal <strong className="text-rose-300">cannot be edited, deleted, or replaced</strong>.
+                    I confirm that this bid is accurate, final, and will be safely locked. I understand that once submitted, this proposal <strong className="text-rose-300">cannot be edited or deleted</strong>.
                   </div>
                 </label>
               </div>
@@ -343,7 +342,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   </div>
                 ) : (
                   <span className="text-[10px] text-slate-500 font-mono">
-                    🛡️ Zero Pre-Opening Leakage: Protected until official deadline unseal.
+                    🛡️ Completely Secret: Locked and private until the deadline passes.
                   </span>
                 )}
 
@@ -360,7 +359,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                     disabled={isSubmitting || eligibilityPassed === false}
                     className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-procure-600 to-indigo-600 hover:from-procure-500 hover:to-indigo-500 text-white font-semibold font-mono shadow-lg shadow-procure-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    <span>🔒 Lock & Seal Bid</span>
+                    <span>🔒 Lock & Submit Bid</span>
                   </button>
                 </div>
               </div>

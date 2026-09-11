@@ -34,7 +34,7 @@ export const BidderComparisonChart: React.FC<BidderComparisonChartProps> = ({
             <line x1="6" y1="20" x2="6" y2="14" />
           </svg>
           <h4 className="font-bold text-gray-900 uppercase tracking-wider text-xs">
-            Bidder Comparison Matrix (Multi-Factor Scoring)
+            Bidder Comparison & AI Scores
           </h4>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs">
@@ -77,7 +77,7 @@ export const BidderComparisonChart: React.FC<BidderComparisonChartProps> = ({
                   <span className="font-bold text-gray-900">{b.name}</span>
                   {b.isAiRecommended && (
                     <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase">
-                      TOP AI REC
+                      TOP AI PICK
                     </span>
                   )}
                 </div>

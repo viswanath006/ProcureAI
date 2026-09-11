@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { query, queryOne, queryRows, withTransaction } from '../config/database';
 import { Company, CompanyDocument, TenderRequirement, Bid } from '../types/database';
 import { evaluateBidderEligibility, BidderEligibilityReport } from '../services/eligibility.engine';
+import { OsintService } from '../services/osint.service';
 import crypto from 'crypto';
 
 async function recordAuditLog(
@@ -525,6 +526,23 @@ export async function evaluateBidEligibility(
 
     const report = evaluateBidderEligibility(requirements, company, documents, bidId);
 
+    // Trigger MCA OSINT statutory public records verification (non-blocking, never auto-rejects)
+    const cinCandidate = (company?.metadata as any)?.cin || company?.registration_number || req.body?.cin;
+    if (cinCandidate) {
+      try {
+        const osintProfile = await OsintService.verifyBidderProfile({
+          bidderId: company.id,
+          cin: String(cinCandidate),
+          declaredCompanyName: company.name,
+          declaredIncDate: (company?.metadata as any)?.incorporation_date || (company as any)?.incorporation_date,
+          registeredAddress: (company?.metadata as any)?.registered_address || (company as any)?.address,
+        });
+        report.osintProfile = osintProfile;
+      } catch (err) {
+        console.warn('OSINT verification deferred:', err);
+      }
+    }
+
     // Persist results into eligibility_results and update bid status
     try {
       await withTransaction(async (client) => {
@@ -660,6 +678,21 @@ export async function evaluateTenderEligibility(
         if (!company) continue;
 
         const report = evaluateBidderEligibility(requirements, company, documents, bid.id);
+        const cinCandidate = (company?.metadata as any)?.cin || company?.registration_number;
+        if (cinCandidate) {
+          try {
+            const osintProfile = await OsintService.verifyBidderProfile({
+              bidderId: company.id,
+              cin: String(cinCandidate),
+              declaredCompanyName: company.name,
+              declaredIncDate: (company?.metadata as any)?.incorporation_date,
+              registeredAddress: (company?.metadata as any)?.registered_address,
+            });
+            report.osintProfile = osintProfile;
+          } catch (err) {
+            console.warn('OSINT screening deferred for bidder:', company.id);
+          }
+        }
         reports.push(report);
 
         if (report.isEligible) {

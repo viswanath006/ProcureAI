@@ -28,6 +28,10 @@ class BidAnomalyProfile(BaseModel):
     unusual_pricing_flag: bool
     timing_anomaly_flag: bool
     price_similarity_flag: bool
+    collusion_flag: bool = False
+    collusion_reasons: List[str] = Field(default_factory=list)
+    osint_verification_status: str = "verified"  # "verified" | "mismatch" | "unavailable"
+    osint_details: Optional[Dict[str, Any]] = None
     factors: List[BidAnomalyFactor] = []
     risk_indicators: List[str] = []
 

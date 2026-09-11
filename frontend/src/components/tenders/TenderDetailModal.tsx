@@ -83,7 +83,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div className="bg-white rounded-3xl border border-gray-200 shadow-2xl max-w-md w-full p-8 text-center space-y-3 animate-pulse">
           <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin mx-auto" />
-          <p className="text-xs text-gray-500 font-medium">Loading tender dossier...</p>
+          <p className="text-xs text-gray-500 font-medium">Loading tender details...</p>
         </div>
       </div>,
       document.body
@@ -245,7 +245,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
         {/* ── 9-Stage Visual Lifecycle Stepper ──────────────────────── */}
         <div className="p-4 rounded-2xl bg-[#FBFBFD] border border-gray-200 space-y-3">
           <div className="flex justify-between items-center text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
-            <span>TENDER LIFECYCLE PROGRESSION</span>
+            <span>TENDER PROGRESS TRACKER</span>
             <span>STAGE {currentStageIndex + 1} OF {LIFECYCLE_STAGES.length}</span>
           </div>
 
@@ -281,10 +281,10 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                 <svg className="w-3.5 h-3.5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                 </svg>
-                <span>Permitted Next Action</span>
+                <span>Next Step</span>
               </span>
               <p className="text-[11px] text-gray-500 mt-0.5">
-                Current state is <strong className="text-blue-600">[{currentStatus}]</strong>. Proceed according to government procurement protocol.
+                Current status is <strong className="text-blue-600">[{currentStatus}]</strong>. Select an action below.
               </p>
             </div>
 
@@ -306,7 +306,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                  <span>Submit Sealed Bid</span>
+                  <span>Submit Bid</span>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
               )}
@@ -317,7 +317,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   disabled={actionLoading}
                   className="px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>Close Bidding (Cutoff)</span>
+                  <span>Close Bidding</span>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
               )}
@@ -329,7 +329,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
-                    <span>Bid Opening & Tamper Verification</span>
+                    <span>Open Bids & Check Authenticity</span>
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
                   <button
@@ -337,7 +337,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     disabled={actionLoading}
                     className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                   >
-                    <span>Unseal Cryptographic Bids</span>
+                    <span>Unlock & Reveal Bids</span>
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
                 </div>
@@ -350,7 +350,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     className="px-4 py-2 rounded-full bg-white hover:bg-gray-50 text-gray-700 text-xs font-medium border border-gray-200 transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
                     <svg className="w-3.5 h-3.5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></svg>
-                    <span>Tamper Audit Console</span>
+                    <span>Check Security Log</span>
                   </button>
 
                   <button
@@ -358,7 +358,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     className="px-4 py-2 rounded-full bg-teal-600 hover:bg-teal-700 text-white text-xs font-medium shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                    <span>Screen Bidder Eligibility</span>
+                    <span>Check Bidder Requirements</span>
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
 
@@ -368,7 +368,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     className="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /></svg>
-                    <span>Start AI Evaluation Pipeline</span>
+                    <span>Start AI Review & Scoring</span>
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
                 </div>
@@ -380,7 +380,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   disabled={actionLoading}
                   className="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>Mark Recommendations Ready</span>
+                  <span>Complete AI Review</span>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
               )}
@@ -391,7 +391,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   className="px-4 py-2 rounded-full bg-[#18181B] hover:bg-black text-white text-xs font-medium shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <svg className="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3v18" /><path d="m3 7 9-4 9 4" /><path d="M6 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M4 21h16" /></svg>
-                  <span>Authoritative Decision Console</span>
+                  <span>Award Contract / Make Decision</span>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                 </button>
               )}
@@ -402,7 +402,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium border border-gray-200 transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <svg className="w-3.5 h-3.5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                  <span>Locked Decision Record</span>
+                  <span>View Final Decision</span>
                 </button>
               )}
 
@@ -413,7 +413,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  <span>Complete Procurement Cycle</span>
+                  <span>Complete Tender</span>
                 </button>
               )}
             </div>
@@ -426,9 +426,9 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
             <div className="flex justify-between items-center">
               <h4 className="font-bold text-amber-900 text-sm flex items-center gap-2">
                 <svg className="w-4 h-4 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3v18" /><path d="m3 7 9-4 9 4" /><path d="M6 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M18 10l-3 5a3 3 0 0 0 6 0l-3-5Z" /><path d="M4 21h16" /></svg>
-                <span>Official Government Decision Record (Humans Decide)</span>
+                <span>Official Decision Record (Officer in Charge)</span>
               </h4>
-              <span className="text-[10px] text-amber-700 font-medium">Audited Exception Ledger</span>
+              <span className="text-[10px] text-amber-700 font-medium">Audit & Activity Log</span>
             </div>
 
             <form onSubmit={handleRecordDecision} className="space-y-3">
@@ -563,7 +563,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               activeTab === 'requirements' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            Eligibility ({data?.requirements?.length || 0})
+            Requirements ({data?.requirements?.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('criteria')}
@@ -571,7 +571,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               activeTab === 'criteria' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            Criteria & Weights ({data?.criteria?.length || 0})
+            Scoring Rules ({data?.criteria?.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('bids')}
@@ -579,7 +579,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               activeTab === 'bids' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            Bids ({data?.bidsCount || 0})
+            Submitted Bids ({data?.bidsCount || 0})
           </button>
           <button
             onClick={() => setActiveTab('ai')}
@@ -587,7 +587,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               activeTab === 'ai' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
             }`}
           >
-            AI Evaluations ({data?.recommendations?.length || 0})
+            AI Scores ({data?.recommendations?.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('risk')}
@@ -596,7 +596,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
             }`}
           >
             <svg className="w-3.5 h-3.5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-            <span>Risk & Anti-Bias</span>
+            <span>Risk & Fairness Checks</span>
           </button>
         </div>
 
@@ -659,7 +659,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     </div>
                     {req.is_mandatory && (
                       <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 uppercase">
-                        MANDATORY GATE
+                        REQUIRED
                       </span>
                     )}
                   </div>
@@ -697,7 +697,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               {data?.unsealedBids?.length === 0 ? (
                 <div className="p-8 text-center text-xs text-gray-400">
                   {currentStageIndex < 4
-                    ? 'Submissions are currently cryptographically locked in the sealed envelope vault until deadline.'
+                    ? 'Bids are safely locked in the secret vault until the deadline passes.'
                     : 'No bids were submitted for this tender.'}
                 </div>
               ) : (
@@ -767,7 +767,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
           onSuccess={() => {
             loadDetails();
             onRefresh();
-            setSuccess('Cryptographic sealed bid submitted and locked.');
+            setSuccess('Secret bid submitted and safely locked.');
           }}
         />
       )}
@@ -780,7 +780,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
         onSuccess={() => {
           loadDetails();
           onRefresh();
-          setSuccess('Government procurement decision officially recorded & locked.');
+          setSuccess('Tender decision saved and permanently recorded.');
         }}
       />
     </div>,

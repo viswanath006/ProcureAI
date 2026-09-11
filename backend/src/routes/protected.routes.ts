@@ -33,8 +33,9 @@ import {
   restoreValidAuditChain,
 } from '../services/auditChain.service';
 import { DEMO_CONSTANTS } from '../services/demoScenario.service';
-import { getLocalTender, saveLocalTender } from '../controllers/tender.controller';
+import { getLocalTender, saveLocalTender, loadLocalTenders } from '../controllers/tender.controller';
 import { loadLocalBids } from '../controllers/bid.controller';
+import { OsintService, lookupMcaRecordFromAiService } from '../services/osint.service';
 
 const router = Router();
 
@@ -79,44 +80,12 @@ router.get(
         }
       } catch {
         // Fallback for offline evaluation sandbox
-        tenders = [
-          {
-            id: '00000000-0000-0000-0000-000000000100',
-            reference_number: 'PROC-2026-EDU-SCH-01',
-            title: 'Government School Infrastructure Project - Phase 2',
-            category: 'infrastructure',
-            department: 'Department of School Education & Literacy',
-            estimated_budget_paisa: 10000000000,
-            submission_start_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            submission_deadline_at: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'OPEN',
-            created_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: '00000003-0000-0000-0000-000000000001',
-            reference_number: 'TENDER-SAMPLE-2026-001',
-            title: 'Smart Solar Streetlight Installation & Grid Integration',
-            category: 'energy',
-            department: 'Ministry of New & Renewable Energy',
-            estimated_budget_paisa: 4500000000,
-            submission_start_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            submission_deadline_at: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'OPEN',
-            created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: '00000000-0000-0000-0000-000000000200',
-            reference_number: 'TENDER-HEALTH-2026-04',
-            title: 'District Hospital Oxygen Generation Plant Setup',
-            category: 'healthcare',
-            department: 'Ministry of Health & Family Welfare',
-            estimated_budget_paisa: 15000000000,
-            submission_start_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-            submission_deadline_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'CLOSED',
-            created_at: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000).toISOString(),
-          },
-        ];
+        const allLocal = loadLocalTenders();
+        if (['GOVT_OFFICER', 'ADMIN', 'AUDITOR'].includes(user.roleCode)) {
+          tenders = allLocal;
+        } else {
+          tenders = allLocal.filter((t: any) => (t.status || '').toUpperCase() !== 'DRAFT');
+        }
       }
 
       res.json({ success: true, data: { tenders } });
@@ -1538,4 +1507,66 @@ router.get(
   }
 );
 
+// ═════════════════════════════════════════════════════════════════════════════
+// 12. OSINT ENRICHMENT & MCA STATUTORY PUBLIC RECORDS
+// ═════════════════════════════════════════════════════════════════════════════
+
+/**
+ * GET /osint/lookup/:cin
+ * Allowed: ALL authenticated roles
+ * Retrieves statutory MCA company master data with 30-day cache.
+ */
+router.get(
+  '/osint/lookup/:cin',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const cin = String(req.params.cin);
+      const declaredName = req.query.declared_company_name ? String(req.query.declared_company_name) : undefined;
+      const declaredDate = req.query.declared_inc_date ? String(req.query.declared_inc_date) : undefined;
+
+      const result = await lookupMcaRecordFromAiService(cin, declaredName, declaredDate);
+      res.json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * POST /osint/verify-bidder
+ * Allowed: ALL authenticated roles
+ * Verifies a bidder's company registration against MCA and persists bidder_osint_profile.
+ */
+router.post(
+  '/osint/verify-bidder',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { bidderId, cin, declaredCompanyName, declaredIncDate, registeredAddress, directors } = req.body;
+      if (!bidderId || !cin) {
+        throw new ValidationError('bidderId and cin are required', 'MISSING_FIELDS');
+      }
+
+      const profile = await OsintService.verifyBidderProfile({
+        bidderId,
+        cin,
+        declaredCompanyName,
+        declaredIncDate,
+        registeredAddress,
+        directors,
+      });
+
+      res.json({
+        success: true,
+        data: profile,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;
+

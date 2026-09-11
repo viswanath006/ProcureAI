@@ -28,10 +28,10 @@ export const HistoricalPatternsChart: React.FC<HistoricalPatternsChartProps> = (
             <polyline points="17 6 23 6 23 12" />
           </svg>
           <h4 className="font-bold text-gray-900 uppercase tracking-wider text-xs">
-            Historical Procurement Trends & Competition Index
+            Past Tender Trends & Bidding Activity
           </h4>
         </div>
-        <span className="text-xs text-gray-400 font-medium">Longitudinal Analytics</span>
+        <span className="text-xs text-gray-400 font-medium">Historical Data</span>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -45,7 +45,7 @@ export const HistoricalPatternsChart: React.FC<HistoricalPatternsChartProps> = (
               Avg Bids: <strong className="text-gray-900 font-semibold">{d.avgBids.toFixed(1)}</strong>
             </div>
             <div className="text-xs text-gray-500">
-              Override: <strong className="text-amber-600 font-semibold">{d.overrideRatePct}%</strong>
+              AI Overrides: <strong className="text-amber-600 font-semibold">{d.overrideRatePct}%</strong>
             </div>
           </div>
         ))}

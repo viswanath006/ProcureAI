@@ -11,8 +11,9 @@ Standard Output Label: "Potential suspicious pattern detected"
 Strict Safeguard: NEVER say "Company X is corrupt."
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 import itertools
+import re
 
 from ..models.anomaly import CollusionPatternIndicator
 from ..models.evaluation import BidderEvaluationInput, TenderEvaluationContext
@@ -25,6 +26,180 @@ class CollusionPatternDetector:
     """
 
     LABEL = "Potential suspicious pattern detected"
+
+    @staticmethod
+    def _normalize_address(addr: Optional[str]) -> str:
+        if not addr:
+            return ""
+        # Remove punctuation, uppercase, normalize tokens
+        s = addr.lower()
+        s = re.sub(r'[,.\-/\\#()]+', ' ', s)
+        tokens = s.split()
+        replacements = {
+            "rd": "road",
+            "st": "street",
+            "flr": "floor",
+            "pvt": "private",
+            "ltd": "limited",
+            "pl": "plot",
+            "sec": "sector",
+            "ind": "industrial",
+            "bldg": "building",
+            "apt": "apartment",
+            "gurgaon": "gurugram",
+            "bangalore": "bengaluru",
+            "bombay": "mumbai",
+            "calcutta": "kolkata",
+            "madras": "chennai",
+            "poona": "pune",
+            "no": "",
+            "near": "",
+            "opp": "",
+            "opposite": "",
+        }
+        normalized_tokens = [replacements.get(t, t) for t in tokens if len(t) > 1 or t.isdigit()]
+        return " ".join([t for t in normalized_tokens if t])
+
+    @staticmethod
+    def _normalize_name(name: Optional[str]) -> str:
+        if not name:
+            return ""
+        s = name.lower()
+        s = re.sub(r'^(mr|mrs|ms|dr|shri|smt)\.?\s+', '', s)
+        s = re.sub(r'[^a-z0-9]', '', s)
+        return s
+
+    @classmethod
+    def detect_cross_bidder_osint_collusion(
+        cls,
+        bids: List[BidderEvaluationInput]
+    ) -> Tuple[Dict[str, Dict[str, Any]], List[CollusionPatternIndicator]]:
+        """
+        Cross-checks registered_address and director names/DINs pairwise across all bidders.
+        Returns:
+        1. Mapping of bid_id -> {"collusion_flag": bool, "reasons": List[str], "matching_bidders": List[str]}
+        2. List of CollusionPatternIndicator objects for risk reporting
+        """
+        bid_map: Dict[str, Dict[str, Any]] = {
+            b.bid_id: {"collusion_flag": False, "reasons": [], "matching_bidders": []}
+            for b in bids
+        }
+        indicators: List[CollusionPatternIndicator] = []
+
+        if len(bids) < 2:
+            return bid_map, indicators
+
+        for b1, b2 in itertools.combinations(bids, 2):
+            # ── A. Check Shared Registered Address ────────────────────────────
+            addr1 = cls._normalize_address(b1.registered_address)
+            addr2 = cls._normalize_address(b2.registered_address)
+
+            has_shared_address = False
+            if addr1 and addr2 and len(addr1) >= 8 and len(addr2) >= 8:
+                if addr1 == addr2:
+                    has_shared_address = True
+                else:
+                    tokens1 = set(addr1.split())
+                    tokens2 = set(addr2.split())
+                    intersection = tokens1.intersection(tokens2)
+                    union = tokens1.union(tokens2)
+                    jaccard = len(intersection) / len(union) if union else 0.0
+                    min_len = min(len(tokens1), len(tokens2))
+                    overlap_coef = len(intersection) / min_len if min_len > 0 else 0.0
+
+                    # Match if high Jaccard (>= 0.60) or Overlap Coefficient >= 0.75 with at least 4 common tokens
+                    if (jaccard >= 0.60) or (overlap_coef >= 0.75 and len(intersection) >= 4):
+                        has_shared_address = True
+
+            if has_shared_address:
+                reason_1 = f"Shares registered corporate address with {b2.company_name} ({b2.registered_address})"
+                reason_2 = f"Shares registered corporate address with {b1.company_name} ({b1.registered_address})"
+
+                bid_map[b1.bid_id]["collusion_flag"] = True
+                bid_map[b1.bid_id]["reasons"].append(reason_1)
+                bid_map[b1.bid_id]["matching_bidders"].append(b2.company_name)
+
+                bid_map[b2.bid_id]["collusion_flag"] = True
+                bid_map[b2.bid_id]["reasons"].append(reason_2)
+                bid_map[b2.bid_id]["matching_bidders"].append(b1.company_name)
+
+                indicators.append(CollusionPatternIndicator(
+                    pattern_type="shared_registered_address",
+                    label=cls.LABEL,
+                    pattern_name="Shared Registered Corporate Address",
+                    severity="HIGH",
+                    involved_companies=[b1.company_name, b2.company_name],
+                    evidence_summary=(
+                        f"{cls.LABEL}: Direct co-location detected between competing bidders "
+                        f"{b1.company_name} and {b2.company_name} sharing registered office: "
+                        f"'{b1.registered_address}'."
+                    ),
+                    metrics={
+                        "b1_id": b1.bid_id,
+                        "b2_id": b2.bid_id,
+                        "address": b1.registered_address,
+                    }
+                ))
+
+            # ── B. Check Shared Directors or DINs ──────────────────────────────
+            dirs1 = b1.directors or []
+            dirs2 = b2.directors or []
+
+            shared_director_names = []
+            shared_dins = []
+
+            for d1 in dirs1:
+                name1 = d1.get("name", "") if isinstance(d1, dict) else str(d1)
+                din1 = str(d1.get("din", "")).strip() if isinstance(d1, dict) and d1.get("din") else ""
+                norm_name1 = cls._normalize_name(name1)
+
+                for d2 in dirs2:
+                    name2 = d2.get("name", "") if isinstance(d2, dict) else str(d2)
+                    din2 = str(d2.get("din", "")).strip() if isinstance(d2, dict) and d2.get("din") else ""
+                    norm_name2 = cls._normalize_name(name2)
+
+                    # Match by DIN first if available
+                    if din1 and din2 and din1 == din2:
+                        shared_dins.append((din1, name1))
+                    elif norm_name1 and norm_name2 and norm_name1 == norm_name2 and len(norm_name1) >= 5:
+                        shared_director_names.append(name1)
+
+            if shared_dins or shared_director_names:
+                match_desc = (
+                    f"DIN: {shared_dins[0][0]} ({shared_dins[0][1]})"
+                    if shared_dins
+                    else f"Director: {shared_director_names[0]}"
+                )
+
+                reason_1 = f"Common director/DIN identified with {b2.company_name}: {match_desc}"
+                reason_2 = f"Common director/DIN identified with {b1.company_name}: {match_desc}"
+
+                bid_map[b1.bid_id]["collusion_flag"] = True
+                bid_map[b1.bid_id]["reasons"].append(reason_1)
+                bid_map[b1.bid_id]["matching_bidders"].append(b2.company_name)
+
+                bid_map[b2.bid_id]["collusion_flag"] = True
+                bid_map[b2.bid_id]["reasons"].append(reason_2)
+                bid_map[b2.bid_id]["matching_bidders"].append(b1.company_name)
+
+                indicators.append(CollusionPatternIndicator(
+                    pattern_type="shared_director_din",
+                    label=cls.LABEL,
+                    pattern_name="Common Board Director or Signatory (DIN Link)",
+                    severity="HIGH",
+                    involved_companies=[b1.company_name, b2.company_name],
+                    evidence_summary=(
+                        f"{cls.LABEL}: Cross-company directorship identified between "
+                        f"{b1.company_name} and {b2.company_name} through common key personnel: {match_desc}."
+                    ),
+                    metrics={
+                        "b1_id": b1.bid_id,
+                        "b2_id": b2.bid_id,
+                        "shared_identifier": match_desc,
+                    }
+                ))
+
+        return bid_map, indicators
 
     @classmethod
     def analyze_patterns(
@@ -40,6 +215,10 @@ class CollusionPatternDetector:
 
         if len(bids) < 2:
             return indicators
+
+        # ── 0. Cross-Bidder OSINT Checks (Shared Address & Common Directors) ──
+        _, osint_indicators = cls.detect_cross_bidder_osint_collusion(bids)
+        indicators.extend(osint_indicators)
 
         # ── 1. Unusually Similar Bids ─────────────────────────────────────────
         # Check pairwise price differences (< 0.5% difference)

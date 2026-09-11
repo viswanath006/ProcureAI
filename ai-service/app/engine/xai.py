@@ -203,6 +203,26 @@ class ShapExplainabilityEngine:
                 summary=summary
             ))
 
+        # OSINT and Cross-Bidder Collusion Integration into Explainability
+        collusion_reasons = getattr(bid, "collusion_reasons", []) or []
+        osint_prof = getattr(bid, "osint_profile", None)
+        if isinstance(osint_prof, dict) and "collusion_flags" in osint_prof:
+            for cf in osint_prof.get("collusion_flags", []):
+                if cf not in collusion_reasons:
+                    collusion_reasons.append(cf)
+
+        for cr in collusion_reasons:
+            negative_contributors.append(f"- Potential collusion: {cr}")
+
+        osint_status = getattr(bid, "osint_verification_status", None)
+        if not osint_status and isinstance(osint_prof, dict):
+            osint_status = osint_prof.get("verification_status")
+
+        if osint_status == "mismatch":
+            negative_contributors.append("- OSINT Discrepancy: declared corporate data differs from MCA public records")
+        elif osint_status == "verified" and not collusion_reasons:
+            positive_contributors.append("+ MCA statutory verification confirmed (Active)")
+
         # Guarantee at least one contributor in each if applicable
         if not positive_contributors:
             positive_contributors.append("+ Meets mandatory eligibility requirements")
@@ -217,6 +237,9 @@ class ShapExplainabilityEngine:
                 f"{bid.company_name} was recommended for award because it achieved the highest composite "
                 f"score ({total_score:.1f}/100), driven by strong ratings in {factors_text} with optimal risk management."
             )
+            if collusion_reasons:
+                why_summary += f" Note: Collusion flags detected ({'; '.join(collusion_reasons)})."
+
             narrative = (
                 f"The AI evaluated {bid.company_name} against the full tender specifications. "
                 f"Its commercial proposal scored {ratings.get('Price', 'Good')}, while technical capability was rated "
@@ -224,11 +247,16 @@ class ShapExplainabilityEngine:
                 f"and past performance verified as {ratings.get('Past performance', 'Good')}. "
                 f"Overall execution risk is categorized as {ratings.get('Risk', 'Low')}."
             )
+            if collusion_reasons:
+                narrative += f" Public records warning: Cross-bidder checks detected {'; '.join(collusion_reasons)}."
         elif rank == 2:
             why_summary = (
                 f"{bid.company_name} is shortlisted as a strong alternative ({total_score:.1f}/100). "
                 f"Demonstrates solid qualifications but trailed the leading bidder on key dimensional margins."
             )
+            if collusion_reasons:
+                why_summary += f" Flagged for collusion review: {'; '.join(collusion_reasons)}."
+
             narrative = (
                 f"Evaluated as Rank #2. Strengths include: {', '.join([p.replace('+ ', '') for p in positive_contributors])}. "
                 f"Areas with lower comparative contribution: {', '.join([n.replace('- ', '') for n in negative_contributors])}."
@@ -238,6 +266,9 @@ class ShapExplainabilityEngine:
                 f"{bid.company_name} was ranked #{rank} ({total_score:.1f}/100). "
                 f"While qualifying on mandatory gates, other proposals presented superior balance across price and capability."
             )
+            if collusion_reasons:
+                why_summary += f" Collusion risk detected: {'; '.join(collusion_reasons)}."
+
             narrative = (
                 f"Composite score placed proposal in reserve. Negative contributors included: "
                 f"{', '.join([n.replace('- ', '') for n in negative_contributors])}."

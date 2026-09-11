@@ -152,14 +152,14 @@ export const AuditorPortal: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold text-gray-900 tracking-tight">
-                  Tamper-Evident CAG Audit System & Cryptographic Ledger
+                  Tamper-Proof Audit System & Activity Record
                 </h2>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                   CAG Oversight
                 </span>
               </div>
               <p className="text-xs text-gray-400 mt-0.5">
-                HASH(N) = SHA256(event_data + HASH(N-1)) · Immutable Cryptographic Chaining
+                Every action is permanently recorded so no one can alter past records.
               </p>
             </div>
           </div>
@@ -175,7 +175,7 @@ export const AuditorPortal: React.FC = () => {
                   : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
               }`}
             >
-              Audit Chain ({logs.length})
+              Activity History ({logs.length})
             </button>
             <button
               onClick={() => setActiveTab('decisions')}
@@ -185,7 +185,7 @@ export const AuditorPortal: React.FC = () => {
                   : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
               }`}
             >
-              Decisions ({decisions.length})
+              Officer Decisions ({decisions.length})
             </button>
           </div>
 
@@ -193,7 +193,7 @@ export const AuditorPortal: React.FC = () => {
             onClick={loadData}
             disabled={isLoading}
             className="p-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 transition-colors shadow-xs cursor-pointer"
-            title="Refresh Ledger"
+            title="Refresh Audit Logs"
           >
             <svg className="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.19" />
@@ -232,12 +232,12 @@ export const AuditorPortal: React.FC = () => {
             </div>
             <div>
               <h3 className={`text-sm font-bold tracking-tight ${isValid ? 'text-emerald-950' : 'text-rose-950'}`}>
-                {verificationResult?.statusText || (isValid ? 'AUDIT CHAIN VALID & IMMUTABLE' : 'AUDIT INTEGRITY FAILURE')}
+                {verificationResult?.statusText || (isValid ? 'ALL RECORDS VERIFIED & UNTOUCHED' : 'TAMPER ALERT: RECORD CHANGED')}
               </h3>
               <p className={`text-xs mt-0.5 ${isValid ? 'text-emerald-800' : 'text-rose-800'}`}>
                 {isValid
-                  ? `Cryptographic proof verified across ${verificationResult?.totalBlocks || logs.length} sequential blocks without tampering.`
-                  : `TAMPER ALERT: ${verificationResult?.failureDetails?.reason || 'Unauthorized block alteration detected'}`}
+                  ? `All ${verificationResult?.totalBlocks || logs.length} recorded events verified. Zero tampering detected.`
+                  : `TAMPER ALERT: ${verificationResult?.failureDetails?.reason || 'Unauthorized record alteration detected'}`}
               </p>
             </div>
           </div>
@@ -251,7 +251,7 @@ export const AuditorPortal: React.FC = () => {
               {isVerifying ? (
                 <>
                   <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Verifying Chain...</span>
+                  <span>Checking Records...</span>
                 </>
               ) : (
                 <>
@@ -259,7 +259,7 @@ export const AuditorPortal: React.FC = () => {
                     <circle cx="11" cy="11" r="8" />
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                   </svg>
-                  <span>Verify Cryptographic Audit Chain</span>
+                  <span>Check Records For Tampering</span>
                 </>
               )}
             </button>
@@ -270,7 +270,7 @@ export const AuditorPortal: React.FC = () => {
                 className="px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-medium shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                 title="Demonstrates tamper-detection capability"
               >
-                <span>Simulate Tamper</span>
+                <span>Test Tamper Alarm</span>
                 <svg className="w-3.5 h-3.5 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
                   <line x1="12" y1="9" x2="12" y2="13" />
@@ -285,7 +285,7 @@ export const AuditorPortal: React.FC = () => {
                 <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                <span>Restore Valid Chain</span>
+                <span>Restore Original Records</span>
               </button>
             )}
           </div>
@@ -513,7 +513,7 @@ export const AuditorPortal: React.FC = () => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                                   <div className="p-3 rounded-xl bg-white border border-gray-200 space-y-1 shadow-xs">
-                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Cryptographic Hashes</span>
+                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Digital Codes (Record IDs)</span>
                                     <div className="text-xs text-gray-700 break-all select-all font-medium">
                                       <span className="text-gray-400 font-normal">PREV: </span>{log.prev_hash}
                                     </div>
@@ -523,7 +523,7 @@ export const AuditorPortal: React.FC = () => {
                                   </div>
 
                                   <div className="p-3 rounded-xl bg-white border border-gray-200 space-y-1 shadow-xs">
-                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Structured Event Details</span>
+                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Event Information</span>
                                     <pre className="text-xs text-gray-800 overflow-x-auto p-1 max-h-28">
                                       {JSON.stringify(log.details, null, 2)}
                                     </pre>
@@ -547,7 +547,7 @@ export const AuditorPortal: React.FC = () => {
           <div className="rounded-2xl bg-white border border-gray-200 p-6 shadow-xs space-y-4">
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <span className="font-bold text-gray-900 uppercase tracking-wider text-xs">
-                Authoritative Government Decisions & Overrides Ledger
+                Government Decisions & Officer Overrides Record
               </span>
               <span className="text-xs text-gray-400">
                 Audited Decisions: {decisions.length}
@@ -588,7 +588,7 @@ export const AuditorPortal: React.FC = () => {
                   {d.override_reason && (
                     <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs space-y-1 text-amber-900">
                       <span className="font-bold block">
-                        DOCUMENTED OVERRIDE JUSTIFICATION [{d.override_reason}]:
+                        OFFICER'S REASON FOR OVERRIDING AI [{d.override_reason}]:
                       </span>
                       <p className="text-amber-800">{d.override_detail}</p>
                     </div>

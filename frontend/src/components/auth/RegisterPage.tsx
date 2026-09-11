@@ -130,13 +130,12 @@ export const RegisterPage: React.FC = () => {
 
       {/* ── 1. Top Navigation Bar ── */}
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px 48px 0px', position: 'relative', zIndex: 1 }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-          <div style={{ width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg viewBox="0 0 24 24" fill="none" style={{ width: 24, height: 24 }} stroke="#22C55E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="5" stroke="#22C55E" strokeWidth="2.2" />
-              <path d="M8 12l3 3 5-6" stroke="#22C55E" strokeWidth="2.2" />
-            </svg>
-          </div>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+          <img
+            src="/logo.png"
+            alt="ProcureAI Logo"
+            style={{ width: 32, height: 32, objectFit: 'contain', flexShrink: 0 }}
+          />
           <div style={{ lineHeight: 1.1 }}>
             <div style={{ fontSize: 16, fontWeight: 600, color: '#111827', fontFamily: FONT, letterSpacing: '-0.01em' }}>procureai</div>
             <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 400, fontFamily: FONT }}>
