@@ -66,8 +66,6 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* ── Phase 14: End-to-End Procurement Demonstration Console ── */}
-      <DemoScenarioConsole />
 
       {/* ── Apple-Style Bento KPI Metric Tiles ────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
@@ -592,6 +590,9 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           )}
         </div>
       </div>
+
+      {/* ── 17-Step Lifecycle Workflow Tracker ──────────────────── */}
+      <DemoScenarioConsole />
     </div>
   );
 };
