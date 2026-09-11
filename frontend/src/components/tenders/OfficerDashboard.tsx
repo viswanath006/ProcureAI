@@ -70,10 +70,13 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
       {/* ── Apple-Style Bento KPI Metric Tiles ────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
         {/* Card 1: Active Tenders */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/Active Tenders.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Active Tenders</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Active Tenders</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-emerald-100/80 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
@@ -86,18 +89,21 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             {summary.activeTenders}
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded-full border border-emerald-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-white/80 px-2 py-0.5 rounded-full border border-emerald-200/60 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Open for bidding
             </span>
           </div>
         </div>
 
-        {/* Card 2: Bids Awaiting Evaluation */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        {/* Card 2: Locked Bids */}
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/Locked Bids.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Locked Bids</span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100/80 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Locked Bids</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-blue-100/80 flex items-center justify-center text-blue-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -108,7 +114,7 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             {summary.closedTenders || evaluatingTenders.length || 2}
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-blue-700 bg-blue-50/80 px-2 py-0.5 rounded-full border border-blue-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-blue-700 bg-white/80 px-2 py-0.5 rounded-full border border-blue-200/60 backdrop-blur-sm">
               <svg className="w-2.5 h-2.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -118,11 +124,14 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
           </div>
         </div>
 
-        {/* Card 3: AI Recommendations */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        {/* Card 3: AI Reports */}
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/AI Reports.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">AI Reports</span>
-            <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100/80 flex items-center justify-center text-purple-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">AI Reports</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-purple-100/80 flex items-center justify-center text-purple-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <rect x="9" y="9" width="6" height="6" />
@@ -141,17 +150,20 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             {summary.recommendationsPending || 1}
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-purple-700 bg-purple-50/80 px-2 py-0.5 rounded-full border border-purple-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-purple-700 bg-white/80 px-2 py-0.5 rounded-full border border-purple-200/60 backdrop-blur-sm">
               Scored by AI
             </span>
           </div>
         </div>
 
-        {/* Card 4: High-Risk Tenders */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        {/* Card 4: Risk Alerts */}
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/Risk Alerts.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Risk Alerts</span>
-            <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100/80 flex items-center justify-center text-rose-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Risk Alerts</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-rose-100/80 flex items-center justify-center text-rose-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
                 <line x1="12" y1="9" x2="12" y2="13" />
@@ -163,17 +175,20 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             {summary.highRiskCount || 1}
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-rose-700 bg-rose-50/80 px-2 py-0.5 rounded-full border border-rose-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-rose-700 bg-white/80 px-2 py-0.5 rounded-full border border-rose-200/60 backdrop-blur-sm">
               Checked for unusual activity
             </span>
           </div>
         </div>
 
-        {/* Card 5: Pending Decisions */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        {/* Card 5: Decisions Needed */}
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/Decisions Needed.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Decisions Needed</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-amber-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Decisions Needed</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-amber-100/80 flex items-center justify-center text-amber-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 3v18" />
                 <path d="m3 7 9-4 9 4" />
@@ -187,17 +202,20 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             {pendingRecommendations.length || 1}
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-700 bg-amber-50/80 px-2 py-0.5 rounded-full border border-amber-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-700 bg-white/80 px-2 py-0.5 rounded-full border border-amber-200/60 backdrop-blur-sm">
               Officer review needed
             </span>
           </div>
         </div>
 
-        {/* Card 6: CAG Audit Ledger */}
-        <div className="rounded-2xl bg-white border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+        {/* Card 6: Audit History */}
+        <div
+          className="rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group overflow-hidden"
+          style={{ backgroundImage: "url('/Audit History.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
           <div className="flex justify-between items-start">
-            <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Audit History</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110">
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Audit History</span>
+            <div className="w-8 h-8 rounded-xl bg-white/80 border border-emerald-100/80 flex items-center justify-center text-emerald-600 transition-transform group-hover:scale-110 backdrop-blur-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 <polyline points="9 12 11 14 15 10" />
@@ -208,12 +226,13 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
             100%
           </div>
           <div className="mt-2.5">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded-full border border-emerald-200/60">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-white/80 px-2 py-0.5 rounded-full border border-emerald-200/60 backdrop-blur-sm">
               ✓ Tamper-proof log
             </span>
           </div>
         </div>
       </div>
+
 
       {/* ── Visual Analytics & Decision Intelligence Charts ─────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
