@@ -110,10 +110,16 @@ async function migrate() {
     console.log('📋 Migration tracking table ready\n');
 
     // ── Migrations ─────────────────────────────────────────────────────────────
-    const migrationsDir = path.resolve(__dirname, '../../../database/migrations');
+    const candidateMigrationDirs = [
+      path.resolve(__dirname, '../../../database/migrations'),
+      path.resolve(__dirname, '../../database/migrations'),
+      path.resolve(process.cwd(), '../database/migrations'),
+      path.resolve(process.cwd(), 'database/migrations'),
+    ];
+    const migrationsDir = candidateMigrationDirs.find((d) => fs.existsSync(d));
 
-    if (!fs.existsSync(migrationsDir)) {
-      throw new Error(`Migrations directory not found at ${migrationsDir}`);
+    if (!migrationsDir) {
+      throw new Error(`Migrations directory not found in candidates: ${candidateMigrationDirs.join(', ')}`);
     }
     console.log(`📂 Using migrations (${migrationsDir})`);
 
@@ -128,8 +134,14 @@ async function migrate() {
     }
 
     // ── Seeds ──────────────────────────────────────────────────────────────────
-    const seedsDir = path.resolve(__dirname, '../../../database/seeds');
-    if (fs.existsSync(seedsDir)) {
+    const candidateSeedDirs = [
+      path.resolve(__dirname, '../../../database/seeds'),
+      path.resolve(__dirname, '../../database/seeds'),
+      path.resolve(process.cwd(), '../database/seeds'),
+      path.resolve(process.cwd(), 'database/seeds'),
+    ];
+    const seedsDir = candidateSeedDirs.find((d) => fs.existsSync(d));
+    if (seedsDir) {
       console.log(`\n📂 Using seeds (${seedsDir})`);
 
       const seedFiles = fs

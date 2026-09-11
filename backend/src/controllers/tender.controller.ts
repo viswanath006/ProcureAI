@@ -416,7 +416,7 @@ export async function updateTenderDraft(req: Request, res: Response, next: NextF
     }
 
     if (!existing) {
-      existing = getLocalTender(id);
+      existing = getLocalTender(String(id));
     }
 
     if (!existing) throw new NotFoundError('Tender not found', 'TENDER_NOT_FOUND');
@@ -536,7 +536,7 @@ export async function publishTender(req: Request, res: Response, next: NextFunct
     }
 
     if (!tender) {
-      tender = getLocalTender(id);
+      tender = getLocalTender(String(id));
     }
 
     if (!tender) throw new NotFoundError('Tender not found', 'TENDER_NOT_FOUND');
@@ -618,7 +618,7 @@ export async function transitionTender(req: Request, res: Response, next: NextFu
     }
 
     if (!tender) {
-      tender = getLocalTender(id);
+      tender = getLocalTender(String(id));
     }
 
     if (!tender) throw new NotFoundError('Tender not found', 'TENDER_NOT_FOUND');
@@ -768,7 +768,7 @@ export async function getTenderDetails(req: Request, res: Response, next: NextFu
     }
 
     if (!tender) {
-      const local = getLocalTender(id);
+      const local = getLocalTender(String(id));
       tender = {
         id: local.id || id || '00000000-0000-0000-0000-000000000100',
         reference_number: local.reference_number || 'PROC-2026-EDU-SCH-01',

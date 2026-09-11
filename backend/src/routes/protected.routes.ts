@@ -23,6 +23,7 @@ import {
 import {
   getTenderDecisionDossier,
   recordHumanDecision,
+  getLocalDecision,
 } from '../services/decision.service';
 import {
   recordChainEvent,
@@ -473,7 +474,7 @@ router.post(
       }
 
       if (!tender) {
-        tender = getLocalTender(id);
+        tender = getLocalTender(String(id));
       }
 
       const weights = customWeights || DEFAULT_EVALUATION_WEIGHTS;
@@ -686,7 +687,7 @@ router.post(
       }
 
       if (!tender) {
-        tender = getLocalTender(id);
+        tender = getLocalTender(String(id));
       }
 
       const weights = customWeights || DEFAULT_EVALUATION_WEIGHTS;
@@ -1159,6 +1160,10 @@ router.get(
       }
 
       if (!decision) {
+        decision = getLocalDecision(tenderId);
+      }
+
+      if (!decision) {
         return res.json({
           success: true,
           data: null,
@@ -1189,7 +1194,7 @@ router.get(
 const humanDecisionSchema = z.object({
   action: z.enum(['approve', 'reject']).default('approve'),
   decision: z.enum(['award', 'reject', 'defer', 'cancel_tender']).default('award'),
-  selected_bid_id: z.string().uuid().optional(),
+  selected_bid_id: z.string().optional().nullable(),
   rationale: z.string().optional().default(''),
   override_reason_type: z.string().optional(),
   override_reason_detail: z.string().optional(),

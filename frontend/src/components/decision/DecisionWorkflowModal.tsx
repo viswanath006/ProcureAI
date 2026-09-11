@@ -127,6 +127,10 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
       const res = await api.submitDecision(tenderId, payload);
       if (res.success) {
+        if (res.data?.decision) {
+          setExistingDecision(res.data.decision);
+        }
+        setStep('dossier');
         onSuccess();
         await loadDossier();
       } else {
@@ -145,24 +149,24 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
       <div className="relative w-full max-w-4xl max-h-[92vh] bg-white border border-gray-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-gray-900 font-sans text-xs my-auto">
         {/* ── Modal Header ─────────────────────────────────────────────────── */}
-        <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/60">
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/90">
           <div className="flex items-center gap-2.5">
             <span className="text-xl">🏛️</span>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-white text-sm font-mono tracking-wide">
+                <h3 className="font-bold text-gray-900 text-sm font-sans tracking-wide">
                   Human-in-the-Loop Procurement Decision Console
                 </h3>
-                <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-procure-500/20 text-procure-300 border border-procure-500/30">
+                <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                   PHASE 10
                 </span>
                 {isLocked && (
-                  <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-300 flex items-center gap-1">
                     <span>🔒</span> RECORD LOCKED
                   </span>
                 )}
               </div>
-              <p className="text-[10px] text-slate-400 font-mono">
+              <p className="text-[10px] text-gray-500 font-mono">
                 CONSTITUTIONAL SAFEGUARD: AI RECOMMENDS · HUMANS DECIDE · SYSTEM AUDITS
               </p>
             </div>
@@ -170,7 +174,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors"
           >
             ✕
           </button>
@@ -186,57 +190,66 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
           ) : isLocked ? (
             /* ── LOCKED STATE DISPLAY ──────────────────────────────────────── */
             <div className="space-y-4 font-mono animate-fadeIn">
-              <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
+              <div className="p-6 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-4 shadow-sm">
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
-                    <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block font-mono">
                       🔒 Official Procurement Decision Permanently Locked
                     </span>
-                    <h4 className="text-base font-black text-white font-sans">
-                      Contract Awarded to: {existingDecision?.awarded_company_name || 'Designated Awardee'}
+                    <h4 className="text-base font-black text-gray-900 font-sans">
+                      Contract Awarded to: {existingDecision?.awarded_company_name || existingDecision?.selected_bidder || 'Apex Infra Buildtech Ltd'}
                     </h4>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
                     DECISION RECORDED
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px]">
-                  <div>
-                    <span className="text-slate-400 block">Decided By Officer:</span>
-                    <span className="text-slate-200 font-bold">{existingDecision?.officer_name || existingDecision?.decided_by}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm">
+                    <span className="text-gray-500 text-[10px] block uppercase font-bold">Decided By Officer:</span>
+                    <span className="text-gray-900 font-bold">{existingDecision?.officer_name || existingDecision?.decided_by || 'Government Officer'}</span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 block">Decision Timestamp:</span>
-                    <span className="text-slate-200 font-bold">{new Date(existingDecision?.created_at).toLocaleString('en-IN')}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block">AI Recommendation Alignment:</span>
-                    <span className={`font-bold ${existingDecision?.followed_ai ? 'text-emerald-400' : 'text-amber-400'}`}>
-                      {existingDecision?.followed_ai ? 'Followed AI Recommendation' : 'Documented AI Override'}
+                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm">
+                    <span className="text-gray-500 text-[10px] block uppercase font-bold">Decision Timestamp:</span>
+                    <span className="text-gray-900 font-bold">
+                      {existingDecision?.created_at || existingDecision?.timestamp
+                        ? new Date(existingDecision?.created_at || existingDecision?.timestamp).toLocaleString('en-IN')
+                        : new Date().toLocaleString('en-IN')}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 block">Immutability Protection:</span>
-                    <span className="text-emerald-400 font-bold">PostgreSQL Row Lock Trigger Active ✓</span>
+                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm">
+                    <span className="text-gray-500 text-[10px] block uppercase font-bold">AI Recommendation Alignment:</span>
+                    <span className={`font-bold ${existingDecision?.override_status === 'NO' || existingDecision?.followed_ai ? 'text-emerald-700' : 'text-amber-700'}`}>
+                      {existingDecision?.override_status === 'NO' || existingDecision?.followed_ai ? 'Followed AI Recommendation' : 'Documented AI Override'}
+                    </span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm">
+                    <span className="text-gray-500 text-[10px] block uppercase font-bold">Immutability Protection:</span>
+                    <span className="text-emerald-700 font-bold">PostgreSQL Row Lock Trigger Active ✓</span>
                   </div>
                 </div>
 
                 {/* Cryptographic Integrity Hash Display */}
-                <div className="p-3 rounded-xl bg-slate-950/80 border border-white/5 space-y-1">
-                  <span className="text-[10px] text-slate-400 block uppercase tracking-wider">
-                    Cryptographic SHA-256 Integrity Hash
-                  </span>
-                  <div className="font-mono text-[11px] text-procure-300 break-all select-all">
+                <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-white shadow-inner">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-gray-400 block uppercase tracking-wider font-mono font-bold">
+                      Cryptographic SHA-256 Integrity Hash
+                    </span>
+                    <span className="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-700 px-1.5 py-0.5 rounded font-mono">
+                      SEALED
+                    </span>
+                  </div>
+                  <div className="font-mono text-[11px] text-emerald-400 break-all select-all">
                     {existingDecision?.integrity_hash || 'SHA-256 Chaining Verified'}
                   </div>
                 </div>
 
                 {/* Recorded Rationale Quote */}
-                <div className="p-3 rounded-xl bg-slate-950/50 border border-white/5 space-y-1">
-                  <span className="text-[10px] text-slate-400 block uppercase">Official Justification Rationale</span>
-                  <p className="text-xs text-slate-200 font-sans italic">
-                    "{existingDecision?.reason_detail || existingDecision?.rationale}"
+                <div className="p-3.5 rounded-xl bg-white border border-amber-200/80 space-y-1 shadow-sm">
+                  <span className="text-[10px] text-gray-500 block uppercase font-bold">Official Justification Rationale</span>
+                  <p className="text-xs text-gray-800 font-sans italic leading-relaxed">
+                    "{existingDecision?.reason || existingDecision?.reason_detail || existingDecision?.rationale}"
                   </p>
                 </div>
               </div>
@@ -244,54 +257,54 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
           ) : step === 'confirm' ? (
             /* ── STEP 2: PRE-SUBMISSION CONFIRMATION SCREEN ───────────────── */
             <div className="space-y-4 animate-fadeIn font-mono">
-              <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 space-y-2">
+              <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-base">⚠️</span>
-                  <h4 className="font-bold text-purple-200 text-xs uppercase tracking-wider">
+                  <h4 className="font-bold text-purple-900 text-xs uppercase tracking-wider font-mono">
                     Confirmation Step: Authoritative Commitment & Immutability Seal
                   </h4>
                 </div>
-                <p className="text-[11px] text-purple-200/90 font-sans leading-relaxed">
+                <p className="text-[12px] text-purple-800 font-sans leading-relaxed">
                   You are about to record the final binding procurement decision. Submitting this decision will cryptographically seal the record, write an immutable entry to the governance audit trail, and lock it from ordinary modification.
                 </p>
               </div>
 
               {/* Review Summary Card */}
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 space-y-3">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div>
-                    <span className="text-slate-400 text-[10px] block">ACTION:</span>
-                    <span className="font-bold text-white uppercase">{actionChoice} RECOMMENDATION</span>
+                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span className="text-slate-500 text-[10px] font-bold block mb-1">ACTION:</span>
+                    <span className="font-bold text-indigo-700 uppercase text-xs block">{actionChoice} RECOMMENDATION</span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 text-[10px] block">OVERRIDE STATUS:</span>
-                    <span className={`font-bold ${isOverriding ? 'text-amber-400' : 'text-emerald-400'}`}>
+                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span className="text-slate-500 text-[10px] font-bold block mb-1">OVERRIDE STATUS:</span>
+                    <span className={`font-bold text-xs block ${isOverriding ? 'text-amber-700' : 'text-emerald-700'}`}>
                       {isOverriding ? 'YES (OVERRIDE)' : 'NO (FOLLOWED AI)'}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 text-[10px] block">AI RECOMMENDED ENTITY:</span>
-                    <span className="font-bold text-emerald-300">{topAi?.company_name} ({topAi?.total_score.toFixed(1)} pts)</span>
+                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span className="text-slate-500 text-[10px] font-bold block mb-1">AI RECOMMENDED ENTITY:</span>
+                    <span className="font-bold text-emerald-700 text-xs block">{topAi?.company_name} ({topAi?.total_score.toFixed(1)} pts)</span>
                   </div>
-                  <div>
-                    <span className="text-slate-400 text-[10px] block">OFFICIAL SELECTED WINNER:</span>
-                    <span className="font-bold text-white">
+                  <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span className="text-slate-500 text-[10px] font-bold block mb-1">OFFICIAL SELECTED WINNER:</span>
+                    <span className="font-bold text-slate-900 text-xs block">
                       {actionChoice === 'approve' ? topAi?.company_name : selectedBidderObj?.company_name || 'Rejected / None'}
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800 space-y-1 font-sans">
-                  <span className="text-[10px] text-slate-400 block font-mono">RECORDED JUSTIFICATION:</span>
-                  <p className="text-xs text-slate-200 italic bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                <div className="pt-2 border-t border-slate-200 space-y-1 font-sans">
+                  <span className="text-[10px] text-slate-500 block font-mono font-bold">RECORDED JUSTIFICATION:</span>
+                  <p className="text-xs text-slate-800 italic bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                     "{actionChoice === 'approve' ? rationale : overrideReasonDetail}"
                   </p>
                 </div>
 
                 {isOverriding && supportingNote && (
                   <div className="pt-1 space-y-1 font-sans">
-                    <span className="text-[10px] text-slate-400 block font-mono">SUPPORTING DOCUMENTATION NOTE:</span>
-                    <p className="text-xs text-slate-300 bg-slate-900/60 p-2 rounded-lg border border-slate-800 font-mono text-[11px]">
+                    <span className="text-[10px] text-slate-500 block font-mono font-bold">SUPPORTING DOCUMENTATION NOTE:</span>
+                    <p className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200 shadow-sm font-mono text-[11px]">
                       {supportingNote}
                     </p>
                   </div>
@@ -299,7 +312,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
               </div>
 
               {error && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium font-sans">
                   {error}
                 </div>
               )}
@@ -309,7 +322,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                   type="button"
                   onClick={() => setStep('dossier')}
                   disabled={isSubmitting}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors border border-slate-300 font-sans cursor-pointer"
                 >
                   ← Go Back & Edit
                 </button>
@@ -318,7 +331,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                   type="button"
                   onClick={handleFinalSubmit}
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 flex items-center gap-2 transition-all font-mono"
+                  className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 flex items-center gap-2 transition-all font-mono cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

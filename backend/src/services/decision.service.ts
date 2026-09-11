@@ -31,9 +31,60 @@
  */
 
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import { query, queryOne, queryRows } from '../config/database';
 import { ValidationError, NotFoundError } from '../utils/errors';
 import { recordChainEvent } from './auditChain.service';
+import { saveLocalTender } from '../controllers/tender.controller';
+
+const DATA_DIR = path.resolve(__dirname, '../../data');
+const DECISIONS_FILE = path.join(DATA_DIR, 'decisions.json');
+
+function ensureDataDir(): void {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.error('Failed to create data dir:', err);
+  }
+}
+
+export function loadLocalDecisions(): any[] {
+  ensureDataDir();
+  try {
+    if (fs.existsSync(DECISIONS_FILE)) {
+      const raw = fs.readFileSync(DECISIONS_FILE, 'utf-8');
+      const list = JSON.parse(raw);
+      if (Array.isArray(list)) return list;
+    }
+  } catch (err) {
+    console.error('Error reading decisions file:', err);
+  }
+  return [];
+}
+
+export function getLocalDecision(tenderId: string): any | null {
+  const list = loadLocalDecisions();
+  return list.find((d: any) => d.tender_id === tenderId) || null;
+}
+
+export function saveLocalDecision(decision: any): void {
+  ensureDataDir();
+  const list = loadLocalDecisions();
+  const idx = list.findIndex((d: any) => d.tender_id === decision.tender_id);
+  if (idx >= 0) {
+    list[idx] = { ...list[idx], ...decision };
+  } else {
+    list.unshift(decision);
+  }
+  try {
+    fs.writeFileSync(DECISIONS_FILE, JSON.stringify(list, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Error saving decision file:', err);
+  }
+}
 
 export interface DecisionDossier {
   tender: {
@@ -94,7 +145,7 @@ export interface DecisionDossier {
 export interface HumanDecisionPayload {
   action: 'approve' | 'reject';
   decision: 'award' | 'reject' | 'defer' | 'cancel_tender';
-  selected_bid_id?: string;
+  selected_bid_id?: string | null;
   rationale: string;
   override_reason_type?: string;
   override_reason_detail?: string;
@@ -278,6 +329,7 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
     };
   } catch {
     // Database offline mode — synthesize complete 7-point decision dossier from demo scenario
+    const localDec = getLocalDecision(tenderId);
     const compA = DEMO_CONSTANTS.COMPANIES[0];
     return {
       tender: {
@@ -285,7 +337,7 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
         reference_number: DEMO_CONSTANTS.TENDER_REF,
         title: DEMO_CONSTANTS.TENDER_TITLE,
         estimated_budget_inr: DEMO_CONSTANTS.ESTIMATED_BUDGET_INR,
-        status: 'RECOMMENDATION_READY',
+        status: localDec?.is_locked ? (localDec.final_decision === 'award' ? 'AWARDED' : 'DECISION_MADE') : 'RECOMMENDATION_READY',
         closing_at: new Date(Date.now() + 86400000 * 5).toISOString(),
         created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
       },
@@ -334,12 +386,12 @@ export async function getTenderDecisionDossier(tenderId: string): Promise<Decisi
       },
       audit_info: {
         tender_id: tenderId,
-        evaluated_at: new Date().toISOString(),
+        evaluated_at: localDec?.created_at || new Date().toISOString(),
         model_version: 'v2.4.0-xai-shap',
         tamper_verified: true,
         integrity_sealed: true,
-        is_locked: false,
-        existing_decision: null,
+        is_locked: Boolean(localDec?.is_locked),
+        existing_decision: localDec,
       },
     };
   }
@@ -588,7 +640,7 @@ export async function recordHumanDecision(
     console.error('Failed to append to audit chain ledger:', chainErr);
   }
 
-  return {
+  const decisionResult = {
     id: decisionId,
     tender_id: tenderId,
     decided_by: user.userId,
@@ -603,5 +655,16 @@ export async function recordHumanDecision(
     supporting_note: payload.supporting_note || null,
     integrity_hash: integrityHash,
     is_locked: true,
+    created_at: timestamp,
   };
+
+  // Persist locally for offline runtime reliability
+  saveLocalDecision(decisionResult);
+  saveLocalTender({
+    id: tenderId,
+    status: payload.decision === 'award' ? 'AWARDED' : (payload.decision === 'reject' || payload.decision === 'cancel_tender') ? 'CANCELLED' : 'DECISION_MADE',
+    updated_at: timestamp,
+  });
+
+  return decisionResult;
 }
