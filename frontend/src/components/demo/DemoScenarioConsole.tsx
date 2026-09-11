@@ -24,7 +24,7 @@ export const DemoScenarioConsole: React.FC = () => {
     );
   }
 
-  const { tender, companies, workflowSteps, currentScenario, scenario2Override, auditVerification } = data;
+  const { tender, workflowSteps, currentScenario, scenario2Override, auditVerification } = data;
 
   return (
     <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-6">
@@ -41,102 +41,6 @@ export const DemoScenarioConsole: React.FC = () => {
         </p>
       </div>
 
-      {/* ── Value-For-Money Principle Card (The Key Judging Proof) ───────── */}
-      <div className="p-5 rounded-xl bg-[#FBFBFD] border border-gray-200 space-y-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-                <path d="M4 22h16" />
-                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 uppercase tracking-wider text-xs">
-                Value-For-Money Evaluation Scorecard
-              </h4>
-              <span className="text-xs text-gray-500">
-                Notice: Company B has the lowest bid, but Company A wins with highest overall evaluation score.
-              </span>
-            </div>
-          </div>
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-white text-gray-600 border border-gray-200 shadow-xs">
-            Weighted: 40/20/15/10/10/5
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-          {companies.map((c: any) => {
-            const isRec = c.isAiRecommended;
-            const isLowest = c.isLowestBidder;
-
-            return (
-              <div
-                key={c.id}
-                className={`p-4 rounded-xl border transition-all space-y-3 ${
-                  isRec
-                    ? 'bg-white border-2 border-emerald-500 shadow-sm'
-                    : isLowest
-                    ? 'bg-white border border-blue-300 shadow-xs'
-                    : 'bg-white border border-gray-200 shadow-xs'
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">RANK #{c.rank}</span>
-                    <h5 className="font-bold text-gray-900 text-xs mt-0.5">{c.name}</h5>
-                  </div>
-                  {isRec && (
-                    <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase">
-                      TOP AI REC
-                    </span>
-                  )}
-                  {isLowest && !isRec && (
-                    <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 uppercase">
-                      LOWEST BID (L1)
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex justify-between items-baseline border-b border-gray-100 pb-2.5">
-                  <span className="text-xs text-gray-500">Commercial Quote:</span>
-                  <span className="text-sm font-bold text-gray-900">{c.bidAmountFormatted}</span>
-                </div>
-
-                <div className="space-y-1.5 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Technical Capability:</span>
-                    <strong className="text-purple-600 font-semibold">{c.technicalCapabilityScore}/20</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Experience:</span>
-                    <strong className="text-gray-700 font-semibold">{c.experienceScore}/15</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Past Performance:</span>
-                    <strong className="text-gray-700 font-semibold">{c.pastPerformanceScore}/10</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Price Score:</span>
-                    <strong className="text-blue-600 font-semibold">{c.priceScore.toFixed(1)}/40</strong>
-                  </div>
-                </div>
-
-                <div className="pt-2.5 border-t border-gray-100 flex justify-between items-center">
-                  <span className="text-[11px] font-semibold text-gray-500">FINAL SCORE:</span>
-                  <span className={`text-base font-bold ${isRec ? 'text-emerald-600' : 'text-gray-900'}`}>
-                    {c.compositeScore.toFixed(1)} <span className="text-xs font-normal text-gray-400">/ 100</span>
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
 
       {/* ── SCENARIO 2 OVERRIDE & GOVERNANCE RISK BANNER ──────────────────── */}
       {currentScenario === 'SCENARIO_2_HUMAN_OVERRIDE' && scenario2Override && (
