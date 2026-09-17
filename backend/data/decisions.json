@@ -1,5 +1,22 @@
 [
   {
+    "id": "4ace0d51-2386-4e58-980f-62889ef125a6",
+    "tender_id": "92323562-ece0-4466-b9ea-042a479f4469",
+    "decided_by": "00000001-0000-0000-0000-000000000011",
+    "officer_name": "officer.suresh@finance.gov.in",
+    "timestamp": "2026-09-11T10:30:09.448Z",
+    "ai_recommendation": "Apex Infra Buildtech Ltd",
+    "final_decision": "award",
+    "selected_bidder": "Apex Infra Buildtech Ltd",
+    "selected_bid_id": "d81a7249-9142-47d2-aed1-09a88b156b81",
+    "override_status": "NO",
+    "reason": "Official approval of AI multi-criteria recommendation as the most advantageous proposal.",
+    "supporting_note": null,
+    "integrity_hash": "10adb298bef3dd58cc1b62e085887564e2e9f02baf9daa87597aee71e4208141",
+    "is_locked": true,
+    "created_at": "2026-09-11T10:30:09.448Z"
+  },
+  {
     "id": "6ca98986-0ec9-4331-bd87-44ef1312ca6d",
     "tender_id": "121eec47-874f-4321-b70d-54f09728523c",
     "decided_by": "00000001-0000-0000-0000-000000000011",
