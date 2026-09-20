@@ -214,15 +214,108 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
     status: 'active',
   },
 
-  // ── Bidder / Auditor / Admin Roles (Standardized without personal names) ──
+  // ── Bidder Role (Verified Top Indian EPC Contractors & Suppliers) ──
+  'lnt.infra@bidder.in': {
+    id: '00000001-0000-0000-0000-000000000012',
+    email: 'lnt.infra@bidder.in',
+    full_name: 'Larsen & Toubro Ltd (L&T Infrastructure)',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000101',
+    department: 'National Highways Authority of India (NHAI)',
+    status: 'active',
+  },
+  'dilipbuildcon@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000001',
+    email: 'dilipbuildcon@bidder.in',
+    full_name: 'Dilip Buildcon Limited (DBL)',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000101',
+    department: 'National Highways Authority of India (NHAI)',
+    status: 'active',
+  },
+  'shapoorji@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000002',
+    email: 'shapoorji@bidder.in',
+    full_name: 'Shapoorji Pallonji & Company Pvt Ltd',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000102',
+    department: 'Central Public Works Department (CPWD)',
+    status: 'active',
+  },
+  'titagarh@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000003',
+    email: 'titagarh@bidder.in',
+    full_name: 'Titagarh Rail Systems Limited',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000103',
+    department: 'Railway Board & Zonal Rail Procurement',
+    status: 'active',
+  },
+  'bel.defence@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000004',
+    email: 'bel.defence@bidder.in',
+    full_name: 'Bharat Electronics Limited (BEL)',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000104',
+    department: 'Military Engineer Services (MES)',
+    status: 'active',
+  },
+  'adanigreen@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000005',
+    email: 'adanigreen@bidder.in',
+    full_name: 'Adani Green Energy Limited',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000105',
+    department: 'Solar Energy Corporation of India (SECI Renewable Grid)',
+    status: 'active',
+  },
+  'tcs.govt@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000006',
+    email: 'tcs.govt@bidder.in',
+    full_name: 'Tata Consultancy Services (TCS Public Sector)',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000106',
+    department: 'National Informatics Centre (NIC Central Procurement)',
+    status: 'active',
+  },
+  'wiproge.health@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000007',
+    email: 'wiproge.health@bidder.in',
+    full_name: 'Wipro GE Healthcare Private Limited',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000107',
+    department: 'AIIMS Centralized Medical Equipment Procurement Cell',
+    status: 'active',
+  },
+  'wabag.water@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000008',
+    email: 'wabag.water@bidder.in',
+    full_name: 'VA Tech Wabag Limited',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000108',
+    department: 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)',
+    status: 'active',
+  },
+  'itilimited@bidder.in': {
+    id: '00000002-0000-0000-0000-000000000009',
+    email: 'itilimited@bidder.in',
+    full_name: 'ITI Limited (Digital Classrooms)',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000109',
+    department: 'Department of School Education & Literacy',
+    status: 'active',
+  },
   'bidder@alphacorp.dev': {
     id: '00000001-0000-0000-0000-000000000012',
     email: 'bidder@alphacorp.dev',
     full_name: 'Apex Infra Bid Representative',
     role_code: 'BIDDER',
     company_id: '00000000-0000-0000-0000-000000000101',
+    department: 'National Highways Authority of India (NHAI)',
     status: 'active',
   },
+
+  // ── Auditor & Administrator Roles ──
   'auditor@cag.gov.in': {
     id: '00000001-0000-0000-0000-000000000013',
     email: 'auditor@cag.gov.in',
@@ -468,6 +561,80 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
     if (password === 'ProcureAI_Dev_2026!' || password.length >= 6) {
       const tokens = await issueTokenPair(dynamicOfficer.id, dynamicOfficer, ipAddress);
       return { user: dynamicOfficer, tokens };
+    }
+    throw new AuthenticationError('Invalid email or password', 'INVALID_CREDENTIALS');
+  }
+
+  // Dynamic Bidder login for any *bidder.in or *contractor.in or bidder email
+  if (!user && (lowerEmail.endsWith('@bidder.in') || lowerEmail.includes('bidder') || lowerEmail.endsWith('@contractor.in') || lowerEmail.endsWith('@alphacorp.dev'))) {
+    const prefix = lowerEmail.split('@')[0];
+    let companyName = 'Larsen & Toubro Ltd (L&T Infrastructure)';
+    let deptName = 'National Highways Authority of India (NHAI)';
+
+    if (prefix.includes('dilip')) {
+      companyName = 'Dilip Buildcon Limited (DBL)';
+      deptName = 'National Highways Authority of India (NHAI)';
+    } else if (prefix.includes('irb')) {
+      companyName = 'IRB Infrastructure Developers Ltd';
+      deptName = 'National Highways Authority of India (NHAI)';
+    } else if (prefix.includes('shapoorji')) {
+      companyName = 'Shapoorji Pallonji & Company Pvt Ltd';
+      deptName = 'Central Public Works Department (CPWD)';
+    } else if (prefix.includes('ahluwalia')) {
+      companyName = 'Ahluwalia Contracts (India) Limited';
+      deptName = 'Central Public Works Department (CPWD)';
+    } else if (prefix.includes('titagarh')) {
+      companyName = 'Titagarh Rail Systems Limited';
+      deptName = 'Railway Board & Zonal Rail Procurement';
+    } else if (prefix.includes('texmaco')) {
+      companyName = 'Texmaco Rail & Engineering Limited';
+      deptName = 'Railway Board & Zonal Rail Procurement';
+    } else if (prefix.includes('bel')) {
+      companyName = 'Bharat Electronics Limited (BEL)';
+      deptName = 'Military Engineer Services (MES)';
+    } else if (prefix.includes('hal')) {
+      companyName = 'Hindustan Aeronautics Limited (HAL)';
+      deptName = 'Department of Defence (Capital Acquisition Wing)';
+    } else if (prefix.includes('adani')) {
+      companyName = 'Adani Green Energy Limited';
+      deptName = 'Solar Energy Corporation of India (SECI Renewable Grid)';
+    } else if (prefix.includes('tatapower') || prefix.includes('solar')) {
+      companyName = 'Tata Power Solar Systems Ltd';
+      deptName = 'Solar Energy Corporation of India (SECI Renewable Grid)';
+    } else if (prefix.includes('tcs')) {
+      companyName = 'Tata Consultancy Services (TCS Public Sector)';
+      deptName = 'National Informatics Centre (NIC Central Procurement)';
+    } else if (prefix.includes('infosys')) {
+      companyName = 'Infosys Public Services India Ltd';
+      deptName = 'National Informatics Centre (NIC Central Procurement)';
+    } else if (prefix.includes('wiproge') || prefix.includes('health') || prefix.includes('siemens')) {
+      companyName = 'Wipro GE Healthcare Private Limited';
+      deptName = 'AIIMS Centralized Medical Equipment Procurement Cell';
+    } else if (prefix.includes('wabag') || prefix.includes('welspun') || prefix.includes('water')) {
+      companyName = 'VA Tech Wabag Limited';
+      deptName = 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)';
+    } else if (prefix.includes('iti') || prefix.includes('tcil') || prefix.includes('edu')) {
+      companyName = 'ITI Limited (Digital Classrooms)';
+      deptName = 'Department of School Education & Literacy';
+    } else if (prefix.includes('alpha')) {
+      companyName = 'Apex Infra Buildtech Ltd';
+      deptName = 'National Highways Authority of India (NHAI)';
+    }
+
+    const hexHash = crypto.createHash('sha256').update(lowerEmail).digest('hex').slice(0, 12);
+    const dynamicBidder: PublicUser = {
+      id: `00000002-0000-0000-0000-${hexHash}`,
+      email: lowerEmail,
+      full_name: `${companyName} Bid Representative`,
+      role_code: 'BIDDER',
+      company_id: '00000000-0000-0000-0000-000000000101',
+      department: deptName,
+      status: 'active',
+    };
+
+    if (password === 'ProcureAI_Dev_2026!' || password.length >= 6) {
+      const tokens = await issueTokenPair(dynamicBidder.id, dynamicBidder, ipAddress);
+      return { user: dynamicBidder, tokens };
     }
     throw new AuthenticationError('Invalid email or password', 'INVALID_CREDENTIALS');
   }

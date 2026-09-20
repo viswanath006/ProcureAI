@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { DepartmentSelectModal } from '../common/DepartmentSelectModal';
+import { BidderSelectModal } from '../common/BidderSelectModal';
 import { GovtDepartment, getDepartmentEmail } from '../../data/govtDepartments';
+import { BidderCompany } from '../../data/bidderCompanies';
 
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif";
 
@@ -45,6 +47,8 @@ export const LoginPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const [selectedDept, setSelectedDept] = useState<GovtDepartment | null>(null);
+  const [isBidderModalOpen, setIsBidderModalOpen] = useState(false);
+  const [selectedBidder, setSelectedBidder] = useState<BidderCompany | null>(null);
   const from = (location.state as any)?.from?.pathname || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,6 +90,27 @@ export const LoginPage: React.FC = () => {
           localStorage.setItem('procureai_officer_department', deptName);
         } catch {}
       }
+
+      const isBidder = selectedRole === 'BIDDER' || email.toLowerCase().includes('bidder');
+      if (isBidder) {
+        try {
+          const saved = localStorage.getItem('procureai_user');
+          const companyName = selectedBidder?.name || 'Larsen & Toubro Ltd (L&T Infrastructure)';
+          const companyDept = selectedBidder?.department || 'National Highways Authority of India (NHAI)';
+          const companyId = selectedBidder?.id || '00000000-0000-0000-0000-000000000101';
+
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            parsed.company_name = companyName;
+            parsed.department = companyDept;
+            parsed.company_id = companyId;
+            localStorage.setItem('procureai_user', JSON.stringify(parsed));
+          }
+          localStorage.setItem('procureai_bidder_company', companyName);
+          localStorage.setItem('procureai_bidder_department', companyDept);
+        } catch {}
+      }
+
       navigate(from, { replace: true });
     } else {
       setError(r.error || 'Invalid email or password.');
@@ -101,6 +126,10 @@ export const LoginPage: React.FC = () => {
       const targetEmail = getDepartmentEmail(selectedDept);
       setEmail(targetEmail);
       setIsDeptModalOpen(true);
+    } else if (roleCode === 'BIDDER') {
+      const targetEmail = selectedBidder?.email || 'lnt.infra@bidder.in';
+      setEmail(targetEmail);
+      setIsBidderModalOpen(true);
     } else {
       setEmail(roleEmail);
     }
@@ -118,7 +147,7 @@ export const LoginPage: React.FC = () => {
 
   const demos = [
     { role: 'GOVT_OFFICER', email: 'cpwddept@govt.in', label: 'Govt Officer', icon: '🏛️' },
-    { role: 'BIDDER', email: 'bidder@alphacorp.dev', label: 'Bidder', icon: '🏢' },
+    { role: 'BIDDER', email: 'lnt.infra@bidder.in', label: 'Bidder', icon: '🏢' },
     { role: 'AUDITOR', email: 'auditor@cag.gov.in', label: 'Auditor', icon: '🔍' },
     { role: 'ADMIN', email: 'admin@procureai.gov.in', label: 'Administrator', icon: '⚙️' },
   ];
@@ -359,7 +388,7 @@ export const LoginPage: React.FC = () => {
                     >
                       {selectedDept
                         ? `${selectedDept.ministry} • ${selectedDept.code}`
-                        : 'Click to choose from all 41 Ministries & Departments'}
+                        : 'Click to choose from all 33 Tendering Ministries & Departments'}
                     </div>
                   </div>
                 </div>
@@ -376,6 +405,96 @@ export const LoginPage: React.FC = () => {
                   }}
                 >
                   {selectedDept ? 'Change' : 'Browse All'}
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* Bidder Contractor Company Selection (Displayed ONLY when Bidder is selected) */}
+          {selectedRole === 'BIDDER' && (
+            <div style={{ marginBottom: 16, animation: 'authItemCascade 0.3s ease-out both' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <label style={{ ...labelStyle, fontSize: 12, margin: 0 }}>
+                  Contractor / Bidding Enterprise <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                {selectedBidder && (
+                  <span style={{ fontSize: 11, color: '#2563EB', fontWeight: 600 }}>✓ Verified Contractor</span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsBidderModalOpen(true)}
+                style={{
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: 8,
+                  border: selectedBidder ? '1.5px solid #2563EB' : '1.5px dashed #CBD5E1',
+                  backgroundColor: selectedBidder ? '#EFF6FF' : '#F8FAFC',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  transition: 'all 0.15s ease',
+                  textAlign: 'left',
+                }}
+                onMouseEnter={(e) => {
+                  if (!selectedBidder) {
+                    e.currentTarget.style.borderColor = '#94A3B8';
+                    e.currentTarget.style.backgroundColor = '#F1F5F9';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!selectedBidder) {
+                    e.currentTarget.style.borderColor = '#CBD5E1';
+                    e.currentTarget.style.backgroundColor = '#F8FAFC';
+                  }
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>🏢</span>
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        color: selectedBidder ? '#1D4ED8' : '#1E293B',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {selectedBidder ? selectedBidder.name : 'Select Contractor / Enterprise...'}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: '#64748B',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginTop: 1,
+                      }}
+                    >
+                      {selectedBidder
+                        ? `Bidding Dept: ${selectedBidder.department} • ${selectedBidder.tag}`
+                        : 'Choose from verified Indian EPC contractors & suppliers'}
+                    </div>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: selectedBidder ? '#2563EB' : '#1E293B',
+                    padding: '3px 8px',
+                    borderRadius: 4,
+                    backgroundColor: selectedBidder ? '#DBEAFE' : '#E2E8F0',
+                    flexShrink: 0,
+                    marginLeft: 8,
+                  }}
+                >
+                  {selectedBidder ? 'Change' : 'Browse All'}
                 </span>
               </button>
             </div>
@@ -501,6 +620,20 @@ export const LoginPage: React.FC = () => {
         }}
         title="Select Government Department"
         subtitle="Choose your Ministry or Department under the Government of India"
+      />
+
+      <BidderSelectModal
+        isOpen={isBidderModalOpen}
+        onClose={() => setIsBidderModalOpen(false)}
+        selectedCompanyId={selectedBidder?.id}
+        onSelect={(company) => {
+          setSelectedBidder(company);
+          setSelectedRole('BIDDER');
+          setEmail(company.email);
+          setPassword('ProcureAI_Dev_2026!');
+        }}
+        title="Select Contractor & Tendering Department"
+        subtitle="Choose from verified Indian EPC contractors, OEM suppliers & system integrators"
       />
     </div>
   );
