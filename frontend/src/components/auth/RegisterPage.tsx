@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { DepartmentSelectModal } from '../common/DepartmentSelectModal';
+import { GovtDepartment } from '../../data/govtDepartments';
 
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif";
 
@@ -37,15 +39,30 @@ export const RegisterPage: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [roleCode, setRoleCode] = useState<'BIDDER' | 'GOVT_OFFICER' | 'AUDITOR'>('BIDDER');
+  const [department, setDepartment] = useState('');
+  const [selectedDeptObj, setSelectedDeptObj] = useState<GovtDepartment | null>(null);
+  const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (roleCode === 'GOVT_OFFICER' && !department) {
+      setError('Please select your Government Department / Ministry.');
+      setIsDeptModalOpen(true);
+      return;
+    }
     setError(null);
     setSubmitting(true);
-    const r = await register({ full_name: fullName, email, role_code: roleCode, password });
+    const r = await register({
+      full_name: fullName,
+      email,
+      role_code: roleCode,
+      password,
+      department: roleCode === 'GOVT_OFFICER' ? department : undefined,
+    });
     setSubmitting(false);
     if (r.success) navigate('/', { replace: true });
     else setError(r.error || 'Registration failed.');
@@ -244,6 +261,81 @@ export const RegisterPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Government Officer Department Selector */}
+            {roleCode === 'GOVT_OFFICER' && (
+              <div style={{ marginBottom: 24, animation: 'authItemCascade 0.25s ease-out both' }}>
+                <label style={labelStyle}>
+                  Government Department <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setIsDeptModalOpen(true)}
+                  style={{
+                    width: '100%',
+                    minHeight: 44,
+                    padding: '8px 12px',
+                    boxSizing: 'border-box',
+                    borderRadius: 6,
+                    border: department ? '1.5px solid #16A34A' : '1px solid #D1D5DB',
+                    backgroundColor: department ? '#F0FDF4' : '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    fontFamily: FONT,
+                    transition: 'all 0.15s ease-in-out',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!department) e.currentTarget.style.borderColor = '#9CA3AF';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!department) e.currentTarget.style.borderColor = '#D1D5DB';
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                    <span style={{ fontSize: 18, flexShrink: 0 }}>🏛️</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          fontWeight: department ? 600 : 400,
+                          color: department ? '#15803D' : '#9CA3AF',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {department || 'Select Department (Govt of India)...'}
+                      </div>
+                      {selectedDeptObj && (
+                        <div style={{ fontSize: 11, color: '#64748B', marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {selectedDeptObj.ministry} • {selectedDeptObj.code}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: department ? '#16A34A' : '#4B5563',
+                      padding: '3px 8px',
+                      borderRadius: 4,
+                      backgroundColor: department ? '#DCFCE7' : '#F3F4F6',
+                      flexShrink: 0,
+                      marginLeft: 8,
+                    }}
+                  >
+                    {department ? 'Change' : 'Browse All'}
+                  </span>
+                </button>
+                <p style={{ fontSize: 11, color: '#6B7280', margin: '5px 0 0', lineHeight: '15px' }}>
+                  Choose from all official Ministries & statutory departments across the Government of India.
+                </p>
+              </div>
+            )}
+
             {/* Password */}
             <div style={{ marginBottom: 24 }}>
               <label style={labelStyle}>Password</label>
@@ -327,6 +419,18 @@ export const RegisterPage: React.FC = () => {
 
         </div>
       </main>
+
+      <DepartmentSelectModal
+        isOpen={isDeptModalOpen}
+        onClose={() => setIsDeptModalOpen(false)}
+        selectedDepartment={department}
+        onSelect={(dept) => {
+          setDepartment(dept.name);
+          setSelectedDeptObj(dept);
+        }}
+        title="Select Government Department"
+        subtitle="Choose your official Ministry or statutory department for Government Officer access"
+      />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../api/client';
 import { CalendarDatePicker } from '../common/CalendarDatePicker';
+import { DepartmentSelectModal } from '../common/DepartmentSelectModal';
+import { useAuth } from '../../hooks/useAuth';
 interface TenderFormModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,7 +23,8 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 1. Basic Info
+  const { user } = useAuth();
+  const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState(
     initialData?.reference_number || `TENDER-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
   );
@@ -29,7 +32,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || 'infrastructure');
   const [department, setDepartment] = useState(
-    initialData?.department || 'Ministry of Infrastructure & Urban Development'
+    initialData?.department || user?.department || localStorage.getItem('procureai_officer_department') || 'Ministry of Infrastructure & Urban Development'
   );
   const [estimatedValueInr, setEstimatedValueInr] = useState<number>(
     initialData?.estimated_budget_paisa ? Number(initialData.estimated_budget_paisa) / 100 : 250000000
@@ -357,16 +360,34 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-gray-500 font-semibold uppercase block mb-1 tracking-wider">
-                    PROCURING DEPARTMENT
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] text-gray-500 font-semibold uppercase block tracking-wider">
+                      PROCURING DEPARTMENT
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setIsDeptModalOpen(true)}
+                      className="text-[10px] font-semibold text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center gap-1"
+                    >
+                      🏛️ Browse Govt of India
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      className="w-full pl-3.5 pr-16 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setIsDeptModalOpen(true)}
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-[10px] font-semibold text-gray-600 transition-colors cursor-pointer"
+                    >
+                      Select
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -819,6 +840,15 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
           </div>
         </div>
       </div>
+
+      <DepartmentSelectModal
+        isOpen={isDeptModalOpen}
+        onClose={() => setIsDeptModalOpen(false)}
+        selectedDepartment={department}
+        onSelect={(dept) => setDepartment(dept.name)}
+        title="Select Procuring Department"
+        subtitle="Select the issuing Ministry or Department under the Government of India for this tender"
+      />
     </div>,
     document.body
   );

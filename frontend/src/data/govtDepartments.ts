@@ -1,0 +1,323 @@
+export interface GovtDepartment {
+  id: string;
+  name: string;
+  ministry: string;
+  category: 'Infrastructure & Construction' | 'Finance & Commerce' | 'Defence & Strategic' | 'Technology & Energy' | 'Health & Education' | 'Governance & Oversight';
+  code: string;
+  popular?: boolean;
+}
+
+export const GOVT_DEPARTMENTS: GovtDepartment[] = [
+  // ── Infrastructure & Construction ──────────────────────────────────────────
+  {
+    id: 'cpwd',
+    name: 'Central Public Works Department (CPWD)',
+    ministry: 'Ministry of Housing & Urban Affairs',
+    category: 'Infrastructure & Construction',
+    code: 'CPWD-MOHUA',
+    popular: true,
+  },
+  {
+    id: 'nhai',
+    name: 'National Highways Authority of India (NHAI)',
+    ministry: 'Ministry of Road Transport & Highways',
+    category: 'Infrastructure & Construction',
+    code: 'NHAI-MORTH',
+    popular: true,
+  },
+  {
+    id: 'railways-board',
+    name: 'Railway Board & Zonal Rail Procurement',
+    ministry: 'Ministry of Railways',
+    category: 'Infrastructure & Construction',
+    code: 'RB-RAIL',
+    popular: true,
+  },
+  {
+    id: 'morth',
+    name: 'Central Highway & Expressway Works Division',
+    ministry: 'Ministry of Road Transport & Highways',
+    category: 'Infrastructure & Construction',
+    code: 'MORTH-ENG',
+  },
+  {
+    id: 'smart-cities',
+    name: 'Smart Cities Mission Project Directorate',
+    ministry: 'Ministry of Housing & Urban Affairs',
+    category: 'Infrastructure & Construction',
+    code: 'SCM-MOHUA',
+  },
+  {
+    id: 'aai',
+    name: 'Airports Authority of India (AAI Engineering)',
+    ministry: 'Ministry of Civil Aviation',
+    category: 'Infrastructure & Construction',
+    code: 'AAI-MCA',
+  },
+  {
+    id: 'nhidcl',
+    name: 'National Highways & Infra Development Corp (NHIDCL)',
+    ministry: 'Ministry of Road Transport & Highways',
+    category: 'Infrastructure & Construction',
+    code: 'NHIDCL-MORTH',
+  },
+  {
+    id: 'iwai',
+    name: 'Inland Waterways Authority of India (IWAI)',
+    ministry: 'Ministry of Ports, Shipping & Waterways',
+    category: 'Infrastructure & Construction',
+    code: 'IWAI-MOPSW',
+  },
+
+  // ── Finance & Commerce ─────────────────────────────────────────────────────
+  {
+    id: 'fin-expenditure',
+    name: 'Department of Expenditure (Procurement Policy Division)',
+    ministry: 'Ministry of Finance',
+    category: 'Finance & Commerce',
+    code: 'DOE-PPD',
+    popular: true,
+  },
+  {
+    id: 'gem',
+    name: 'Government e-Marketplace (GeM Directorate)',
+    ministry: 'Ministry of Commerce & Industry',
+    category: 'Finance & Commerce',
+    code: 'GEM-COMM',
+    popular: true,
+  },
+  {
+    id: 'fin-economic-affairs',
+    name: 'Department of Economic Affairs (DEA)',
+    ministry: 'Ministry of Finance',
+    category: 'Finance & Commerce',
+    code: 'DEA-MOF',
+  },
+  {
+    id: 'fin-revenue',
+    name: 'Department of Revenue & CBIC Modernization',
+    ministry: 'Ministry of Finance',
+    category: 'Finance & Commerce',
+    code: 'DOR-CBIC',
+  },
+  {
+    id: 'dpiit',
+    name: 'Department for Promotion of Industry & Internal Trade (DPIIT)',
+    ministry: 'Ministry of Commerce & Industry',
+    category: 'Finance & Commerce',
+    code: 'DPIIT-MCI',
+  },
+  {
+    id: 'fin-services',
+    name: 'Department of Financial Services (DFS)',
+    ministry: 'Ministry of Finance',
+    category: 'Finance & Commerce',
+    code: 'DFS-MOF',
+  },
+  {
+    id: 'dipam',
+    name: 'Department of Investment & Public Asset Management (DIPAM)',
+    ministry: 'Ministry of Finance',
+    category: 'Finance & Commerce',
+    code: 'DIPAM-MOF',
+  },
+
+  // ── Defence & Strategic ───────────────────────────────────────────────────
+  {
+    id: 'mes',
+    name: 'Military Engineer Services (MES)',
+    ministry: 'Ministry of Defence',
+    category: 'Defence & Strategic',
+    code: 'MES-MOD',
+    popular: true,
+  },
+  {
+    id: 'drdo',
+    name: 'Defence Research & Development Organisation (DRDO)',
+    ministry: 'Ministry of Defence',
+    category: 'Defence & Strategic',
+    code: 'DRDO-MOD',
+    popular: true,
+  },
+  {
+    id: 'mod-acquisition',
+    name: 'Department of Defence (Capital Acquisition Wing)',
+    ministry: 'Ministry of Defence',
+    category: 'Defence & Strategic',
+    code: 'DOD-ACQ',
+  },
+  {
+    id: 'isro',
+    name: 'Indian Space Research Organisation (ISRO Propulsion & Launch)',
+    ministry: 'Department of Space',
+    category: 'Defence & Strategic',
+    code: 'ISRO-DOS',
+    popular: true,
+  },
+  {
+    id: 'dae-barc',
+    name: 'Bhabha Atomic Research Centre (BARC)',
+    ministry: 'Department of Atomic Energy',
+    category: 'Defence & Strategic',
+    code: 'BARC-DAE',
+  },
+  {
+    id: 'mha-capf',
+    name: 'Central Armed Police Forces (CAPF Consolidated Procurement)',
+    ministry: 'Ministry of Home Affairs',
+    category: 'Defence & Strategic',
+    code: 'CAPF-MHA',
+  },
+
+  // ── Technology & Energy ───────────────────────────────────────────────────
+  {
+    id: 'nic',
+    name: 'National Informatics Centre (NIC Central Procurement)',
+    ministry: 'Ministry of Electronics & Information Technology',
+    category: 'Technology & Energy',
+    code: 'NIC-MEITY',
+    popular: true,
+  },
+  {
+    id: 'dot',
+    name: 'Department of Telecommunications (Telecom Infra)',
+    ministry: 'Ministry of Communications',
+    category: 'Technology & Energy',
+    code: 'DOT-MOC',
+  },
+  {
+    id: 'digital-india',
+    name: 'Digital India Corporation (DIC Platform Operations)',
+    ministry: 'Ministry of Electronics & Information Technology',
+    category: 'Technology & Energy',
+    code: 'DIC-MEITY',
+  },
+  {
+    id: 'seci',
+    name: 'Solar Energy Corporation of India (SECI Renewable Grid)',
+    ministry: 'Ministry of New & Renewable Energy',
+    category: 'Technology & Energy',
+    code: 'SECI-MNRE',
+    popular: true,
+  },
+  {
+    id: 'cea-power',
+    name: 'Central Electricity Authority & Transmission Works',
+    ministry: 'Ministry of Power',
+    category: 'Technology & Energy',
+    code: 'CEA-POWER',
+  },
+  {
+    id: 'eil-petro',
+    name: 'Engineers India Limited (Energy Infra & Pipelines)',
+    ministry: 'Ministry of Petroleum & Natural Gas',
+    category: 'Technology & Energy',
+    code: 'EIL-MOPNG',
+  },
+  {
+    id: 'dst',
+    name: 'Department of Science & Technology (DST Laboratories)',
+    ministry: 'Ministry of Science & Technology',
+    category: 'Technology & Energy',
+    code: 'DST-MST',
+  },
+  {
+    id: 'csir',
+    name: 'Council of Scientific & Industrial Research (CSIR Central)',
+    ministry: 'Ministry of Science & Technology',
+    category: 'Technology & Energy',
+    code: 'CSIR-MST',
+  },
+
+  // ── Health, Education & Welfare ───────────────────────────────────────────
+  {
+    id: 'edu-school',
+    name: 'Department of School Education & Literacy',
+    ministry: 'Ministry of Education',
+    category: 'Health & Education',
+    code: 'DOSEL-MOE',
+    popular: true,
+  },
+  {
+    id: 'aiims-procure',
+    name: 'AIIMS Centralized Medical Equipment Procurement Cell',
+    ministry: 'Ministry of Health & Family Welfare',
+    category: 'Health & Education',
+    code: 'AIIMS-MOHFW',
+    popular: true,
+  },
+  {
+    id: 'health-family',
+    name: 'Department of Health & Family Welfare',
+    ministry: 'Ministry of Health & Family Welfare',
+    category: 'Health & Education',
+    code: 'DOHFW-MOHFW',
+  },
+  {
+    id: 'jal-jeevan',
+    name: 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)',
+    ministry: 'Ministry of Jal Shakti',
+    category: 'Health & Education',
+    code: 'JJM-MOJS',
+    popular: true,
+  },
+  {
+    id: 'water-resources',
+    name: 'Department of Water Resources, River Dev & Ganga Rejuvenation',
+    ministry: 'Ministry of Jal Shakti',
+    category: 'Health & Education',
+    code: 'DOWR-MOJS',
+  },
+  {
+    id: 'agri-coop',
+    name: 'Department of Agriculture & Farmers Welfare',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    category: 'Health & Education',
+    code: 'DAFW-MOA',
+  },
+  {
+    id: 'rural-dev',
+    name: 'National Rural Infrastructure Development Agency (NRIDA)',
+    ministry: 'Ministry of Rural Development',
+    category: 'Health & Education',
+    code: 'NRIDA-MORD',
+  },
+  {
+    id: 'edu-higher',
+    name: 'Department of Higher Education (Central Universities Infrastructure)',
+    ministry: 'Ministry of Education',
+    category: 'Health & Education',
+    code: 'DHE-MOE',
+  },
+
+  // ── Governance & Oversight ────────────────────────────────────────────────
+  {
+    id: 'cag-oversight',
+    name: 'Office of the Comptroller & Auditor General of India',
+    ministry: 'Comptroller & Auditor General of India',
+    category: 'Governance & Oversight',
+    code: 'CAG-INDIA',
+    popular: true,
+  },
+  {
+    id: 'niti-infra',
+    name: 'NITI Aayog (Public Infrastructure & Project Monitoring)',
+    ministry: 'NITI Aayog',
+    category: 'Governance & Oversight',
+    code: 'NITI-AAYOG',
+  },
+  {
+    id: 'dopt',
+    name: 'Department of Personnel & Training (DoPT)',
+    ministry: 'Ministry of Personnel, Public Grievances & Pensions',
+    category: 'Governance & Oversight',
+    code: 'DOPT-MOP',
+  },
+  {
+    id: 'cvc-dir',
+    name: 'Central Vigilance Commission (Procurement Monitoring Cell)',
+    ministry: 'Central Vigilance Commission',
+    category: 'Governance & Oversight',
+    code: 'CVC-PMC',
+  },
+];

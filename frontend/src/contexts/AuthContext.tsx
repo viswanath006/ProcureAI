@@ -13,6 +13,7 @@ interface AuthContextType {
     full_name: string;
     role_code: string;
     company_id?: string;
+    department?: string;
   }) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   switchDemoRole: (email: string, roleName: string) => Promise<void>;
@@ -146,6 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       full_name: string;
       role_code: string;
       company_id?: string;
+      department?: string;
     }) => {
       setIsLoading(true);
       try {

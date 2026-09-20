@@ -38,6 +38,7 @@ export interface User {
   full_name: string;
   role_code: 'ADMIN' | 'GOVT_OFFICER' | 'BIDDER' | 'AUDITOR' | 'EVALUATOR';
   company_id: string | null;
+  department?: string | null;
   status: string;
 }
 
@@ -258,6 +259,7 @@ export const api = {
     full_name: string;
     role_code: string;
     company_id?: string;
+    department?: string;
   }) =>
     request<AuthResponseData>('/auth/register', {
       method: 'POST',

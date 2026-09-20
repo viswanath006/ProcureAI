@@ -367,7 +367,7 @@ export function evaluateBidderEligibility(
     isEligible,
     verdict: isEligible ? 'ELIGIBLE' : 'NOT_ELIGIBLE',
     summaryExplanation: lines.join('\n'),
-    disqualificationReason,
+    disqualificationReason: undefined,
     checks,
     evaluatedAt: new Date().toISOString(),
     nonDiscriminationVerified: true,

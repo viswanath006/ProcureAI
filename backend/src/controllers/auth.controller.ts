@@ -24,6 +24,7 @@ const registerSchema = z.object({
     errorMap: () => ({ message: 'Invalid role for self-registration' }),
   }),
   company_id: z.string().uuid().optional(),
+  department: z.string().max(300).optional(),
 });
 
 const loginSchema = z.object({

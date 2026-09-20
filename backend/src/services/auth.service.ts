@@ -74,6 +74,7 @@ export interface RegisterInput {
   full_name: string;
   role_code: string;
   company_id?: string;
+  department?: string;
 }
 
 export interface LoginInput {
@@ -94,6 +95,7 @@ export interface UserRecord {
   role_id: string;
   role_code: string;
   company_id: string | null;
+  department?: string | null;
   status: string;
   password_hash: string;
   failed_login_count: number;
@@ -106,6 +108,7 @@ export interface PublicUser {
   full_name: string;
   role_code: string;
   company_id: string | null;
+  department?: string | null;
   status: string;
 }
 
@@ -116,6 +119,7 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
     full_name: 'Suresh Kumar (Director of Procurement)',
     role_code: 'GOVT_OFFICER',
     company_id: null,
+    department: 'Department of Expenditure (Procurement Policy Division)',
     status: 'active',
   },
   'officer.alpha@procureai.dev': {
@@ -124,6 +128,7 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
     full_name: 'Officer Alpha (Procurement Lead)',
     role_code: 'GOVT_OFFICER',
     company_id: null,
+    department: 'Central Public Works Department (CPWD)',
     status: 'active',
   },
   'bidder.alpha@alphacorp.dev': {
@@ -186,7 +191,7 @@ const SELF_REGISTER_ROLES = ['GOVT_OFFICER', 'EVALUATOR', 'BIDDER', 'AUDITOR'];
  * Register a new user. Returns tokens immediately (auto-login on register).
  */
 export async function registerUser(input: RegisterInput): Promise<{ user: PublicUser; tokens: TokenPair }> {
-  const { email, password, full_name, role_code, company_id } = input;
+  const { email, password, full_name, role_code, company_id, department } = input;
 
   // Validate role
   if (!SELF_REGISTER_ROLES.includes(role_code)) {
@@ -231,9 +236,9 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
     );
     if (role) {
       await query(
-        `INSERT INTO users (id, role_id, company_id, email, password_hash, full_name, status, email_verified_at)
-         VALUES ($1, $2, $3, $4, $5, $6, 'active', NOW())`,
-        [userId, role.id, company_id ?? null, email, password_hash, full_name]
+        `INSERT INTO users (id, role_id, company_id, email, password_hash, full_name, status, department, email_verified_at)
+         VALUES ($1, $2, $3, $4, $5, $6, 'active', $7, NOW())`,
+        [userId, role.id, company_id ?? null, email, password_hash, full_name, department ?? null]
       );
     }
   } catch {
@@ -248,6 +253,7 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
     role_id: role_code.toLowerCase(),
     role_code,
     company_id: company_id ?? null,
+    department: department ?? null,
     status: 'active',
     password_hash,
     failed_login_count: 0,
@@ -262,6 +268,7 @@ export async function registerUser(input: RegisterInput): Promise<{ user: Public
     full_name,
     role_code,
     company_id: company_id ?? null,
+    department: department ?? null,
     status: 'active',
   };
 
@@ -365,6 +372,7 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
     full_name: user.full_name,
     role_code: user.role_code,
     company_id: user.company_id,
+    department: (user as any).department ?? (DEMO_FALLBACK_USERS[user.email.toLowerCase()]?.department || null),
     status: user.status,
   };
 

@@ -32,7 +32,6 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
   const [companyProfile, setCompanyProfile] = useState<any | null>(null);
   const [companyName, setCompanyName] = useState('Apex Infra Buildtech Ltd');
   const [companyDocs, setCompanyDocs] = useState<any[]>([]);
-  const [eligibilityPassed, setEligibilityPassed] = useState<boolean | null>(true);
   const [eligibilityChecking, setEligibilityChecking] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,10 +45,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
       setEligibilityChecking(true);
       setErrorMessage(null);
 
-      const [profileRes, precheckRes] = await Promise.all([
-        api.getCompanyProfile(),
-        api.precheckEligibility(tender.id),
-      ]);
+      const profileRes = await api.getCompanyProfile();
 
       if (profileRes.success && profileRes.data) {
         setCompanyProfile(profileRes.data.company);
@@ -59,8 +55,6 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
         setCompanyDocs(profileRes.data.documents || []);
       }
 
-      // Open bidding: any company can bid for now
-      setEligibilityPassed(true);
       setEligibilityChecking(false);
     }
 
