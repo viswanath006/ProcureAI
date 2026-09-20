@@ -32,7 +32,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
   const [companyProfile, setCompanyProfile] = useState<any | null>(null);
   const [companyName, setCompanyName] = useState('Apex Infra Buildtech Ltd');
   const [companyDocs, setCompanyDocs] = useState<any[]>([]);
-  const [eligibilityPassed, setEligibilityPassed] = useState<boolean | null>(null);
+  const [eligibilityPassed, setEligibilityPassed] = useState<boolean | null>(true);
   const [eligibilityChecking, setEligibilityChecking] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,11 +59,8 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
         setCompanyDocs(profileRes.data.documents || []);
       }
 
-      if (precheckRes.success && precheckRes.data) {
-        setEligibilityPassed(precheckRes.data.report.isEligible);
-      } else {
-        setEligibilityPassed(false);
-      }
+      // Open bidding: any company can bid for now
+      setEligibilityPassed(true);
       setEligibilityChecking(false);
     }
 
@@ -163,13 +160,9 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
               <div>
                 {eligibilityChecking ? (
                   <span className="text-slate-400 font-mono">Checking qualifications...</span>
-                ) : eligibilityPassed ? (
+                ) : (
                   <span className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">
                     ✓ ELIGIBLE TO APPLY
-                  </span>
-                ) : (
-                  <span className="px-2.5 py-1 rounded bg-red-500/20 text-red-300 font-mono font-bold">
-                    ❌ DOES NOT MEET REQUIREMENTS YET
                   </span>
                 )}
               </div>
@@ -378,7 +371,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
                   </button>
                   <button
                     type="submit"
-                    disabled={isSubmitting || eligibilityPassed === false}
+                    disabled={isSubmitting}
                     className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-procure-600 to-indigo-600 hover:from-procure-500 hover:to-indigo-500 text-white font-semibold font-mono shadow-lg shadow-procure-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <span>🔒 Lock & Submit Bid</span>

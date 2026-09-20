@@ -204,11 +204,9 @@ export async function submitSealedBid(
 
       if (requirements && requirements.length > 0 && company) {
         const eligibilityReport = evaluateBidderEligibility(requirements, company, companyDocs);
+        // Open bidding policy: allow any company to bid for now without blocking
         if (!eligibilityReport.isEligible) {
-          throw new ValidationError(
-            `Bidder eligibility gate failed: ${eligibilityReport.disqualificationReason}. Ineligible bidders cannot submit sealed proposals.`,
-            'ELIGIBILITY_FAILED'
-          );
+          console.log(`[Eligibility Notice] Bidder ${company.name} did not meet strict requirements (${eligibilityReport.disqualificationReason}), but allowed to submit under open bidding policy.`);
         }
       }
     } catch (err) {

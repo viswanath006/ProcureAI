@@ -74,7 +74,7 @@ router.get(
             `SELECT id, reference_number, title, category, department,
                     submission_start_at, submission_deadline_at, status, created_at
              FROM tenders
-             WHERE status IN ('published', 'clarification', 'closed', 'under_evaluation', 'awarded')
+             WHERE UPPER(status::text) IN ('PUBLISHED', 'OPEN', 'CLARIFICATION', 'CLOSED', 'UNDER_EVALUATION', 'AWARDED')
              ORDER BY submission_deadline_at ASC`
           );
         }

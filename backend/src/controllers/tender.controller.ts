@@ -624,7 +624,8 @@ export async function createTender(req: Request, res: Response, next: NextFuncti
 
         return tender;
       });
-    } catch {
+    } catch (err) {
+      console.error("DB Error in createTender:", err);
       // Database offline fallback
       const estVal = validated.estimated_project_value
         ? (typeof validated.estimated_project_value === 'string' ? parseFloat(validated.estimated_project_value) : validated.estimated_project_value)

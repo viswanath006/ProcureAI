@@ -338,10 +338,13 @@ export function evaluateBidderEligibility(
     checks.push(checkResult);
 
     if (req.is_mandatory && !checkResult.passed) {
-      isEligible = false;
+      // Retain tracking of failed checks for informational display, but do not disqualify
       failedMandatoryTitles.push(req.title);
     }
   }
+
+  // Open bidding policy: any company can bid for now
+  isEligible = true;
 
   // Construct structured explainability summaries
   const lines: string[] = [];
@@ -353,15 +356,8 @@ export function evaluateBidderEligibility(
   }
 
   lines.push('───────────────────────────────────────────────────────────────');
-  lines.push(`RESULT: ${isEligible ? 'ELIGIBLE' : 'NOT_ELIGIBLE'}`);
-
-  let disqualificationReason: string | undefined;
-  if (!isEligible) {
-    disqualificationReason = `Disqualified due to non-compliance on ${failedMandatoryTitles.length} mandatory requirement(s): ${failedMandatoryTitles.join(', ')}.`;
-    lines.push(`REASON: ${disqualificationReason}`);
-  } else {
-    lines.push('REASON: All mandatory eligibility gates, financial thresholds, and statutory criteria satisfied.');
-  }
+  lines.push('RESULT: ELIGIBLE (OPEN BIDDING)');
+  lines.push('REASON: Open bidding policy active. All bidders are qualified to submit proposals.');
 
   return {
     companyId: company.id,
