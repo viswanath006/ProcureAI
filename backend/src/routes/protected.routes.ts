@@ -36,6 +36,11 @@ import { DEMO_CONSTANTS } from '../services/demoScenario.service';
 import { getLocalTender, saveLocalTender, loadLocalTenders } from '../controllers/tender.controller';
 import { loadLocalBids } from '../controllers/bid.controller';
 import { OsintService, lookupMcaRecordFromAiService } from '../services/osint.service';
+import {
+  getEvaluationBiddersForDepartment,
+  loadContractorsEvaluationDataset,
+  getContractorsForDepartment,
+} from '../data/companyEvaluationDataset';
 
 const router = Router();
 
@@ -494,35 +499,46 @@ router.post(
           };
         });
       } else {
-        const localBids = loadLocalBids().filter((b) => b.tender_id === id || b.tender_reference === tender.reference_number);
-        processedBids = DEMO_CONSTANTS.COMPANIES.map((c, i) => {
-          let amt = c.bidAmountInr;
-          let days = 180 + i * 15;
-          let ref = `BID-2026-0${i + 1}`;
-          if (c.name.includes('Apex Infra') && localBids.length > 0) {
-            amt = localBids[0].amount_inr || amt;
-            days = localBids[0].completion_days || days;
-            ref = localBids[0].bid_reference || ref;
+        const tenderBudget = tender?.estimated_budget_paisa ? Number(tender.estimated_budget_paisa) / 100 : 100000000;
+        const dept = tender?.department || tender?.department_id;
+        if (dept) {
+          const deptBids = getEvaluationBiddersForDepartment(dept, tenderBudget, 180);
+          if (deptBids.length > 0) {
+            processedBids = deptBids;
           }
-          return {
-            id: c.id,
-            bid_id: c.id,
-            bid_reference: ref,
-            company_id: c.id,
-            company_name: c.name,
-            bid_amount_inr: amt,
-            completion_days: days,
-            technical_proposal: `Turnkey execution proposal for ${tender.title}`,
-            annual_turnover_inr: 750000000,
-            net_worth_inr: 250000000,
-            years_in_operation: 10 + i * 2,
-            completed_projects_count: 5 + i,
-            technical_capabilities: ['Prefab Construction', 'Seismic Design'],
-            compliance_info: { audited_balance_sheet: true, gst_compliant: true },
-            past_performance: { on_time_completion_rate: 0.95 },
-            is_synthetic: true,
-          };
-        });
+        }
+
+        if (processedBids.length === 0) {
+          const localBids = loadLocalBids().filter((b) => b.tender_id === id || b.tender_reference === tender.reference_number);
+          processedBids = DEMO_CONSTANTS.COMPANIES.map((c, i) => {
+            let amt = c.bidAmountInr;
+            let days = 180 + i * 15;
+            let ref = `BID-2026-0${i + 1}`;
+            if (c.name.includes('Apex Infra') && localBids.length > 0) {
+              amt = localBids[0].amount_inr || amt;
+              days = localBids[0].completion_days || days;
+              ref = localBids[0].bid_reference || ref;
+            }
+            return {
+              id: c.id,
+              bid_id: c.id,
+              bid_reference: ref,
+              company_id: c.id,
+              company_name: c.name,
+              bid_amount_inr: amt,
+              completion_days: days,
+              technical_proposal: `Turnkey execution proposal for ${tender.title}`,
+              annual_turnover_inr: 750000000,
+              net_worth_inr: 250000000,
+              years_in_operation: 10 + i * 2,
+              completed_projects_count: 5 + i,
+              technical_capabilities: ['Prefab Construction', 'Seismic Design'],
+              compliance_info: { audited_balance_sheet: true, gst_compliant: true },
+              past_performance: { on_time_completion_rate: 0.95 },
+              is_synthetic: true,
+            };
+          });
+        }
       }
 
       // Execute AI evaluation
@@ -673,14 +689,18 @@ router.post(
       const weights = customWeights || DEFAULT_EVALUATION_WEIGHTS;
       validateWeights(weights);
 
+      const dept = tender.department_id || tender.department || null;
       const evalResult = await runSyntheticBenchmark(
         {
           id: tender.id,
           reference_number: tender.reference_number,
           title: tender.title,
           estimated_budget_inr: tender.estimated_budget_paisa ? Number(tender.estimated_budget_paisa) / 100 : 100000000,
+          department_id: dept,
+          department: tender.department || dept,
         },
-        weights
+        weights,
+        dept
       );
 
       let evaluation: any = null;
@@ -763,6 +783,36 @@ router.post(
     } catch (error) {
       next(error);
     }
+  }
+);
+
+/**
+ * GET /tenders/evaluation/dataset
+ * Allowed: GOVERNMENT_OFFICER, ADMIN, AUDITOR, BIDDER
+ * Returns the verified contractors evaluation dataset across all departments.
+ */
+router.get(
+  '/tenders/evaluation/dataset',
+  authorize('GOVT_OFFICER', 'ADMIN', 'AUDITOR', 'BIDDER'),
+  async (_req: Request, res: Response) => {
+    res.json(loadContractorsEvaluationDataset());
+  }
+);
+
+/**
+ * GET /tenders/evaluation/dataset/:deptId
+ * Allowed: GOVERNMENT_OFFICER, ADMIN, AUDITOR, BIDDER
+ * Returns verified contractors for a specific department.
+ */
+router.get(
+  '/tenders/evaluation/dataset/:deptId',
+  authorize('GOVT_OFFICER', 'ADMIN', 'AUDITOR', 'BIDDER'),
+  async (req: Request, res: Response) => {
+    const { deptId } = req.params;
+    res.json({
+      department_id: deptId,
+      contractors: getContractorsForDepartment(String(deptId)),
+    });
   }
 );
 

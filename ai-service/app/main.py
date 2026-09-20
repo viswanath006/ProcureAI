@@ -184,18 +184,61 @@ async def evaluate_bids(request: EvaluationRequest) -> EvaluationResponse:
         )
 
 
+@app.get("/evaluation/dataset")
+async def get_evaluation_dataset() -> Dict[str, Any]:
+    """
+    Returns the comprehensive dataset of 38 verified Indian government contractors
+    across 10 tendering departments for AI evaluation and benchmarking.
+    """
+    return SyntheticBenchmarkGenerator.load_contractors_dataset()
+
+
+@app.get("/evaluation/dataset/{department_id}")
+async def get_department_evaluation_dataset(department_id: str) -> Dict[str, Any]:
+    """
+    Returns verified contractor profiles and evaluation baselines for a specific tendering department.
+    """
+    contractors = SyntheticBenchmarkGenerator.get_contractors_for_department(department_id)
+    return {
+        "department_id": department_id,
+        "contractor_count": len(contractors),
+        "contractors": contractors,
+    }
+
+
 @app.post("/synthetic/benchmark", response_model=EvaluationResponse)
 async def evaluate_synthetic_benchmark(
     request: SyntheticBenchmarkRequest,
 ) -> EvaluationResponse:
     """
-    Generates and evaluates a synthetic benchmark dataset with 3 distinct bidder personas.
-    Clearly labeled with [SYNTHETIC DATASET].
+    Generates and evaluates a synthetic benchmark dataset.
+    Supports department-specific real-world contractor cohorts (NHAI, Railways, CPWD, Defence, etc.)
+    or the default benchmark suite.
     """
     try:
-        # Generate benchmark suite
-        synth_tender, synth_bids = SyntheticBenchmarkGenerator.generate_benchmark_suite()
-        
+        # Detect department from request or tender context
+        dept_id = (
+            request.department_id
+            or request.department
+            or (request.tender.department_id if request.tender else None)
+            or (request.tender.department if request.tender else None)
+        )
+
+        budget = request.tender.estimated_budget_inr if request.tender else 100_000_000.0
+        days = request.tender.required_delivery_days if (request.tender and request.tender.required_delivery_days) else 180
+
+        if dept_id:
+            synth_tender, synth_bids = SyntheticBenchmarkGenerator.generate_department_benchmark_suite(
+                department_id=dept_id,
+                estimated_budget_inr=budget,
+                required_days=days,
+            )
+        else:
+            synth_tender, synth_bids = SyntheticBenchmarkGenerator.generate_benchmark_suite(
+                estimated_budget_inr=budget,
+                required_days=days,
+            )
+
         # Override with requested tender context if provided
         if request.tender:
             synth_tender = request.tender

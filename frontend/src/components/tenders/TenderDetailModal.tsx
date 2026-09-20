@@ -885,6 +885,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
             <AiEvaluationView
               tenderId={tenderId}
               tenderStatus={currentStatus}
+              tenderDepartment={data?.tender?.department}
               onEvaluationComplete={() => {
                 loadDetails();
                 onRefresh();

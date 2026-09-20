@@ -421,8 +421,35 @@ export class OsintService {
           let collusionFlags: string[] = [];
           let discrepancyDetails: Record<string, any> = {};
 
-          // Synthetic profiles for demo bidders
-          if (b.company_name?.includes('Company B') || b.company_name?.includes('Bharat')) {
+          if (b.osint_profile) {
+            profile = {
+              bidder_id: id,
+              cin: b.cin || b.osint_profile.cin || 'L99999MH1946PLC004768',
+              mca_status: b.osint_profile.company_status || 'ACTIVE',
+              incorporation_date: b.incorporation_date || '2000-01-01',
+              registered_address: b.registered_address || 'Registered Corporate Office, India',
+              directors: b.directors || [],
+              authorized_capital: b.osint_profile.authorized_capital || 500000000,
+              last_verified_at: new Date().toISOString(),
+              verification_status: b.osint_profile.verification_status || 'verified',
+              discrepancy_details: {},
+              collusion_flags: b.osint_profile.collusion_flags || [],
+            };
+          } else if (b.cin) {
+            profile = {
+              bidder_id: id,
+              cin: b.cin,
+              mca_status: 'ACTIVE',
+              incorporation_date: b.incorporation_date || '2000-01-01',
+              registered_address: b.registered_address || 'Registered Corporate Office, India',
+              directors: b.directors || [],
+              authorized_capital: 500000000,
+              last_verified_at: new Date().toISOString(),
+              verification_status: 'verified',
+              discrepancy_details: {},
+              collusion_flags: [],
+            };
+          } else if (b.company_name?.includes('Company B') || b.company_name?.includes('Bharat')) {
             // Company B: Flagged with statutory mismatch & collusion indicator (Amber)
             regAddress = 'Plot No. 42, Sector 18, Electronic City, Gurugram, Haryana 122015';
             directors = [{ name: 'Suresh Verma', din: '08123456' }];

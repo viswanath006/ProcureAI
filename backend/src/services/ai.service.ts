@@ -1,4 +1,5 @@
 import { env } from '../config/env';
+import { getEvaluationBiddersForDepartment } from '../data/companyEvaluationDataset';
 
 export interface AiHealthData {
   status: string;
@@ -633,9 +634,12 @@ export async function runAiEvaluation(
 
 export async function runSyntheticBenchmark(
   tender?: any,
-  weights: EvaluationWeights = DEFAULT_EVALUATION_WEIGHTS
+  weights: EvaluationWeights = DEFAULT_EVALUATION_WEIGHTS,
+  departmentId?: string
 ): Promise<EvaluationResponse> {
   validateWeights(weights);
+
+  const dept = departmentId || tender?.department_id || tender?.department || null;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 7000);
@@ -649,9 +653,13 @@ export async function runSyntheticBenchmark(
             title: tender.title || 'Procurement Tender',
             estimated_budget_inr: Number(tender.estimated_budget_inr || 100000000),
             required_delivery_days: 180,
+            department_id: dept,
+            department: tender?.department || dept,
           }
         : null,
       weights,
+      department_id: dept,
+      department: tender?.department || dept,
     };
 
     const res = await fetch(`${env.AI_SERVICE_URL}/synthetic/benchmark`, {
@@ -675,6 +683,22 @@ export async function runSyntheticBenchmark(
 
   // Local synthetic benchmark generation
   const budget = tender?.estimated_budget_inr ? Number(tender.estimated_budget_inr) : 100000000;
+  
+  if (dept) {
+    const deptBids = getEvaluationBiddersForDepartment(dept, budget, 180);
+    if (deptBids.length > 0) {
+      const synthTender = {
+        tender_id: tender?.id || `synth-tdr-${dept}`,
+        reference_number: tender?.reference_number || `SYNTH-TDR-${dept.toUpperCase()}-01`,
+        title: tender?.title || `[SYNTHETIC BENCHMARK] ${tender?.department || dept} Infrastructure Procurement`,
+        estimated_budget_inr: budget,
+        department_id: dept,
+        department: tender?.department || dept,
+      };
+      return evaluateLocally(synthTender, deptBids, weights);
+    }
+  }
+
   const synthTender = {
     tender_id: tender?.id || 'synth-tdr-001',
     reference_number: tender?.reference_number || 'SYNTH-TDR-2026-CLOUD-01',

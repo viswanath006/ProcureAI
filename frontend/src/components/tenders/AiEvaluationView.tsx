@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../api/client';
 import { useAuth } from '../../hooks/useAuth';
 import { AiExplainabilityCard, ExplanationObject } from './AiExplainabilityCard';
+import { getDepartmentContractors, getContractorEvaluationDetails } from '../../data/companyEvaluationDataset';
 
 interface AiEvaluationViewProps {
   tenderId: string;
   tenderStatus: string;
+  tenderDepartment?: string;
   onEvaluationComplete?: () => void;
 }
 
@@ -30,16 +32,25 @@ const DEFAULT_WEIGHTS: WeightsState = {
 export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
   tenderId,
   tenderStatus,
+  tenderDepartment,
   onEvaluationComplete,
 }) => {
   const { user } = useAuth();
   const [weights, setWeights] = useState<WeightsState>(DEFAULT_WEIGHTS);
   const [showConfig, setShowConfig] = useState(false);
+  const [showCohort, setShowCohort] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [evaluationData, setEvaluationData] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const effectiveDepartment =
+    tenderDepartment ||
+    localStorage.getItem('procureai_officer_department') ||
+    'National Highways Authority of India (NHAI)';
+
+  const cohortContractors = getDepartmentContractors(effectiveDepartment);
 
   const isOfficerOrAdmin = ['GOVT_OFFICER', 'ADMIN'].includes(user?.role_code || '');
 
@@ -225,10 +236,18 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
 
           <div className="flex items-center gap-2">
             <button
+              onClick={() => setShowCohort(!showCohort)}
+              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold border border-slate-700 flex items-center gap-1.5 transition-all"
+              title={`View ${cohortContractors.length} verified Indian contractors from ${effectiveDepartment}`}
+            >
+              <span>🏢</span> {showCohort ? 'Hide Bidders' : `Sector Bidders (${cohortContractors.length})`}
+            </button>
+
+            <button
               onClick={() => setShowConfig(!showConfig)}
               className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold border border-slate-700 flex items-center gap-1.5 transition-all"
             >
-              <span>⚙️</span> {showConfig ? 'Hide Weights Config' : 'Configure Weights'}
+              <span>⚙️</span> {showConfig ? 'Hide Weights' : 'Configure Weights'}
             </button>
 
             {isOfficerOrAdmin && (
@@ -237,9 +256,9 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                   onClick={handleRunSyntheticBenchmark}
                   disabled={isLoading}
                   className="px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white text-[11px] font-semibold transition-all shadow-md shadow-indigo-600/20 disabled:opacity-50 flex items-center gap-1.5"
-                  title="Demonstrate evaluation using 3 synthetic bidder personas"
+                  title={`Benchmark evaluation using verified ${effectiveDepartment} contractors`}
                 >
-                  <span>🧪</span> Synthetic Demo
+                  <span>🧪</span> Benchmark Sector
                 </button>
 
                 <button
@@ -261,6 +280,62 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
               </>
             )}
           </div>
+        </div>
+
+        {/* ── Verified Department Contractor Cohort Dataset Panel ───────────────── */}
+        <div className="p-3 rounded-xl bg-slate-950/80 border border-procure-500/20 text-[11px] space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-amber-400">🏛️</span>
+              <span className="font-bold text-slate-200">
+                Verified Indian Contractor Dataset · <span className="text-procure-300 font-mono">{effectiveDepartment}</span>
+              </span>
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-procure-500/10 text-procure-400 border border-procure-500/20">
+                {cohortContractors.length} Verified Enterprises
+              </span>
+            </div>
+            <button
+              onClick={() => setShowCohort(!showCohort)}
+              className="text-[10px] text-slate-400 hover:text-slate-200 underline font-mono"
+            >
+              {showCohort ? 'Collapse Profiles' : 'Expand Profiles'}
+            </button>
+          </div>
+
+          {showCohort && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pt-2 border-t border-slate-800 animate-fadeIn">
+              {cohortContractors.map((c) => {
+                const details = getContractorEvaluationDetails(c.id);
+                return (
+                  <div key={c.id} className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-slate-200 text-[11px] truncate max-w-[180px]" title={c.name}>
+                        {c.name}
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        VERIFIED
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      CIN: <span className="text-slate-300">{c.cin}</span>
+                    </div>
+                    <div className="text-[10px] text-slate-400">
+                      Tag: <span className="text-procure-300 font-medium">{c.tag}</span>
+                    </div>
+                    {details && (
+                      <div className="flex items-center gap-2 text-[9px] text-slate-500 font-mono pt-1 border-t border-slate-800/60">
+                        <span>{details.years_in_operation} yrs exp</span>
+                        <span>·</span>
+                        <span>{details.completed_projects_count} projects</span>
+                        <span>·</span>
+                        <span className="text-amber-400">★ {details.past_performance_rating}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* ── Weights Summary Pill Badges ──────────────────────────────── */}

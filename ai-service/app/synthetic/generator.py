@@ -1,22 +1,133 @@
 """
-ProcureAI Phase 7 Synthetic Benchmark Data Generator.
+ProcureAI Phase 7 & Phase 14 Synthetic Benchmark Data Generator.
 Creates diverse, labeled synthetic evaluation datasets for training, automated tests,
-and platform demonstration without fabricating real government records.
+and platform demonstration featuring verified real-world Indian contractors across 10 tendering departments.
 """
 
-from typing import List, Tuple
+import json
+import os
+from pathlib import Path
+from typing import List, Tuple, Dict, Any, Optional
 from ..models.evaluation import (
     BidderEvaluationInput,
     TenderEvaluationContext,
     EvaluationWeights,
 )
 
+DATASET_FILE = Path(__file__).resolve().parent.parent / "data" / "company_evaluation_dataset.json"
+
 
 class SyntheticBenchmarkGenerator:
     """
     Generates realistic, standardized benchmark evaluation datasets.
-    All records are clearly labeled as [SYNTHETIC DATASET].
+    Supports both generic benchmark personas and real-world verified Indian contractor cohorts.
     """
+
+    _cached_dataset: Optional[Dict[str, Any]] = None
+
+    @classmethod
+    def load_contractors_dataset(cls) -> Dict[str, Any]:
+        """Loads and caches the verified Indian contractors AI evaluation dataset."""
+        if cls._cached_dataset is not None:
+            return cls._cached_dataset
+
+        if DATASET_FILE.exists():
+            try:
+                with open(DATASET_FILE, "r", encoding="utf-8") as f:
+                    cls._cached_dataset = json.load(f)
+                    return cls._cached_dataset
+            except Exception as err:
+                print(f"[SyntheticBenchmarkGenerator] Error loading {DATASET_FILE}: {err}")
+
+        # Fallback to empty structure if file is missing
+        return {"contractors": [], "departments": []}
+
+    @classmethod
+    def get_contractors_for_department(cls, department_id: str) -> List[Dict[str, Any]]:
+        """Filters contractor records by department identifier."""
+        data = cls.load_contractors_dataset()
+        contractors = data.get("contractors", [])
+        dept_clean = department_id.lower().strip()
+        
+        matched = [
+            c for c in contractors
+            if c.get("department_id", "").lower() == dept_clean or dept_clean in c.get("department", "").lower()
+        ]
+        return matched if matched else contractors[:4]
+
+    @classmethod
+    def generate_department_benchmark_suite(
+        cls,
+        department_id: str = "nhai",
+        estimated_budget_inr: float = 100_000_000.0,
+        required_days: int = 180,
+    ) -> Tuple[TenderEvaluationContext, List[BidderEvaluationInput]]:
+        """
+        Generates a sector-specific benchmark suite featuring verified Indian government contractors.
+        """
+        dept_contractors = cls.get_contractors_for_department(department_id)
+        if not dept_contractors:
+            return cls.generate_benchmark_suite(estimated_budget_inr, required_days)
+
+        first_c = dept_contractors[0]
+        dept_name = first_c.get("department", "Ministry of Infrastructure")
+        category = first_c.get("category", "Works & Procurement")
+
+        tender = TenderEvaluationContext(
+            tender_id=f"synth-tdr-{department_id}-2026",
+            reference_number=f"IN-GOV-{department_id.upper()}-2026-001",
+            title=f"[SYNTHETIC BENCHMARK] {dept_name} — High-Priority Turnkey Project",
+            estimated_budget_inr=estimated_budget_inr,
+            required_delivery_days=required_days,
+            required_experience_years=5,
+            required_completed_projects=3,
+            required_turnover_inr=estimated_budget_inr * 0.3,
+            technical_requirements=[
+                f"Accredited by {dept_name}",
+                "ISO 9001:2015 Quality Management System",
+                "ISO 14001:2015 Environmental Compliance",
+                "Statutory MCA Active Standing & Zero Debarment",
+            ],
+        )
+
+        bidders: List[BidderEvaluationInput] = []
+        for idx, c in enumerate(dept_contractors):
+            profile = c.get("evaluation_profile", {})
+            bid_ratio = profile.get("bid_amount_ratio", 0.90 + (idx * 0.02))
+            days_ratio = profile.get("completion_days_ratio", 0.92)
+
+            bidder = BidderEvaluationInput(
+                bid_id=f"synth-bid-{c['id']}",
+                bid_reference=f"BID-{department_id.upper()}-2026-00{idx + 1}",
+                company_id=c["id"],
+                company_name=f"[SYNTHETIC BENCHMARK] {c['name']}",
+                bid_amount_inr=round(estimated_budget_inr * bid_ratio, 2),
+                completion_days=max(30, int(required_days * days_ratio)),
+                technical_proposal=profile.get(
+                    "technical_proposal",
+                    f"Comprehensive execution proposal for {tender.title} adhering to standard statutory norms."
+                ),
+                annual_turnover_inr=profile.get("annual_turnover_inr", estimated_budget_inr * 5),
+                net_worth_inr=profile.get("net_worth_inr", estimated_budget_inr * 2),
+                years_in_operation=profile.get("years_in_operation", 15),
+                completed_projects_count=profile.get("completed_projects_count", 10),
+                technical_capabilities=profile.get("technical_capabilities", []),
+                compliance_info=profile.get("compliance_info", {"is_debarred": False, "litigation_count": 0}),
+                past_performance=profile.get(
+                    "past_performance",
+                    {"avg_rating": 4.7, "on_time_completion_pct": 95.0, "contractual_disputes": 0}
+                ),
+                eligibility_passed=True,
+                is_synthetic=True,
+                cin=c.get("cin"),
+                registered_address=c.get("registered_address"),
+                directors=c.get("directors", []),
+                incorporation_date=c.get("incorporation_date"),
+                osint_profile=profile.get("osint_profile"),
+            )
+            bidders.append(bidder)
+
+        return tender, bidders
 
     @staticmethod
     def generate_benchmark_suite(

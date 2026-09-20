@@ -66,6 +66,8 @@ class TenderEvaluationContext(BaseModel):
     required_completed_projects: Optional[int] = 0
     required_turnover_inr: Optional[float] = 0.0
     technical_requirements: Optional[List[str]] = []
+    department_id: Optional[str] = None
+    department: Optional[str] = None
 
 
 class EvaluationRequest(BaseModel):
@@ -114,18 +116,19 @@ class BidderExplanationObject(BaseModel):
     total_score: float
     why_summary: str
     ratings: Dict[str, str]
-    positive_contributors: List[str]
-    negative_contributors: List[str]
-    factor_explanations: List[FactorExplanation]
-    shap_attributions: Dict[str, float]
-    baseline_expected_score: float
-    plain_language_narrative: str
+    positive_contributors: List[str] = []
+    negative_contributors: List[str] = []
+    factor_explanations: List[FactorExplanation] = []
+    shap_attributions: Dict[str, float] = {}
+    baseline_expected_score: float = 72.0
+    plain_language_narrative: str = ""
 
 
 class BidderEvaluationResult(BaseModel):
     """Comprehensive score dossier for a single bidder."""
     bid_id: str
     bid_reference: str
+    company_id: Optional[str] = None
     company_name: str
     rank: int
     total_score: float = Field(ge=0.0, le=100.0)
@@ -163,3 +166,5 @@ class SyntheticBenchmarkRequest(BaseModel):
     tender: Optional[TenderEvaluationContext] = None
     bids_count: int = Field(default=3, ge=2, le=10)
     weights: Optional[EvaluationWeights] = None
+    department_id: Optional[str] = None
+    department: Optional[str] = None

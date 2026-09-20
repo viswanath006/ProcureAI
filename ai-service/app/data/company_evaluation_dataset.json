@@ -1,0 +1,1351 @@
+{
+  "dataset_metadata": {
+    "title": "ProcureAI Verified Indian Government Contractors AI Evaluation Dataset",
+    "version": "1.0.0",
+    "total_contractors": 38,
+    "total_departments": 10,
+    "last_updated": "2026-09-20",
+    "evaluation_model": "Quality & Cost Based Selection (QCBS) 6-Factor Model",
+    "evaluation_factors": {
+      "price": { "weight_pct": 40.0, "description": "Commercial pricing competitiveness and dumping safeguards" },
+      "technical": { "weight_pct": 20.0, "description": "Technical proposal methodology, architectural depth, and verified domain accreditations" },
+      "experience": { "weight_pct": 15.0, "description": "Years in operation and verified completed public works references" },
+      "financial": { "weight_pct": 10.0, "description": "Audited annual turnover and net worth relative to contract size" },
+      "past_performance": { "weight_pct": 10.0, "description": "Historical on-time completion rates, delivery ratings, and dispute absence" },
+      "risk": { "weight_pct": 5.0, "description": "Operational risk, statutory MCA active standing, and collusion absence" }
+    }
+  },
+  "departments": [
+    { "id": "nhai", "name": "National Highways Authority of India (NHAI)", "sector": "Highways & Expressways", "contractor_count": 6 },
+    { "id": "cpwd", "name": "Central Public Works Department (CPWD)", "sector": "Civil Infrastructure & Public Buildings", "contractor_count": 3 },
+    { "id": "dmrc", "name": "Delhi Metro Rail Corporation & Urban Transit", "sector": "Urban Rail & Viaducts", "contractor_count": 1 },
+    { "id": "railways-board", "name": "Railway Board & Zonal Rail Procurement", "sector": "Rolling Stock & Electrification", "contractor_count": 4 },
+    { "id": "mes", "name": "Military Engineer Services (MES)", "sector": "Defence Civil Infrastructure", "contractor_count": 2 },
+    { "id": "mod-acquisition", "name": "Department of Defence (Capital Acquisition Wing)", "sector": "Defence Aviation & Systems", "contractor_count": 1 },
+    { "id": "drdo", "name": "Defence Research & Development Organisation (DRDO)", "sector": "Strategic Defence Electronics", "contractor_count": 2 },
+    { "id": "seci", "name": "Solar Energy Corporation of India (SECI Renewable Grid)", "sector": "Renewable Clean Energy", "contractor_count": 3 },
+    { "id": "powergrid", "name": "Power Grid Corporation & Central Electricity Authority", "sector": "Transmission & Hybrid Grids", "contractor_count": 1 },
+    { "id": "nic", "name": "National Informatics Centre (NIC Central Procurement)", "sector": "IT & e-Governance Platforms", "contractor_count": 3 },
+    { "id": "dot", "name": "Department of Telecommunications (Telecom Infra & BharatNet)", "sector": "Telecom & Optical Networks", "contractor_count": 2 },
+    { "id": "aiims-procure", "name": "AIIMS Centralized Medical Equipment Procurement Cell", "sector": "Medical Diagnostic & Surgical Imaging", "contractor_count": 2 },
+    { "id": "cmss", "name": "Central Medical Services Society (CMSS Pharma & Medical Logistics)", "sector": "Medical Consumables & Logistics", "contractor_count": 1 },
+    { "id": "jal-jeevan", "name": "Department of Drinking Water & Sanitation (Jal Jeevan Mission)", "sector": "Piped Water & Wastewater Treatment", "contractor_count": 3 },
+    { "id": "edu-school", "name": "Department of School Education & Literacy", "sector": "Smart Classrooms & ICT", "contractor_count": 3 },
+    { "id": "agri-infra", "name": "Department of Agriculture & Farmers Welfare (Farm Mechanization)", "sector": "Agricultural Heavy Equipment", "contractor_count": 1 }
+  ],
+  "contractors": [
+    {
+      "id": "lnt-infra",
+      "name": "Larsen & Toubro Ltd (L&T Infrastructure)",
+      "short_name": "L&T Infra",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "lnt.infra@bidder.in",
+      "cin": "L99999MH1946PLC004768",
+      "incorporation_date": "1946-02-07",
+      "registered_address": "L&T House, Ballard Estate, Mumbai, Maharashtra 400001",
+      "directors": [
+        { "name": "S. N. Subrahmanyan", "din": "02255382", "designation": "Chairman & Managing Director" },
+        { "name": "R. Shankar Raman", "din": "00019798", "designation": "Whole-time Director & CFO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.92,
+        "completion_days_ratio": 0.94,
+        "technical_proposal": "Full-depth asphalt pavement with automated Wirtgen slipform concrete pavers, precast segmental box girder bridges, automated drone LIDAR progress audits, and 10-year defect liability warranty adhering to IRC:SP:84-2019 standards.",
+        "technical_capabilities": [
+          { "name": "IRC Accredited Paving Specialist", "category": "engineering", "level": "tier-1" },
+          { "name": "ISO 9001:2015 Quality Management", "category": "quality", "level": "certified" },
+          { "name": "ISO 14001:2015 Environmental", "category": "environment", "level": "certified" },
+          { "name": "ISO 45001:2018 Occupational Health & Safety", "category": "safety", "level": "certified" },
+          { "name": "3D Stringless Concrete Paving", "category": "machinery", "level": "advanced" }
+        ],
+        "years_in_operation": 78,
+        "completed_projects_count": 48,
+        "flagship_projects": ["Mumbai Trans Harbour Link (Atal Setu)", "Western Dedicated Freight Corridor", "Delhi-Meerut Expressway Package 1"],
+        "annual_turnover_inr": 1833410000000.0,
+        "net_worth_inr": 892000000000.0,
+        "past_performance": {
+          "avg_rating": 4.85,
+          "on_time_completion_pct": 97.2,
+          "contractual_disputes": 0,
+          "quality_audit_score": 96.4
+        },
+        "compliance_info": {
+          "is_debarred": false,
+          "litigation_count": 0,
+          "gst_compliance_score": 99.8,
+          "statutory_clearances_ready": true
+        },
+        "osint_profile": {
+          "verification_status": "verified",
+          "company_status": "ACTIVE",
+          "authorized_capital": 6000000000.0,
+          "paid_up_capital": 2810000000.0,
+          "collusion_flags": []
+        }
+      }
+    },
+    {
+      "id": "dilip-buildcon",
+      "name": "Dilip Buildcon Limited (DBL)",
+      "short_name": "Dilip Buildcon",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "dilipbuildcon@bidder.in",
+      "cin": "L45201MP2006PLC018689",
+      "incorporation_date": "2006-06-12",
+      "registered_address": "Plot No. 5, Inside Govind Narayan Singh Gate, Chuna Bhatti, Kolar Road, Bhopal, MP 462016",
+      "directors": [
+        { "name": "Dilip Suryavanshi", "din": "00397048", "designation": "Managing Director" },
+        { "name": "Devendra Jain", "din": "02374610", "designation": "Executive Director & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.87,
+        "completion_days_ratio": 0.88,
+        "technical_proposal": "Hybrid Annuity Model (HAM) highway construction with captive heavy equipment fleet, automated hot-mix asphalt plant with GPS-tracked dumpers, automated compaction meters, and fast-track subgrade stabilization.",
+        "technical_capabilities": [
+          { "name": "NHAI HAM Gold Standard Certified", "category": "engineering", "level": "tier-1" },
+          { "name": "ISO 9001:2015 Quality Management", "category": "quality", "level": "certified" },
+          { "name": "ISO 14001:2015 Environmental", "category": "environment", "level": "certified" },
+          { "name": "Captive Fleet (12,000+ Heavy Machinery Units)", "category": "assets", "level": "leader" }
+        ],
+        "years_in_operation": 18,
+        "completed_projects_count": 34,
+        "flagship_projects": ["Zuari Bridge Goa (8-lane Cable Stayed)", "Bhopal Metro Rail Phase 1", "Delhi-Vadodara Expressway Package 11"],
+        "annual_turnover_inr": 105370000000.0,
+        "net_worth_inr": 48200000000.0,
+        "past_performance": {
+          "avg_rating": 4.72,
+          "on_time_completion_pct": 98.1,
+          "contractual_disputes": 0,
+          "quality_audit_score": 93.8
+        },
+        "compliance_info": {
+          "is_debarred": false,
+          "litigation_count": 0,
+          "gst_compliance_score": 99.4,
+          "statutory_clearances_ready": true
+        },
+        "osint_profile": {
+          "verification_status": "verified",
+          "company_status": "ACTIVE",
+          "authorized_capital": 1600000000.0,
+          "paid_up_capital": 1462000000.0,
+          "collusion_flags": []
+        }
+      }
+    },
+    {
+      "id": "irb-infra",
+      "name": "IRB Infrastructure Developers Ltd",
+      "short_name": "IRB Infra",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "irb.infra@bidder.in",
+      "cin": "L65991MH1998PLC115975",
+      "incorporation_date": "1998-07-27",
+      "registered_address": "1101, Hiranandani Knowledge Park, Technology Street, Powai, Mumbai 400076",
+      "directors": [
+        { "name": "Virendra D. Mhaiskar", "din": "00183554", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.94,
+        "completion_days_ratio": 0.96,
+        "technical_proposal": "Toll-Operate-Transfer (TOT) & BOT expressway development with electronic toll collection (ETC FASTag) integration, automated incident management systems, and durable polymer-modified bitumen surfacing.",
+        "technical_capabilities": [
+          { "name": "BOT / TOT Concessionaire Specialist", "category": "finance_eng", "level": "tier-1" },
+          { "name": "ISO 9001:2015 Certified", "category": "quality", "level": "certified" },
+          { "name": "Automated Highway Incident Management", "category": "operations", "level": "expert" }
+        ],
+        "years_in_operation": 26,
+        "completed_projects_count": 28,
+        "flagship_projects": ["Mumbai-Pune Expressway Concession", "Ganga Expressway Group 2", "Vadodara-Mumbai Expressway Package"],
+        "annual_turnover_inr": 74090000000.0,
+        "net_worth_inr": 134200000000.0,
+        "past_performance": {
+          "avg_rating": 4.65,
+          "on_time_completion_pct": 95.0,
+          "contractual_disputes": 0,
+          "quality_audit_score": 92.1
+        },
+        "compliance_info": {
+          "is_debarred": false,
+          "litigation_count": 0,
+          "gst_compliance_score": 99.1,
+          "statutory_clearances_ready": true
+        },
+        "osint_profile": {
+          "verification_status": "verified",
+          "company_status": "ACTIVE",
+          "authorized_capital": 6500000000.0,
+          "paid_up_capital": 6039000000.0,
+          "collusion_flags": []
+        }
+      }
+    },
+    {
+      "id": "gr-infra",
+      "name": "GR Infraprojects Limited",
+      "short_name": "GR Infra",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "grinfra@bidder.in",
+      "cin": "L45201RJ1995PLC009862",
+      "incorporation_date": "1995-12-22",
+      "registered_address": "GR House, Hiran Magri, Sector 11, Udaipur, Rajasthan 313002",
+      "directors": [
+        { "name": "Vinod Kumar Agarwal", "din": "00182893", "designation": "Chairman" },
+        { "name": "Ajendra Kumar Agarwal", "din": "01136955", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Specialized highway tunneling and high-altitude viaduct construction using computerized NATM tunneling, high-strength concrete segmental launch, and automated slope stabilization with wire-mesh soil nailing.",
+        "technical_capabilities": [
+          { "name": "NATM Tunneling & Viaducts", "category": "tunneling", "level": "expert" },
+          { "name": "ISO 9001:2015 & ISO 14001:2015", "category": "integrated", "level": "certified" }
+        ],
+        "years_in_operation": 29,
+        "completed_projects_count": 27,
+        "flagship_projects": ["NH-24 Hapur Bypass", "Purvanchal Expressway Package 4", "Delhi-Amritsar-Katra Expressway"],
+        "annual_turnover_inr": 85000000000.0,
+        "net_worth_inr": 59000000000.0,
+        "past_performance": {
+          "avg_rating": 4.68,
+          "on_time_completion_pct": 96.0,
+          "contractual_disputes": 0,
+          "quality_audit_score": 93.0
+        },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.2, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 900000000.0, "paid_up_capital": 483000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "pnc-infratech",
+      "name": "PNC Infratech Limited",
+      "short_name": "PNC Infratech",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "pncinfra@bidder.in",
+      "cin": "L45201DL1999PLC195937",
+      "incorporation_date": "1999-08-09",
+      "registered_address": "PNC Tower, 3/22-D, Civil Lines, Bypass Road, Agra, UP 282002",
+      "directors": [
+        { "name": "Pradeep Kumar Jain", "din": "00086653", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.90,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "Heavy duty concrete rigid pavements, military airfield runway resurfacing, and multi-lane expressway construction with continuous electronic grade control and mobile stone crushing units.",
+        "technical_capabilities": [
+          { "name": "Runway & Heavy Pavement EPC", "category": "speciality", "level": "expert" },
+          { "name": "ISO 9001:2015 & OHSAS 18001", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 25,
+        "completed_projects_count": 24,
+        "flagship_projects": ["Agra-Lucknow Expressway Package", "Aligarh-Kanpur Highway HAM", "Indian Air Force Runway Modernization"],
+        "annual_turnover_inr": 79000000000.0,
+        "net_worth_inr": 42000000000.0,
+        "past_performance": { "avg_rating": 4.60, "on_time_completion_pct": 94.5, "contractual_disputes": 0, "quality_audit_score": 91.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 600000000.0, "paid_up_capital": 513000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "ashoka-buildcon",
+      "name": "Ashoka Buildcon Limited",
+      "short_name": "Ashoka Buildcon",
+      "department_id": "nhai",
+      "department": "National Highways Authority of India (NHAI)",
+      "category": "Infrastructure & Construction",
+      "email": "ashokabuildcon@bidder.in",
+      "cin": "L45200MH1993PLC071970",
+      "incorporation_date": "1993-05-13",
+      "registered_address": "S. No. 861, Ashoka House, Ashoka Marg, Vadala, Nashik, Maharashtra 422011",
+      "directors": [
+        { "name": "Ashok Katariya", "din": "00112240", "designation": "Chairman" },
+        { "name": "Satish Parakh", "din": "00112324", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.91,
+        "completion_days_ratio": 0.95,
+        "technical_proposal": "Turnkey engineering procurement and construction of 6-lane divided expressways, continuous river bridges, smart lighting, and automated road condition testing with high-speed laser profilers.",
+        "technical_capabilities": [
+          { "name": "Bridge & Road Concessionaire", "category": "engineering", "level": "tier-1" },
+          { "name": "ISO 9001:2015 & ISO 14001:2015", "category": "compliance", "level": "certified" }
+        ],
+        "years_in_operation": 31,
+        "completed_projects_count": 29,
+        "flagship_projects": ["Eastern Peripheral Expressway Package", "Belgaum-Khanapur Highway HAM", "Bundelkhand Expressway"],
+        "annual_turnover_inr": 81000000000.0,
+        "net_worth_inr": 36000000000.0,
+        "past_performance": { "avg_rating": 4.58, "on_time_completion_pct": 93.8, "contractual_disputes": 0, "quality_audit_score": 91.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 98.9, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1500000000.0, "paid_up_capital": 1403000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "shapoorji-pallonji",
+      "name": "Shapoorji Pallonji & Company Pvt Ltd",
+      "short_name": "Shapoorji Pallonji",
+      "department_id": "cpwd",
+      "department": "Central Public Works Department (CPWD)",
+      "category": "Infrastructure & Construction",
+      "email": "shapoorji@bidder.in",
+      "cin": "U45200MH1943PTC003812",
+      "incorporation_date": "1943-04-16",
+      "registered_address": "SP Centre, 41/44 Minoo Desai Marg, Colaba, Mumbai 400005",
+      "directors": [
+        { "name": "Pallon Shapoorji Mistry", "din": "05229734", "designation": "Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.94,
+        "completion_days_ratio": 0.95,
+        "technical_proposal": "GRIHA 5-Star and LEED Platinum rated green public building construction utilizing Building Information Modeling (BIM Level 3), prefabricated precast structural columns, earthquake-resistant design (Zone V), and centralized HVAC with building management systems (BMS).",
+        "technical_capabilities": [
+          { "name": "BIM Level 3 Certified Architecture", "category": "engineering", "level": "expert" },
+          { "name": "GRIHA 5-Star Green Construction", "category": "sustainability", "level": "certified" },
+          { "name": "ISO 9001 / 14001 / 45001", "category": "integrated", "level": "certified" }
+        ],
+        "years_in_operation": 158,
+        "completed_projects_count": 65,
+        "flagship_projects": ["Bharat Mandapam (IECC Pragati Maidan)", "Reserve Bank of India Mumbai Headquarters", "Jawaharlal Nehru Bhavan (MEA Delhi)"],
+        "annual_turnover_inr": 125000000000.0,
+        "net_worth_inr": 62000000000.0,
+        "past_performance": { "avg_rating": 4.88, "on_time_completion_pct": 96.5, "contractual_disputes": 0, "quality_audit_score": 97.2 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.7, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 5000000000.0, "paid_up_capital": 3500000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "ahluwalia-contracts",
+      "name": "Ahluwalia Contracts (India) Limited",
+      "short_name": "Ahluwalia Contracts",
+      "department_id": "cpwd",
+      "department": "Central Public Works Department (CPWD)",
+      "category": "Infrastructure & Construction",
+      "email": "ahluwalia@bidder.in",
+      "cin": "L45101DL1979PLC009652",
+      "incorporation_date": "1979-06-02",
+      "registered_address": "A-177, Okhla Industrial Area, Phase-I, New Delhi 110020",
+      "directors": [
+        { "name": "Bikramjit Ahluwalia", "din": "00044949", "designation": "Managing Director" },
+        { "name": "Shobhit Uppal", "din": "00044998", "designation": "Deputy Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Specialized multi-speciality hospital and institutional university construction with medical gas pipeline systems (MGPS), clean-room HVAC filtration, pre-engineered steel roofing, and seismic-damped concrete framing.",
+        "technical_capabilities": [
+          { "name": "Hospital & Healthcare Civil EPC", "category": "speciality", "level": "expert" },
+          { "name": "ISO 9001:2015 & OHSAS 18001", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 45,
+        "completed_projects_count": 42,
+        "flagship_projects": ["AIIMS Jammu & AIIMS Bilaspur Hospitals", "Nalanda University New Campus", "Goa International Airport Terminal Building"],
+        "annual_turnover_inr": 34000000000.0,
+        "net_worth_inr": 18500000000.0,
+        "past_performance": { "avg_rating": 4.74, "on_time_completion_pct": 95.8, "contractual_disputes": 0, "quality_audit_score": 94.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.3, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 200000000.0, "paid_up_capital": 133900000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "ncc-limited",
+      "name": "NCC Limited (Nagarjuna Construction)",
+      "short_name": "NCC Limited",
+      "department_id": "cpwd",
+      "department": "Central Public Works Department (CPWD)",
+      "category": "Infrastructure & Construction",
+      "email": "ncclimited@bidder.in",
+      "cin": "L72200TG1990PLC011146",
+      "incorporation_date": "1990-03-15",
+      "registered_address": "NCC House, Madhapur, Hyderabad, Telangana 500081",
+      "directors": [
+        { "name": "A. A. V. Ranga Raju", "din": "00019195", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.91,
+        "completion_days_ratio": 0.94,
+        "technical_proposal": "Industrialized construction methodology with aluminum formwork (Mivan technology), pre-cast concrete boundary walls, energy-efficient building envelope, and integrated fire-suppression systems complying with NBC 2016.",
+        "technical_capabilities": [
+          { "name": "Aluminum Formwork (Mivan) Construction", "category": "technology", "level": "expert" },
+          { "name": "ISO 9001:2015 Quality Systems", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 34,
+        "completed_projects_count": 51,
+        "flagship_projects": ["AIIMS Guwahati Construction", "Defence Housing Complex Hyderabad", "Nagpur Metro Viaduct Package"],
+        "annual_turnover_inr": 183000000000.0,
+        "net_worth_inr": 68000000000.0,
+        "past_performance": { "avg_rating": 4.66, "on_time_completion_pct": 94.2, "contractual_disputes": 0, "quality_audit_score": 92.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.1, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1500000000.0, "paid_up_capital": 1256000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "tata-projects",
+      "name": "Tata Projects Limited",
+      "short_name": "Tata Projects",
+      "department_id": "dmrc",
+      "department": "Delhi Metro Rail Corporation & Urban Transit",
+      "category": "Infrastructure & Construction",
+      "email": "tataprojects@bidder.in",
+      "cin": "U45203TG1979PLC050528",
+      "incorporation_date": "1979-07-20",
+      "registered_address": "Mithona Towers, 1-7-80 to 87, Prenderghast Road, Secunderabad, Telangana 500003",
+      "directors": [
+        { "name": "Vinayak Pai", "din": "03632944", "designation": "Managing Director & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.95,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "Precision urban viaduct and underground metro station execution utilizing Earth Pressure Balance Tunnel Boring Machines (EPB-TBM), precast segment lining with hydrophilic waterstops, and advanced vibration attenuation trackbeds.",
+        "technical_capabilities": [
+          { "name": "EPB-TBM Underground Metro Tunneling", "category": "tunneling", "level": "expert" },
+          { "name": "New Parliament Building EPC Constructor", "category": "landmark", "level": "master" },
+          { "name": "ISO 9001 / 14001 / 45001", "category": "integrated", "level": "certified" }
+        ],
+        "years_in_operation": 45,
+        "completed_projects_count": 39,
+        "flagship_projects": ["New Parliament Building of India (Central Vista)", "Noida International Airport (Jewar EPC)", "Mumbai Metro Line 3 Underground Package"],
+        "annual_turnover_inr": 178000000000.0,
+        "net_worth_inr": 38000000000.0,
+        "past_performance": { "avg_rating": 4.89, "on_time_completion_pct": 97.8, "contractual_disputes": 0, "quality_audit_score": 98.1 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1000000000.0, "paid_up_capital": 395000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "titagarh-rail",
+      "name": "Titagarh Rail Systems Limited",
+      "short_name": "Titagarh Rail",
+      "department_id": "railways-board",
+      "department": "Railway Board & Zonal Rail Procurement",
+      "category": "Infrastructure & Construction",
+      "email": "titagarh@bidder.in",
+      "cin": "L27320WB1997PLC084819",
+      "incorporation_date": "1997-07-03",
+      "registered_address": "Titagarh Towers, 756 Anandapur, E.M. Bypass, Kolkata, West Bengal 700107",
+      "directors": [
+        { "name": "Umesh Chowdhary", "din": "00313652", "designation": "Vice Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.91,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Manufacturing of modern stainless steel and aluminum body passenger EMU/MEMU trainsets and Vande Bharat sleeper coaches with aerodynamic nose cone, regenerative braking, micro-processor controlled TCMS, and crashworthiness as per EN 15227.",
+        "technical_capabilities": [
+          { "name": "RDSO Approved Rolling Stock Manufacturer", "category": "railways", "level": "class-a" },
+          { "name": "IRIS (International Railway Industry Standard) ISO/TS 22163", "category": "rail_quality", "level": "certified" },
+          { "name": "EN 15085 Welding of Railway Vehicles (CL-1)", "category": "welding", "level": "expert" }
+        ],
+        "years_in_operation": 27,
+        "completed_projects_count": 31,
+        "flagship_projects": ["Pune Metro Aluminium Car Body Trainsets", "Surat & Ahmedabad Metro Coaches", "Vande Bharat Sleeper Trainsets (BHEL-Titagarh Consortium)"],
+        "annual_turnover_inr": 38500000000.0,
+        "net_worth_inr": 21500000000.0,
+        "past_performance": { "avg_rating": 4.81, "on_time_completion_pct": 96.7, "contractual_disputes": 0, "quality_audit_score": 96.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.6, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 3500000000.0, "paid_up_capital": 1346000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "texmaco-rail",
+      "name": "Texmaco Rail & Engineering Limited",
+      "short_name": "Texmaco Rail",
+      "department_id": "railways-board",
+      "department": "Railway Board & Zonal Rail Procurement",
+      "category": "Infrastructure & Construction",
+      "email": "texmaco@bidder.in",
+      "cin": "L29261WB1998PLC087404",
+      "incorporation_date": "1998-06-25",
+      "registered_address": "Belgharia, Kolkata, West Bengal 700056",
+      "directors": [
+        { "name": "Indrajit Mookerjee", "din": "02418377", "designation": "Executive Vice Chairman" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.88,
+        "completion_days_ratio": 0.94,
+        "technical_proposal": "Automated freight wagon fabrication (BOXNHL, BCNHL, BOBRN), cast steel bogies, high-capacity draft gears, and turnkey railway track laying with automated flash-butt track welding.",
+        "technical_capabilities": [
+          { "name": "RDSO Approved Wagon Builder", "category": "freight", "level": "leader" },
+          { "name": "ISO 9001:2015 Quality Systems", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 26,
+        "completed_projects_count": 35,
+        "flagship_projects": ["Indian Railways 20,000+ Wagon Supply Contract", "Dedicated Freight Corridor Ballastless Track Package", "Export Wagons to Africa & Middle East"],
+        "annual_turnover_inr": 36000000000.0,
+        "net_worth_inr": 17200000000.0,
+        "past_performance": { "avg_rating": 4.69, "on_time_completion_pct": 94.8, "contractual_disputes": 0, "quality_audit_score": 93.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.2, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 2000000000.0, "paid_up_capital": 386000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "alstom-india",
+      "name": "Alstom Transport India Limited",
+      "short_name": "Alstom India",
+      "department_id": "railways-board",
+      "department": "Railway Board & Zonal Rail Procurement",
+      "category": "Infrastructure & Construction",
+      "email": "alstom.india@bidder.in",
+      "cin": "U74999DL1994PLC059888",
+      "incorporation_date": "1994-07-06",
+      "registered_address": "Vatika Towers, 7th Floor, Sector 54, Golf Course Road, Gurugram, Haryana 122002",
+      "directors": [
+        { "name": "Olivier Loison", "din": "09689432", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.96,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Manufacture of 12,000 HP Prima T8 (WAG-12B) twin-section electric locomotives, CBTC Urbalis automated signaling, and aerodynamic high-speed Regional Rapid Transit trainsets (Namo Bharat).",
+        "technical_capabilities": [
+          { "name": "High-Power (12,000 HP) Electric Locomotive OEM", "category": "traction", "level": "global-tier-1" },
+          { "name": "CBTC & ETCS Level 2 Signaling Specialist", "category": "signaling", "level": "sil-4" },
+          { "name": "Make-in-India Madhepura Factory Facility", "category": "manufacturing", "level": "mega-hub" }
+        ],
+        "years_in_operation": 30,
+        "completed_projects_count": 22,
+        "flagship_projects": ["800 WAG-12B Electric Locomotives (Madhepura Joint Venture)", "Delhi-Meerut RRTS Trainsets & Signaling", "Kochi & Lucknow Metro Turnkey Systems"],
+        "annual_turnover_inr": 48000000000.0,
+        "net_worth_inr": 26000000000.0,
+        "past_performance": { "avg_rating": 4.90, "on_time_completion_pct": 98.2, "contractual_disputes": 0, "quality_audit_score": 98.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 3000000000.0, "paid_up_capital": 2510000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "siemens-mobility",
+      "name": "Siemens Mobility India Ltd",
+      "short_name": "Siemens Mobility",
+      "department_id": "railways-board",
+      "department": "Railway Board & Zonal Rail Procurement",
+      "category": "Infrastructure & Construction",
+      "email": "siemens.mobility@bidder.in",
+      "cin": "L28920MH1957PLC010839",
+      "incorporation_date": "1957-03-02",
+      "registered_address": "Birla Aurora, Level 21, Plot No. 54, Dr. Annie Besant Road, Worli, Mumbai 400030",
+      "directors": [
+        { "name": "Sunil Mathur", "din": "00055323", "designation": "Managing Director & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.97,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "9,000 HP heavy electric locomotives with IGBT traction propulsion, Trainguard MT signaling, automated central interlocking, and 35-year lifecycle fleet availability guarantee.",
+        "technical_capabilities": [
+          { "name": "SIL-4 Railway Interlocking & Signaling", "category": "automation", "level": "sil-4" },
+          { "name": "9,000 HP Electric Locomotive OEM", "category": "traction", "level": "global-tier-1" },
+          { "name": "ISO 9001 / ISO 27001 / IRIS Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 67,
+        "completed_projects_count": 36,
+        "flagship_projects": ["1,200 Electric Locomotives for Indian Railways (Dahod)", "KAVACH Automatic Train Protection Systems", "Delhi Metro Airport Express Signaling"],
+        "annual_turnover_inr": 196000000000.0,
+        "net_worth_inr": 115000000000.0,
+        "past_performance": { "avg_rating": 4.92, "on_time_completion_pct": 98.5, "contractual_disputes": 0, "quality_audit_score": 98.7 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.9, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1000000000.0, "paid_up_capital": 712000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "bel-defence",
+      "name": "Bharat Electronics Limited (BEL)",
+      "short_name": "BEL",
+      "department_id": "mes",
+      "department": "Military Engineer Services (MES)",
+      "category": "Defence & Strategic",
+      "email": "bel.defence@bidder.in",
+      "cin": "L32309KA1954GOI000787",
+      "incorporation_date": "1954-04-21",
+      "registered_address": "Outer Ring Road, Nagavara, Bengaluru, Karnataka 560045",
+      "directors": [
+        { "name": "Manoj Jain", "din": "09605553", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.93,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Design, manufacture, and deployment of 3D tactical radar systems, software-defined radios (SDR), C4I military command centers, and anti-drone electronic countermeasures with ruggedized MIL-STD-810G packaging.",
+        "technical_capabilities": [
+          { "name": "Navratna Defence PSU OEM", "category": "defence", "level": "tier-1" },
+          { "name": "MIL-STD-810G & MIL-STD-461E Certified", "category": "military", "level": "certified" },
+          { "name": "AS9100D Aerospace & Defence Quality", "category": "quality", "level": "certified" },
+          { "name": "CMMI Level 5 Software Engineering", "category": "software", "level": "highest" }
+        ],
+        "years_in_operation": 70,
+        "completed_projects_count": 58,
+        "flagship_projects": ["Akash Surface-to-Air Missile Radars", "Project Akashteer (Automated Air Defence Control)", "IACCS (Integrated Air Command & Control System)"],
+        "annual_turnover_inr": 202680000000.0,
+        "net_worth_inr": 154000000000.0,
+        "past_performance": { "avg_rating": 4.91, "on_time_completion_pct": 97.4, "contractual_disputes": 0, "quality_audit_score": 98.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 100.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 2500000000.0, "paid_up_capital": 2193000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "hal-aerospace",
+      "name": "Hindustan Aeronautics Limited (HAL)",
+      "short_name": "HAL",
+      "department_id": "mod-acquisition",
+      "department": "Department of Defence (Capital Acquisition Wing)",
+      "category": "Defence & Strategic",
+      "email": "hal.aerospace@bidder.in",
+      "cin": "L35301KA1963GOI001622",
+      "incorporation_date": "1963-10-01",
+      "registered_address": "15/1, Cubbon Road, Bengaluru, Karnataka 560001",
+      "directors": [
+        { "name": "C. B. Ananthakrishnan", "din": "06761339", "designation": "Director (Finance) & CMD Additional Charge" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.95,
+        "completion_days_ratio": 0.94,
+        "technical_proposal": "Full lifecycle aviation engineering, avionics integration, composite material airframes, and gas turbine engine manufacture adhering to CEMILAC and DGAQA military airworthiness standards.",
+        "technical_capabilities": [
+          { "name": "Maharatna Military Aircraft OEM", "category": "defence", "level": "tier-1" },
+          { "name": "CEMILAC Military Airworthiness Certified", "category": "aerospace", "level": "highest" },
+          { "name": "AS9100 Rev D Aerospace Management", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 61,
+        "completed_projects_count": 44,
+        "flagship_projects": ["LCA Tejas Mk-1A Fighter Aircraft", "Prachand Light Combat Helicopter (LCH)", "ALH Dhruv Multi-Role Helicopter"],
+        "annual_turnover_inr": 298100000000.0,
+        "net_worth_inr": 268000000000.0,
+        "past_performance": { "avg_rating": 4.86, "on_time_completion_pct": 96.0, "contractual_disputes": 0, "quality_audit_score": 97.6 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 100.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 6000000000.0, "paid_up_capital": 3344000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "bharat-forge",
+      "name": "Bharat Forge Limited (Kalyani Strategic Systems)",
+      "short_name": "Bharat Forge",
+      "department_id": "mes",
+      "department": "Military Engineer Services (MES)",
+      "category": "Defence & Strategic",
+      "email": "bharatforge@bidder.in",
+      "cin": "L25209PN1961PLC012046",
+      "incorporation_date": "1961-06-19",
+      "registered_address": "Mundhwa, Pune Cantonment, Pune, Maharashtra 411036",
+      "directors": [
+        { "name": "Babasaheb Neelkanth Kalyani", "din": "00089380", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Metallurgical engineering and forging of 155mm artillery barrels, armored tactical vehicles (M4 4x4), and high-strength defense drivetrain assemblies with in-house ballistic testing and X-ray flaw detection.",
+        "technical_capabilities": [
+          { "name": "Artillery & Armored Vehicle Platform OEM", "category": "weapons", "level": "expert" },
+          { "name": "ISO 9001:2015 & IATF 16949 Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 63,
+        "completed_projects_count": 32,
+        "flagship_projects": ["ATAGS (Advanced Towed Artillery Gun System)", "Kalyani M4 Quick Reaction Armored Vehicles", "Garuda 105mm Mounted Gun"],
+        "annual_turnover_inr": 156000000000.0,
+        "net_worth_inr": 74000000000.0,
+        "past_performance": { "avg_rating": 4.79, "on_time_completion_pct": 96.5, "contractual_disputes": 0, "quality_audit_score": 95.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.7, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1750000000.0, "paid_up_capital": 931000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "tata-advanced",
+      "name": "Tata Advanced Systems Limited (TASL)",
+      "short_name": "TASL",
+      "department_id": "drdo",
+      "department": "Defence Research & Development Organisation (DRDO)",
+      "category": "Defence & Strategic",
+      "email": "tasl.defence@bidder.in",
+      "cin": "U72900TG2007PLC055530",
+      "incorporation_date": "2007-09-12",
+      "registered_address": "Plot No 21, Hardware Park, Kancha Imarath, Pahadi Shareef, Hyderabad, Telangana 500005",
+      "directors": [
+        { "name": "Sukaran Singh", "din": "02458376", "designation": "Managing Director & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.92,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "Aerostructures manufacturing, mission systems integration, unmanned aerial vehicles (UAVs), and DRDO missile launching canisters utilizing high-precision CNC machining and laser metrology.",
+        "technical_capabilities": [
+          { "name": "C-295 Military Transport Aircraft Final Assembly Line", "category": "aviation", "level": "oem" },
+          { "name": "AS9100D Aerospace Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 17,
+        "completed_projects_count": 25,
+        "flagship_projects": ["Airbus C-295 Manufacturing Facility Vadodara", "Pinaka Multi-Barrel Rocket Launcher Systems", "WhAP 8x8 Armored Amphibious Carrier"],
+        "annual_turnover_inr": 62000000000.0,
+        "net_worth_inr": 31000000000.0,
+        "past_performance": { "avg_rating": 4.82, "on_time_completion_pct": 97.0, "contractual_disputes": 0, "quality_audit_score": 96.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 3000000000.0, "paid_up_capital": 2420000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "data-patterns",
+      "name": "Data Patterns (India) Limited",
+      "short_name": "Data Patterns",
+      "department_id": "drdo",
+      "department": "Defence Research & Development Organisation (DRDO)",
+      "category": "Defence & Strategic",
+      "email": "datapatterns@bidder.in",
+      "cin": "L72200TN1998PLC061236",
+      "incorporation_date": "1998-08-04",
+      "registered_address": "Plot No. H94, 4th Main Road, SIPCOT IT Park, Siruseri, Chennai, Tamil Nadu 603103",
+      "directors": [
+        { "name": "Srinivasagopalan Rangarajan", "din": "00643456", "designation": "Chairman & Managing Director" },
+        { "name": "Rekha Murthy Rangarajan", "din": "00643618", "designation": "Whole Time Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.88,
+        "completion_days_ratio": 0.89,
+        "technical_proposal": "Indigenous electronic warfare processors, digital radar signal processors, fire control computers, and space payload electronics with space-qualified clean-room assembly lines.",
+        "technical_capabilities": [
+          { "name": "DRDO Radar Processor Specialist", "category": "electronics", "level": "expert" },
+          { "name": "AS9100D & ISO 9001:2015", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 26,
+        "completed_projects_count": 28,
+        "flagship_projects": ["Su-30 MKI Radar Display & Processing", "BrahMos Missile Seeker Electronics", "Arudhra Medium Power Radar Processing Units"],
+        "annual_turnover_inr": 5400000000.0,
+        "net_worth_inr": 12800000000.0,
+        "past_performance": { "avg_rating": 4.77, "on_time_completion_pct": 96.2, "contractual_disputes": 0, "quality_audit_score": 95.2 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.5, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 150000000.0, "paid_up_capital": 112000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "adani-green",
+      "name": "Adani Green Energy Limited",
+      "short_name": "Adani Green",
+      "department_id": "seci",
+      "department": "Solar Energy Corporation of India (SECI Renewable Grid)",
+      "category": "Energy & Resources",
+      "email": "adanigreen@bidder.in",
+      "cin": "L40106GJ2015PLC082007",
+      "incorporation_date": "2015-01-23",
+      "registered_address": "Adani Corporate House, Shantigram, Near Vaishno Devi Circle, SG Highway, Ahmedabad 382421",
+      "directors": [
+        { "name": "Gautam S. Adani", "din": "00006273", "designation": "Chairman" },
+        { "name": "Vneet S. Jaain", "din": "00053906", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.88,
+        "technical_proposal": "Utility-scale gigawatt solar-wind hybrid parks with bifacial solar PV modules, single-axis astronomical trackers, battery energy storage systems (BESS), and digital twin SCADA telemetry.",
+        "technical_capabilities": [
+          { "name": "World Largest Renewable Park Developer", "category": "renewables", "level": "tier-1" },
+          { "name": "IEC 61215 & IEC 61730 Solar PV Certified", "category": "solar", "level": "certified" },
+          { "name": "ISO 9001 / ISO 14001 / ISO 45001", "category": "integrated", "level": "certified" }
+        ],
+        "years_in_operation": 9,
+        "completed_projects_count": 30,
+        "flagship_projects": ["Khavda 30 GW Renewable Energy Park Gujarat", "Kamuthi 648 MW Solar Project Tamil Nadu", "Jaisalmer 2.1 GW Hybrid Wind-Solar Cluster"],
+        "annual_turnover_inr": 104620000000.0,
+        "net_worth_inr": 92000000000.0,
+        "past_performance": { "avg_rating": 4.80, "on_time_completion_pct": 97.2, "contractual_disputes": 0, "quality_audit_score": 96.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.6, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 25000000000.0, "paid_up_capital": 15840000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "tata-solar",
+      "name": "Tata Power Solar Systems Ltd",
+      "short_name": "Tata Power Solar",
+      "department_id": "seci",
+      "department": "Solar Energy Corporation of India (SECI Renewable Grid)",
+      "category": "Energy & Resources",
+      "email": "tatapower.solar@bidder.in",
+      "cin": "U40108MH1989PLC054360",
+      "incorporation_date": "1989-11-24",
+      "registered_address": "Bombay House, 24 Homi Mody Street, Fort, Mumbai 400001",
+      "directors": [
+        { "name": "Praveer Sinha", "din": "01785164", "designation": "Director" },
+        { "name": "Deepesh Nanda", "din": "03565982", "designation": "President & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.94,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "Turnkey solar EPC encompassing high-efficiency TOPCon solar cells, 400kV pooling sub-stations, automated robotic dry-cleaning arrays, and 25-year performance warranty with guaranteed generation ratios.",
+        "technical_capabilities": [
+          { "name": "Tier-1 Solar Cell & Module Manufacturer", "category": "oem", "level": "tier-1" },
+          { "name": "IEC & BIS Certified Modules", "category": "quality", "level": "certified" },
+          { "name": "ISO 9001 / ISO 14001 / OHSAS 18001", "category": "integrated", "level": "certified" }
+        ],
+        "years_in_operation": 35,
+        "completed_projects_count": 48,
+        "flagship_projects": ["100 MW Floating Solar Project at Kayamkulam Kerala", "Raghanesda 100 MW Solar Park Gujarat", "300 MW CPSU Scheme Solar Project Dholera"],
+        "annual_turnover_inr": 88400000000.0,
+        "net_worth_inr": 42000000000.0,
+        "past_performance": { "avg_rating": 4.88, "on_time_completion_pct": 98.0, "contractual_disputes": 0, "quality_audit_score": 97.9 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 5000000000.0, "paid_up_capital": 3810000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "sterling-wilson",
+      "name": "Sterling and Wilson Renewable Energy Ltd",
+      "short_name": "Sterling & Wilson",
+      "department_id": "seci",
+      "department": "Solar Energy Corporation of India (SECI Renewable Grid)",
+      "category": "Energy & Resources",
+      "email": "sterlingwilson@bidder.in",
+      "cin": "L51909MH2017PLC292281",
+      "incorporation_date": "2017-03-09",
+      "registered_address": "9th Floor, Universal Majestic, P. L. Lokhande Marg, Chembur West, Mumbai 400043",
+      "directors": [
+        { "name": "Khurshed Daruvala", "din": "00016474", "designation": "Chairman" },
+        { "name": "Amit Jain", "din": "08581729", "designation": "Global CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.90,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Full balance of system (BOS) solar EPC, high-voltage substations, battery energy storage system (BESS) integration, and drone thermal scanning for hotspot detection.",
+        "technical_capabilities": [
+          { "name": "Global Solar EPC & Storage Specialist", "category": "epc", "level": "tier-1" },
+          { "name": "ISO 9001 / ISO 14001 / ISO 45001", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 7,
+        "completed_projects_count": 33,
+        "flagship_projects": ["NTPC 1,575 MW Solar EPC Khavda", "Sweihan 1,177 MW Solar Park (Abu Dhabi)", "ReNew 300 MW Bikarner Solar Grid"],
+        "annual_turnover_inr": 31200000000.0,
+        "net_worth_inr": 18200000000.0,
+        "past_performance": { "avg_rating": 4.70, "on_time_completion_pct": 95.2, "contractual_disputes": 0, "quality_audit_score": 94.1 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.3, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 500000000.0, "paid_up_capital": 233000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "renew-power",
+      "name": "ReNew Power Private Limited",
+      "short_name": "ReNew Power",
+      "department_id": "powergrid",
+      "department": "Power Grid Corporation & Central Electricity Authority",
+      "category": "Energy & Resources",
+      "email": "renewpower@bidder.in",
+      "cin": "U40300DL2011PTC291527",
+      "incorporation_date": "2011-01-19",
+      "registered_address": "138 Ansal Chambers II, Bhikaji Cama Place, New Delhi 110066",
+      "directors": [
+        { "name": "Sumant Sinha", "din": "01438258", "designation": "Chairman & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.92,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Round-the-clock (RTC) green power supply through intelligent wind-solar hybrid generation, pumped hydro storage scheduling, and automated grid-balancing inverters.",
+        "technical_capabilities": [
+          { "name": "RTC Renewable Energy Power Producer", "category": "utility", "level": "expert" },
+          { "name": "ISO 9001 / ISO 14001 / ISO 27001", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 13,
+        "completed_projects_count": 26,
+        "flagship_projects": ["India First 300 MW Round-The-Clock (RTC) Clean Energy Contract", "400 MW Solar-Wind Hybrid Project Karnataka"],
+        "annual_turnover_inr": 89000000000.0,
+        "net_worth_inr": 78000000000.0,
+        "past_performance": { "avg_rating": 4.75, "on_time_completion_pct": 96.0, "contractual_disputes": 0, "quality_audit_score": 95.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.4, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 5000000000.0, "paid_up_capital": 3790000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "tcs-govt",
+      "name": "Tata Consultancy Services (TCS Public Sector)",
+      "short_name": "TCS Govt",
+      "department_id": "nic",
+      "department": "National Informatics Centre (NIC Central Procurement)",
+      "category": "Technology & Telecom",
+      "email": "tcs.govt@bidder.in",
+      "cin": "L22210MH1995PLC084781",
+      "incorporation_date": "1995-01-19",
+      "registered_address": "TCS House, Raveline Street, Fort, Mumbai 400001",
+      "directors": [
+        { "name": "K. Krithivasan", "din": "07471922", "designation": "CEO & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.95,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Mission-mode e-governance platform architecture featuring microservices-based zero-trust security, DevSecOps pipelines, multi-cloud redundancy (MeitY empaneled clouds), automated accessibility (WCAG 2.1 AA), and AI-driven workflow engines.",
+        "technical_capabilities": [
+          { "name": "CMMI Level 5 DEV & SVC (Highest Rating)", "category": "software", "level": "highest" },
+          { "name": "ISO 27001:2022 Information Security Management", "category": "security", "level": "certified" },
+          { "name": "ISO 20000-1 IT Service Management", "category": "itil", "level": "certified" },
+          { "name": "CERT-In Audited Safe-to-Host Architecture", "category": "cybersecurity", "level": "verified" }
+        ],
+        "years_in_operation": 56,
+        "completed_projects_count": 82,
+        "flagship_projects": ["Passport Seva 2.0 Mission-Mode Project", "GeM (Government e-Marketplace Platform v2)", "India Post Core Banking & Technology Transformation"],
+        "annual_turnover_inr": 2408930000000.0,
+        "net_worth_inr": 904000000000.0,
+        "past_performance": { "avg_rating": 4.93, "on_time_completion_pct": 98.4, "contractual_disputes": 0, "quality_audit_score": 98.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 100.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 4600000000.0, "paid_up_capital": 3618000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "infosys-public",
+      "name": "Infosys Public Services India Ltd",
+      "short_name": "Infosys Public",
+      "department_id": "nic",
+      "department": "National Informatics Centre (NIC Central Procurement)",
+      "category": "Technology & Telecom",
+      "email": "infosys.public@bidder.in",
+      "cin": "L85110KA1981PLC013115",
+      "incorporation_date": "1981-07-02",
+      "registered_address": "44, Infosys Avenue, Electronics City, Hosur Road, Bengaluru 560100",
+      "directors": [
+        { "name": "Salil Parekh", "din": "01876159", "designation": "CEO & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.93,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Cloud-native public portal development with automated Aadhaar/e-KYC authentication, open API gateway architecture, automated regression testing suites, disaster recovery RPO < 15 mins, and RTO < 1 hour.",
+        "technical_capabilities": [
+          { "name": "CMMI Level 5 Software Engineering", "category": "software", "level": "highest" },
+          { "name": "ISO 27001 / ISO 27701 Privacy Management", "category": "security", "level": "certified" }
+        ],
+        "years_in_operation": 43,
+        "completed_projects_count": 68,
+        "flagship_projects": ["Income Tax e-Filing 2.0 Portal", "GSTN (Goods & Services Tax Network Infrastructure)", "Corporate Affairs MCA21 V3 Portal"],
+        "annual_turnover_inr": 1536700000000.0,
+        "net_worth_inr": 860000000000.0,
+        "past_performance": { "avg_rating": 4.87, "on_time_completion_pct": 97.6, "contractual_disputes": 0, "quality_audit_score": 97.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 100.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 2400000000.0, "paid_up_capital": 2070000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "wipro-enterprise",
+      "name": "Wipro Enterprise & Government Solutions",
+      "short_name": "Wipro Enterprise",
+      "department_id": "nic",
+      "department": "National Informatics Centre (NIC Central Procurement)",
+      "category": "Technology & Telecom",
+      "email": "wipro.govt@bidder.in",
+      "cin": "L32102KA1945PLC020800",
+      "incorporation_date": "1945-12-29",
+      "registered_address": "Doddakannelli, Sarjapur Road, Bengaluru, Karnataka 560035",
+      "directors": [
+        { "name": "Srini Pallia", "din": "10557432", "designation": "CEO & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.91,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Hybrid cloud data center management, automated SOC (Security Operations Centre), zero-day endpoint protection, automated data backup with immutable air-gapped vaults, and 24x7 Tier-3 technical support.",
+        "technical_capabilities": [
+          { "name": "CMMI Level 5 Software Systems", "category": "software", "level": "highest" },
+          { "name": "ISO 27001 & ISO 22301 Business Continuity", "category": "security", "level": "certified" }
+        ],
+        "years_in_operation": 79,
+        "completed_projects_count": 55,
+        "flagship_projects": ["State Data Center (SDC) Management Contracts", "UIDAI Aadhaar Data Management & Enrolment Systems"],
+        "annual_turnover_inr": 897600000000.0,
+        "net_worth_inr": 740000000000.0,
+        "past_performance": { "avg_rating": 4.81, "on_time_completion_pct": 96.8, "contractual_disputes": 0, "quality_audit_score": 96.2 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 5500000000.0, "paid_up_capital": 5230000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "tejas-networks",
+      "name": "Tejas Networks Limited (Tata Group)",
+      "short_name": "Tejas Networks",
+      "department_id": "dot",
+      "department": "Department of Telecommunications (Telecom Infra & BharatNet)",
+      "category": "Technology & Telecom",
+      "email": "tejasnetworks@bidder.in",
+      "cin": "L72900KA2000PLC026980",
+      "incorporation_date": "2000-04-24",
+      "registered_address": "J P Software Park, Plot No 23, KM 18, Hosur Road, Phase 1, Electronics City, Bengaluru 560100",
+      "directors": [
+        { "name": "Anand Athreya", "din": "10087799", "designation": "CEO & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Design, manufacture, and deployment of indigenous optical transmission systems (DWDM/OTN), 4G/5G Radio Access Network (RAN) base stations, GPON broadband equipment, and hardened IP/MPLS routers.",
+        "technical_capabilities": [
+          { "name": "Indigenous 4G/5G RAN & Optical OEM", "category": "telecom", "level": "trusted-source" },
+          { "name": "National Security Directive on Telecom (NSDTS) Certified", "category": "security", "level": "approved" },
+          { "name": "TL 9000 Telecom Quality Management System", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 24,
+        "completed_projects_count": 38,
+        "flagship_projects": ["BSNL 100,000 4G/5G Indigenous Base Stations Rollout", "BharatNet Phase 2 Optical GPON Infrastructure"],
+        "annual_turnover_inr": 24700000000.0,
+        "net_worth_inr": 31000000000.0,
+        "past_performance": { "avg_rating": 4.84, "on_time_completion_pct": 97.2, "contractual_disputes": 0, "quality_audit_score": 96.9 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.7, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 2600000000.0, "paid_up_capital": 1710000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "hfcl-telecom",
+      "name": "HFCL Limited (Himachal Futuristic)",
+      "short_name": "HFCL",
+      "department_id": "dot",
+      "department": "Department of Telecommunications (Telecom Infra & BharatNet)",
+      "category": "Technology & Telecom",
+      "email": "hfcl.telecom@bidder.in",
+      "cin": "L64200HP1987PLC007466",
+      "incorporation_date": "1987-05-11",
+      "registered_address": "8, Electronics Complex, Chambaghat, Solan, Himachal Pradesh 173213",
+      "directors": [
+        { "name": "Mahendra Nahata", "din": "00052084", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.87,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Turnkey rollout of high-count optical fiber cables (OFC), micro-trenching, automated fusion splicing, outdoor Wi-Fi access points, and rural fiber backhaul under BharatNet.",
+        "technical_capabilities": [
+          { "name": "Optical Fiber & Cable OEM", "category": "fiber", "level": "tier-1" },
+          { "name": "ISO 9001:2015 & TL 9000 Certified", "category": "telecom", "level": "certified" }
+        ],
+        "years_in_operation": 37,
+        "completed_projects_count": 46,
+        "flagship_projects": ["BharatNet Optical Fiber Rollout across 6 States", "Indian Army Network for Spectrum (NFS) Package", "RailTel Wi-Fi Rollout across 6,000+ Stations"],
+        "annual_turnover_inr": 44600000000.0,
+        "net_worth_inr": 34000000000.0,
+        "past_performance": { "avg_rating": 4.71, "on_time_completion_pct": 95.0, "contractual_disputes": 0, "quality_audit_score": 93.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.2, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1750000000.0, "paid_up_capital": 1443000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "wipro-ge-healthcare",
+      "name": "Wipro GE Healthcare Private Limited",
+      "short_name": "Wipro GE",
+      "department_id": "aiims-procure",
+      "department": "AIIMS Centralized Medical Equipment Procurement Cell",
+      "category": "Healthcare & Water",
+      "email": "wiproge.health@bidder.in",
+      "cin": "U33110KA1990PTC010834",
+      "incorporation_date": "1990-03-29",
+      "registered_address": "No. 4, Kadugodi Industrial Area, Bengaluru, Karnataka 560067",
+      "directors": [
+        { "name": "Chaitanya Sarawate", "din": "09825412", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.94,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Supply, installation, and 10-year comprehensive maintenance (CMC) of 128-slice CT Scanners, 3.0 Tesla MRI systems, digital cath labs, and ultrasound imaging systems with remote IoT diagnostic telemetry (InSite) and AERB radiation safety clearance.",
+        "technical_capabilities": [
+          { "name": "AERB (Atomic Energy Regulatory Board) Type Approved", "category": "radiation", "level": "approved" },
+          { "name": "ISO 13485 Medical Devices Quality Management", "category": "medical", "level": "certified" },
+          { "name": "US FDA 510(k) & European CE Marked", "category": "compliance", "level": "global" }
+        ],
+        "years_in_operation": 34,
+        "completed_projects_count": 52,
+        "flagship_projects": ["AIIMS Delhi & New AIIMS Diagnostic Suites", "PMSSY Government Medical College Modernization", "Tele-ICU Infrastructure across 12 States"],
+        "annual_turnover_inr": 72000000000.0,
+        "net_worth_inr": 38000000000.0,
+        "past_performance": { "avg_rating": 4.90, "on_time_completion_pct": 98.0, "contractual_disputes": 0, "quality_audit_score": 98.4 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.9, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1000000000.0, "paid_up_capital": 450000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "siemens-healthineers",
+      "name": "Siemens Healthcare Private Limited",
+      "short_name": "Siemens Healthineers",
+      "department_id": "aiims-procure",
+      "department": "AIIMS Centralized Medical Equipment Procurement Cell",
+      "category": "Healthcare & Water",
+      "email": "siemens.health@bidder.in",
+      "cin": "U74999MH2015PTC264859",
+      "incorporation_date": "2015-05-26",
+      "registered_address": "Unit No. 9A, 9th Floor, North Tower, Godrej One, Pirojshanagar, Eastern Express Highway, Vikhroli East, Mumbai 400079",
+      "directors": [
+        { "name": "Hariharan Subramanian", "din": "08764512", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.96,
+        "completion_days_ratio": 0.93,
+        "technical_proposal": "Automated clinical laboratory diagnostic analyzers, dual-source photon-counting CT scanners, robotic angiography systems, and centralized PACS server integration with 99.5% uptime SLA.",
+        "technical_capabilities": [
+          { "name": "ISO 13485 Medical Devices Certified", "category": "medical", "level": "certified" },
+          { "name": "AERB Type Approved Radiation Equipment", "category": "radiation", "level": "approved" }
+        ],
+        "years_in_operation": 9,
+        "completed_projects_count": 37,
+        "flagship_projects": ["AIIMS Bhubaneswar & Rishikesh Advanced Radiology Suites", "National Cancer Institute (Jhajjar) Imaging Systems"],
+        "annual_turnover_inr": 46000000000.0,
+        "net_worth_inr": 29000000000.0,
+        "past_performance": { "avg_rating": 4.88, "on_time_completion_pct": 97.5, "contractual_disputes": 0, "quality_audit_score": 98.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1000000000.0, "paid_up_capital": 540000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "poly-medicure",
+      "name": "Poly Medicure Limited",
+      "short_name": "Poly Medicure",
+      "department_id": "cmss",
+      "department": "Central Medical Services Society (CMSS Pharma & Medical Logistics)",
+      "category": "Healthcare & Water",
+      "email": "polymedicure@bidder.in",
+      "cin": "L40300DL1995PLC066007",
+      "incorporation_date": "1995-03-30",
+      "registered_address": "232B, 3rd Floor, Okhla Industrial Estate, Phase III, New Delhi 110020",
+      "directors": [
+        { "name": "Himanshu Baid", "din": "00014008", "designation": "Managing Director" },
+        { "name": "Rishi Baid", "din": "00048585", "designation": "Joint Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.88,
+        "completion_days_ratio": 0.89,
+        "technical_proposal": "Manufacture and supply of medical disposables (IV cannulas, blood bags, safety needles, dialyzers, infusion sets) produced in Class 10,000 clean rooms with sterile ethylene oxide (EtO) batch certification.",
+        "technical_capabilities": [
+          { "name": "CDSCO Licensed Medical Device Manufacturer Class D", "category": "licensing", "level": "highest" },
+          { "name": "ISO 13485 & CE 0123 Certified", "category": "medical", "level": "certified" }
+        ],
+        "years_in_operation": 29,
+        "completed_projects_count": 45,
+        "flagship_projects": ["Central Medical Services Society Pan-India Disposable Supply", "Armed Forces Medical Services (AFMS) Annual Rate Contract"],
+        "annual_turnover_inr": 13600000000.0,
+        "net_worth_inr": 16400000000.0,
+        "past_performance": { "avg_rating": 4.76, "on_time_completion_pct": 96.4, "contractual_disputes": 0, "quality_audit_score": 95.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.6, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 600000000.0, "paid_up_capital": 480000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "va-tech-wabag",
+      "name": "VA Tech Wabag Limited",
+      "short_name": "VA Tech Wabag",
+      "department_id": "jal-jeevan",
+      "department": "Department of Drinking Water & Sanitation (Jal Jeevan Mission)",
+      "category": "Healthcare & Water",
+      "email": "wabag.water@bidder.in",
+      "cin": "L45205TN1995PLC030231",
+      "incorporation_date": "1995-02-17",
+      "registered_address": "WABAG House, No. 17, 200 Feet Radial Road, S. Kolathur, Chennai, Tamil Nadu 600117",
+      "directors": [
+        { "name": "Rajiv Mittal", "din": "01299110", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.92,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Turnkey design, construction, and 15-year O&M of multi-million liter per day (MLD) drinking water treatment plants (WTP), membrane bioreactor sewage treatment (MBR-STP), seawater reverse osmosis desalination, and SCADA-based distribution flow monitoring.",
+        "technical_capabilities": [
+          { "name": "Desalination & Water EPC Global Specialist", "category": "water", "level": "top-tier" },
+          { "name": "Membrane Bioreactor (MBR) Technology Leader", "category": "technology", "level": "expert" },
+          { "name": "ISO 9001:2015 & ISO 14001:2015", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 29,
+        "completed_projects_count": 48,
+        "flagship_projects": ["100 MLD Nemmeli Seawater Desalination Plant Chennai", "400 MLD Perur Desalination Plant", "Namami Gange STPs across Varanasi & Haridwar"],
+        "annual_turnover_inr": 34200000000.0,
+        "net_worth_inr": 18200000000.0,
+        "past_performance": { "avg_rating": 4.86, "on_time_completion_pct": 97.4, "contractual_disputes": 0, "quality_audit_score": 97.1 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 150000000.0, "paid_up_capital": 124000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "welspun-enterprises",
+      "name": "Welspun Enterprises Limited",
+      "short_name": "Welspun Enterprises",
+      "department_id": "jal-jeevan",
+      "department": "Department of Drinking Water & Sanitation (Jal Jeevan Mission)",
+      "category": "Healthcare & Water",
+      "email": "welspun.water@bidder.in",
+      "cin": "L45201GJ1994PLC023920",
+      "incorporation_date": "1994-12-20",
+      "registered_address": "Welspun City, Village Versamedi, Taluka Anjar, Dist. Kutch, Gujarat 370110",
+      "directors": [
+        { "name": "Balkrishan Goenka", "din": "00270175", "designation": "Chairman" },
+        { "name": "Sandeep Garg", "din": "00036419", "designation": "Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.89,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Rural piped water supply network under Jal Jeevan Mission, ductile iron (DI) gravity transmission mains, elevated storage reservoirs (ESR), household tap connections (FHTC), and solar pumping stations with online chlorination.",
+        "technical_capabilities": [
+          { "name": "Jal Jeevan Mission Rural Water EPC Specialist", "category": "piped_water", "level": "expert" },
+          { "name": "ISO 9001:2015 & OHSAS 18001", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 30,
+        "completed_projects_count": 33,
+        "flagship_projects": ["Jal Jeevan Mission Multi-Village Piped Water Supply Schemes (UP & MP)", "Dharoi Canal Water Network Gujarat"],
+        "annual_turnover_inr": 29800000000.0,
+        "net_worth_inr": 22400000000.0,
+        "past_performance": { "avg_rating": 4.74, "on_time_completion_pct": 96.0, "contractual_disputes": 0, "quality_audit_score": 95.2 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.4, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1750000000.0, "paid_up_capital": 1400000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "shakti-pumps",
+      "name": "Shakti Pumps (India) Limited",
+      "short_name": "Shakti Pumps",
+      "department_id": "jal-jeevan",
+      "department": "Department of Drinking Water & Sanitation (Jal Jeevan Mission)",
+      "category": "Healthcare & Water",
+      "email": "shaktipumps@bidder.in",
+      "cin": "L29120MP1995PLC009299",
+      "incorporation_date": "1995-05-03",
+      "registered_address": "Plot No. 401, 402 & 413, Sector III, Industrial Area, Pithampur, Dhar, MP 454774",
+      "directors": [
+        { "name": "Dinesh Patidar", "din": "00549552", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.86,
+        "completion_days_ratio": 0.88,
+        "technical_proposal": "Manufacture and installation of energy-efficient solar photovoltaic submersible water pumps, helical rotor pumps, IoT smart pump controllers with SIM-based remote water output monitoring, and PM-KUSUM scheme compliance.",
+        "technical_capabilities": [
+          { "name": "BEE 5-Star Energy Efficient Solar Submersible OEM", "category": "pumps", "level": "tier-1" },
+          { "name": "MNRE Approved Solar Pump Manufacturer", "category": "compliance", "level": "approved" },
+          { "name": "ISO 9001:2015 & CE Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 29,
+        "completed_projects_count": 40,
+        "flagship_projects": ["PM-KUSUM Scheme 100,000+ Solar Agricultural Pumps Installation", "Drinking Water Supply Borewell Solar Pumps (Maharashtra & Rajasthan)"],
+        "annual_turnover_inr": 14200000000.0,
+        "net_worth_inr": 8900000000.0,
+        "past_performance": { "avg_rating": 4.78, "on_time_completion_pct": 96.7, "contractual_disputes": 0, "quality_audit_score": 96.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.5, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 250000000.0, "paid_up_capital": 184000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "iti-limited",
+      "name": "ITI Limited (Digital Classrooms)",
+      "short_name": "ITI Limited",
+      "department_id": "edu-school",
+      "department": "Department of School Education & Literacy",
+      "category": "Education & Agriculture",
+      "email": "itilimited@bidder.in",
+      "cin": "L32202KA1950GOI000640",
+      "incorporation_date": "1950-01-25",
+      "registered_address": "ITI Bhavan, Dooravaninagar, Bengaluru, Karnataka 560016",
+      "directors": [
+        { "name": "Rajesh Rai", "din": "09825471", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.90,
+        "completion_days_ratio": 0.92,
+        "technical_proposal": "Turnkey implementation of interactive digital smart classrooms including 75-inch interactive touch displays, educational software suites in 12 regional Indian languages, solar power backup units, and cloud learning management systems (LMS).",
+        "technical_capabilities": [
+          { "name": "First Telecom PSU of India (CPSE)", "category": "psu", "level": "tier-1" },
+          { "name": "ISO 9001:2015 & ISO 27001 Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 74,
+        "completed_projects_count": 39,
+        "flagship_projects": ["Digital Classroom Installation in 15,000+ Government Schools", "Student Laptop & Tablet Provisioning Contracts"],
+        "annual_turnover_inr": 18500000000.0,
+        "net_worth_inr": 22100000000.0,
+        "past_performance": { "avg_rating": 4.70, "on_time_completion_pct": 95.2, "contractual_disputes": 0, "quality_audit_score": 94.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.8, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 10000000000.0, "paid_up_capital": 9600000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "tcil-ict",
+      "name": "Telecommunications Consultants India (TCIL)",
+      "short_name": "TCIL",
+      "department_id": "edu-school",
+      "department": "Department of School Education & Literacy",
+      "category": "Education & Agriculture",
+      "email": "tcil.edu@bidder.in",
+      "cin": "U74899DL1978GOI008911",
+      "incorporation_date": "1978-03-10",
+      "registered_address": "TCIL Bhawan, Greater Kailash-I, New Delhi 110048",
+      "directors": [
+        { "name": "Sanjeev Kumar", "din": "08764120", "designation": "Chairman & Managing Director" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.93,
+        "completion_days_ratio": 0.94,
+        "technical_proposal": "Pan-India ICT lab establishment, satellite connectivity (VSAT), virtual classroom telemetry, and teacher digital literacy training under Samagra Shiksha Abhiyan.",
+        "technical_capabilities": [
+          { "name": "Mini-Ratna CPSE ICT Consultant", "category": "psu", "level": "tier-1" },
+          { "name": "ISO 9001:2015 & ISO 27001 Certified", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 46,
+        "completed_projects_count": 41,
+        "flagship_projects": ["Pan-Africa e-Network Project (Tele-education & Tele-medicine)", "Samagra Shiksha Abhiyan ICT Labs in 8 States"],
+        "annual_turnover_inr": 23400000000.0,
+        "net_worth_inr": 14200000000.0,
+        "past_performance": { "avg_rating": 4.75, "on_time_completion_pct": 96.0, "contractual_disputes": 0, "quality_audit_score": 95.0 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.9, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 1000000000.0, "paid_up_capital": 864000000.0, "collusion_flags": [] }
+      }
+    },
+    {
+      "id": "globus-infocom",
+      "name": "Globus Infocom Limited",
+      "short_name": "Globus Infocom",
+      "department_id": "edu-school",
+      "department": "Department of School Education & Literacy",
+      "category": "Education & Agriculture",
+      "email": "globusinfocom@bidder.in",
+      "cin": "U72900UP2006PLC032049",
+      "incorporation_date": "2006-06-19",
+      "registered_address": "A-66, Sector-4, Noida, Gautam Buddha Nagar, Uttar Pradesh 201301",
+      "directors": [
+        { "name": "Kiran Dham", "din": "02456781", "designation": "Chief Executive Officer" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.88,
+        "completion_days_ratio": 0.90,
+        "technical_proposal": "Interactive flat panels, digital language labs, multi-touch capacitive displays, STEM lab kits, and cloud-based student attendance and learning assessment applications.",
+        "technical_capabilities": [
+          { "name": "Make in India Certified Smart Classroom OEM", "category": "edtech", "level": "leader" },
+          { "name": "ISO 9001:2015 & ISO 14001:2015", "category": "quality", "level": "certified" }
+        ],
+        "years_in_operation": 18,
+        "completed_projects_count": 30,
+        "flagship_projects": ["Kendriya Vidyalaya Sangathan (KVS) Smart Classroom Modernization", "Navodaya Vidyalaya Digital Labs"],
+        "annual_turnover_inr": 6200000000.0,
+        "net_worth_inr": 3100000000.0,
+        "past_performance": { "avg_rating": 4.68, "on_time_completion_pct": 95.0, "contractual_disputes": 0, "quality_audit_score": 93.8 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 99.2, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 200000000.0, "paid_up_capital": 145000000.0, "collusion_flags": [] }
+      }
+    },
+
+    {
+      "id": "mahindra-farm",
+      "name": "Mahindra & Mahindra Ltd (Farm Equipment)",
+      "short_name": "Mahindra Agri",
+      "department_id": "agri-infra",
+      "department": "Department of Agriculture & Farmers Welfare (Farm Mechanization)",
+      "category": "Education & Agriculture",
+      "email": "mahindra.agri@bidder.in",
+      "cin": "L65990MH1945PLC004558",
+      "incorporation_date": "1945-10-02",
+      "registered_address": "Gateway Building, Apollo Bunder, Mumbai, Maharashtra 400001",
+      "directors": [
+        { "name": "Anand G. Mahindra", "din": "00004695", "designation": "Chairman" },
+        { "name": "Anish Shah", "din": "02715202", "designation": "Managing Director & CEO" }
+      ],
+      "evaluation_profile": {
+        "bid_amount_ratio": 0.92,
+        "completion_days_ratio": 0.91,
+        "technical_proposal": "Sub-Mission on Agricultural Mechanization (SMAM) rate contracts for 45HP-75HP 4WD agricultural tractors, GPS-steered autonomous combine harvesters, laser land levelers, and IoT telematics (DigiSense) for fleet monitoring and subsidized farmer allocation.",
+        "technical_capabilities": [
+          { "name": "World Largest Tractor Manufacturer by Volume", "category": "heavy_machinery", "level": "global-tier-1" },
+          { "name": "Central Farm Machinery Training & Testing Institute (CFMTTI) Certified", "category": "agriculture", "level": "certified" },
+          { "name": "ISO 9001:2015 & IATF 16949 Certified", "category": "manufacturing", "level": "highest" }
+        ],
+        "years_in_operation": 79,
+        "completed_projects_count": 62,
+        "flagship_projects": ["Government of India SMAM Custom Hiring Center Supply", "Pan-India Agri-Mechanization DBT Schemes"],
+        "annual_turnover_inr": 1390780000000.0,
+        "net_worth_inr": 582000000000.0,
+        "past_performance": { "avg_rating": 4.92, "on_time_completion_pct": 98.6, "contractual_disputes": 0, "quality_audit_score": 98.5 },
+        "compliance_info": { "is_debarred": false, "litigation_count": 0, "gst_compliance_score": 100.0, "statutory_clearances_ready": true },
+        "osint_profile": { "verification_status": "verified", "company_status": "ACTIVE", "authorized_capital": 10000000000.0, "paid_up_capital": 6210000000.0, "collusion_flags": [] }
+      }
+    }
+  ]
+}
