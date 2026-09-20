@@ -195,7 +195,7 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by Ministry, Department, or Code (e.g. Finance, CPWD, NHAI, Rail, MeitY)..."
+              placeholder="Search by Ministry, Department, or Code (e.g. CPWD, NHAI, Rail, Defence, AIIMS)..."
               style={{
                 width: '100%',
                 height: 42,
@@ -305,7 +305,7 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({
                 No matching government department found
               </div>
               <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 4 }}>
-                Try searching for a different keyword like "Finance", "Transport", "Energy", or "Health"
+                Try searching for a different keyword like "Highways", "Railways", "Defence", "Power", or "AIIMS"
               </div>
             </div>
           ) : (

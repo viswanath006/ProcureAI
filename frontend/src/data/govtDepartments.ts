@@ -2,11 +2,24 @@ export interface GovtDepartment {
   id: string;
   name: string;
   ministry: string;
-  category: 'Infrastructure & Construction' | 'Finance & Commerce' | 'Defence & Strategic' | 'Technology & Energy' | 'Health & Education' | 'Governance & Oversight';
+  category:
+    | 'Infrastructure & Construction'
+    | 'Defence & Strategic'
+    | 'Energy & Resources'
+    | 'Technology & Telecom'
+    | 'Healthcare & Water'
+    | 'Education & Agriculture';
   code: string;
   popular?: boolean;
 }
 
+/**
+ * Validated Tendering Departments & Agencies of the Government of India.
+ * Strictly includes entities that actively float public tenders for civil works,
+ * capital goods, technology, healthcare, and services. Non-tendering policy,
+ * taxation, civil-service HR, and constitutional audit bodies (e.g. CAG, CVC,
+ * DoPT, NITI Aayog, DEA) are excluded.
+ */
 export const GOVT_DEPARTMENTS: GovtDepartment[] = [
   // ── Infrastructure & Construction ──────────────────────────────────────────
   {
@@ -41,18 +54,12 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
     code: 'MORTH-ENG',
   },
   {
-    id: 'smart-cities',
-    name: 'Smart Cities Mission Project Directorate',
-    ministry: 'Ministry of Housing & Urban Affairs',
-    category: 'Infrastructure & Construction',
-    code: 'SCM-MOHUA',
-  },
-  {
     id: 'aai',
     name: 'Airports Authority of India (AAI Engineering)',
     ministry: 'Ministry of Civil Aviation',
     category: 'Infrastructure & Construction',
     code: 'AAI-MCA',
+    popular: true,
   },
   {
     id: 'nhidcl',
@@ -62,64 +69,32 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
     code: 'NHIDCL-MORTH',
   },
   {
+    id: 'dmrc',
+    name: 'Delhi Metro Rail Corporation & Urban Transit',
+    ministry: 'Ministry of Housing & Urban Affairs',
+    category: 'Infrastructure & Construction',
+    code: 'DMRC-MOHUA',
+  },
+  {
     id: 'iwai',
     name: 'Inland Waterways Authority of India (IWAI)',
     ministry: 'Ministry of Ports, Shipping & Waterways',
     category: 'Infrastructure & Construction',
     code: 'IWAI-MOPSW',
   },
-
-  // ── Finance & Commerce ─────────────────────────────────────────────────────
   {
-    id: 'fin-expenditure',
-    name: 'Department of Expenditure (Procurement Policy Division)',
-    ministry: 'Ministry of Finance',
-    category: 'Finance & Commerce',
-    code: 'DOE-PPD',
-    popular: true,
+    id: 'smart-cities',
+    name: 'Smart Cities Mission Project Directorate',
+    ministry: 'Ministry of Housing & Urban Affairs',
+    category: 'Infrastructure & Construction',
+    code: 'SCM-MOHUA',
   },
   {
-    id: 'gem',
-    name: 'Government e-Marketplace (GeM Directorate)',
-    ministry: 'Ministry of Commerce & Industry',
-    category: 'Finance & Commerce',
-    code: 'GEM-COMM',
-    popular: true,
-  },
-  {
-    id: 'fin-economic-affairs',
-    name: 'Department of Economic Affairs (DEA)',
-    ministry: 'Ministry of Finance',
-    category: 'Finance & Commerce',
-    code: 'DEA-MOF',
-  },
-  {
-    id: 'fin-revenue',
-    name: 'Department of Revenue & CBIC Modernization',
-    ministry: 'Ministry of Finance',
-    category: 'Finance & Commerce',
-    code: 'DOR-CBIC',
-  },
-  {
-    id: 'dpiit',
-    name: 'Department for Promotion of Industry & Internal Trade (DPIIT)',
-    ministry: 'Ministry of Commerce & Industry',
-    category: 'Finance & Commerce',
-    code: 'DPIIT-MCI',
-  },
-  {
-    id: 'fin-services',
-    name: 'Department of Financial Services (DFS)',
-    ministry: 'Ministry of Finance',
-    category: 'Finance & Commerce',
-    code: 'DFS-MOF',
-  },
-  {
-    id: 'dipam',
-    name: 'Department of Investment & Public Asset Management (DIPAM)',
-    ministry: 'Ministry of Finance',
-    category: 'Finance & Commerce',
-    code: 'DIPAM-MOF',
+    id: 'nrida',
+    name: 'National Rural Infrastructure Development Agency (NRIDA - PMGSY)',
+    ministry: 'Ministry of Rural Development',
+    category: 'Infrastructure & Construction',
+    code: 'NRIDA-MORD',
   },
 
   // ── Defence & Strategic ───────────────────────────────────────────────────
@@ -145,6 +120,7 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
     ministry: 'Ministry of Defence',
     category: 'Defence & Strategic',
     code: 'DOD-ACQ',
+    popular: true,
   },
   {
     id: 'isro',
@@ -156,7 +132,7 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
   },
   {
     id: 'dae-barc',
-    name: 'Bhabha Atomic Research Centre (BARC)',
+    name: 'Bhabha Atomic Research Centre (BARC Engineering)',
     ministry: 'Department of Atomic Energy',
     category: 'Defence & Strategic',
     code: 'BARC-DAE',
@@ -169,155 +145,138 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
     code: 'CAPF-MHA',
   },
 
-  // ── Technology & Energy ───────────────────────────────────────────────────
-  {
-    id: 'nic',
-    name: 'National Informatics Centre (NIC Central Procurement)',
-    ministry: 'Ministry of Electronics & Information Technology',
-    category: 'Technology & Energy',
-    code: 'NIC-MEITY',
-    popular: true,
-  },
-  {
-    id: 'dot',
-    name: 'Department of Telecommunications (Telecom Infra)',
-    ministry: 'Ministry of Communications',
-    category: 'Technology & Energy',
-    code: 'DOT-MOC',
-  },
-  {
-    id: 'digital-india',
-    name: 'Digital India Corporation (DIC Platform Operations)',
-    ministry: 'Ministry of Electronics & Information Technology',
-    category: 'Technology & Energy',
-    code: 'DIC-MEITY',
-  },
+  // ── Energy & Resources ────────────────────────────────────────────────────
   {
     id: 'seci',
     name: 'Solar Energy Corporation of India (SECI Renewable Grid)',
     ministry: 'Ministry of New & Renewable Energy',
-    category: 'Technology & Energy',
+    category: 'Energy & Resources',
     code: 'SECI-MNRE',
     popular: true,
   },
   {
-    id: 'cea-power',
-    name: 'Central Electricity Authority & Transmission Works',
+    id: 'powergrid',
+    name: 'Power Grid Corporation & Central Electricity Authority',
     ministry: 'Ministry of Power',
-    category: 'Technology & Energy',
-    code: 'CEA-POWER',
+    category: 'Energy & Resources',
+    code: 'PGCIL-POWER',
+    popular: true,
+  },
+  {
+    id: 'ntpc',
+    name: 'NTPC Limited (Power Generation & EPC Plants)',
+    ministry: 'Ministry of Power',
+    category: 'Energy & Resources',
+    code: 'NTPC-POWER',
+  },
+  {
+    id: 'ongc',
+    name: 'Oil & Natural Gas Corporation (ONGC Offshore & Drilling)',
+    ministry: 'Ministry of Petroleum & Natural Gas',
+    category: 'Energy & Resources',
+    code: 'ONGC-MOPNG',
   },
   {
     id: 'eil-petro',
     name: 'Engineers India Limited (Energy Infra & Pipelines)',
     ministry: 'Ministry of Petroleum & Natural Gas',
-    category: 'Technology & Energy',
+    category: 'Energy & Resources',
     code: 'EIL-MOPNG',
   },
+
+  // ── Technology & Telecom ──────────────────────────────────────────────────
   {
-    id: 'dst',
-    name: 'Department of Science & Technology (DST Laboratories)',
-    ministry: 'Ministry of Science & Technology',
-    category: 'Technology & Energy',
-    code: 'DST-MST',
+    id: 'nic',
+    name: 'National Informatics Centre (NIC Central Procurement)',
+    ministry: 'Ministry of Electronics & Information Technology',
+    category: 'Technology & Telecom',
+    code: 'NIC-MEITY',
+    popular: true,
+  },
+  {
+    id: 'dot',
+    name: 'Department of Telecommunications (Telecom Infra & BharatNet)',
+    ministry: 'Ministry of Communications',
+    category: 'Technology & Telecom',
+    code: 'DOT-MOC',
+    popular: true,
+  },
+  {
+    id: 'cdac',
+    name: 'Centre for Development of Advanced Computing (C-DAC Supercomputing)',
+    ministry: 'Ministry of Electronics & Information Technology',
+    category: 'Technology & Telecom',
+    code: 'CDAC-MEITY',
+  },
+  {
+    id: 'digital-india',
+    name: 'Digital India Corporation (DIC Platform Operations)',
+    ministry: 'Ministry of Electronics & Information Technology',
+    category: 'Technology & Telecom',
+    code: 'DIC-MEITY',
   },
   {
     id: 'csir',
     name: 'Council of Scientific & Industrial Research (CSIR Central)',
     ministry: 'Ministry of Science & Technology',
-    category: 'Technology & Energy',
+    category: 'Technology & Telecom',
     code: 'CSIR-MST',
   },
 
-  // ── Health, Education & Welfare ───────────────────────────────────────────
-  {
-    id: 'edu-school',
-    name: 'Department of School Education & Literacy',
-    ministry: 'Ministry of Education',
-    category: 'Health & Education',
-    code: 'DOSEL-MOE',
-    popular: true,
-  },
+  // ── Healthcare & Water ────────────────────────────────────────────────────
   {
     id: 'aiims-procure',
     name: 'AIIMS Centralized Medical Equipment Procurement Cell',
     ministry: 'Ministry of Health & Family Welfare',
-    category: 'Health & Education',
+    category: 'Healthcare & Water',
     code: 'AIIMS-MOHFW',
     popular: true,
   },
   {
-    id: 'health-family',
-    name: 'Department of Health & Family Welfare',
+    id: 'cmss',
+    name: 'Central Medical Services Society (CMSS Pharma & Medical Logistics)',
     ministry: 'Ministry of Health & Family Welfare',
-    category: 'Health & Education',
-    code: 'DOHFW-MOHFW',
+    category: 'Healthcare & Water',
+    code: 'CMSS-MOHFW',
+    popular: true,
   },
   {
     id: 'jal-jeevan',
     name: 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)',
     ministry: 'Ministry of Jal Shakti',
-    category: 'Health & Education',
+    category: 'Healthcare & Water',
     code: 'JJM-MOJS',
     popular: true,
   },
   {
-    id: 'water-resources',
-    name: 'Department of Water Resources, River Dev & Ganga Rejuvenation',
+    id: 'nmcg',
+    name: 'National Mission for Clean Ganga (NMCG Water Treatment & STPs)',
     ministry: 'Ministry of Jal Shakti',
-    category: 'Health & Education',
-    code: 'DOWR-MOJS',
-  },
-  {
-    id: 'agri-coop',
-    name: 'Department of Agriculture & Farmers Welfare',
-    ministry: 'Ministry of Agriculture & Farmers Welfare',
-    category: 'Health & Education',
-    code: 'DAFW-MOA',
-  },
-  {
-    id: 'rural-dev',
-    name: 'National Rural Infrastructure Development Agency (NRIDA)',
-    ministry: 'Ministry of Rural Development',
-    category: 'Health & Education',
-    code: 'NRIDA-MORD',
-  },
-  {
-    id: 'edu-higher',
-    name: 'Department of Higher Education (Central Universities Infrastructure)',
-    ministry: 'Ministry of Education',
-    category: 'Health & Education',
-    code: 'DHE-MOE',
+    category: 'Healthcare & Water',
+    code: 'NMCG-MOJS',
   },
 
-  // ── Governance & Oversight ────────────────────────────────────────────────
+  // ── Education & Agriculture ───────────────────────────────────────────────
   {
-    id: 'cag-oversight',
-    name: 'Office of the Comptroller & Auditor General of India',
-    ministry: 'Comptroller & Auditor General of India',
-    category: 'Governance & Oversight',
-    code: 'CAG-INDIA',
+    id: 'edu-school',
+    name: 'Department of School Education & Literacy',
+    ministry: 'Ministry of Education',
+    category: 'Education & Agriculture',
+    code: 'DOSEL-MOE',
     popular: true,
   },
   {
-    id: 'niti-infra',
-    name: 'NITI Aayog (Public Infrastructure & Project Monitoring)',
-    ministry: 'NITI Aayog',
-    category: 'Governance & Oversight',
-    code: 'NITI-AAYOG',
+    id: 'edu-higher',
+    name: 'Department of Higher Education (Central Universities & IITs Infra)',
+    ministry: 'Ministry of Education',
+    category: 'Education & Agriculture',
+    code: 'DHE-MOE',
   },
   {
-    id: 'dopt',
-    name: 'Department of Personnel & Training (DoPT)',
-    ministry: 'Ministry of Personnel, Public Grievances & Pensions',
-    category: 'Governance & Oversight',
-    code: 'DOPT-MOP',
-  },
-  {
-    id: 'cvc-dir',
-    name: 'Central Vigilance Commission (Procurement Monitoring Cell)',
-    ministry: 'Central Vigilance Commission',
-    category: 'Governance & Oversight',
-    code: 'CVC-PMC',
+    id: 'agri-infra',
+    name: 'Department of Agriculture & Farmers Welfare (Farm Mechanization)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    category: 'Education & Agriculture',
+    code: 'DAFW-MOA',
   },
 ];

@@ -119,7 +119,7 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
     full_name: 'Suresh Kumar (Director of Procurement)',
     role_code: 'GOVT_OFFICER',
     company_id: null,
-    department: 'Department of Expenditure (Procurement Policy Division)',
+    department: 'Central Public Works Department (CPWD)',
     status: 'active',
   },
   'officer.alpha@procureai.dev': {
