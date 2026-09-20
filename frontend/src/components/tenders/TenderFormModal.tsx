@@ -24,6 +24,10 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const { user } = useAuth();
+  const isGovtOfficer = user?.role_code === 'GOVT_OFFICER';
+  const officerAssignedDept = user?.department || localStorage.getItem('procureai_officer_department') || '';
+  const isDeptLocked = isGovtOfficer && Boolean(officerAssignedDept);
+
   const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState(
     initialData?.reference_number || `TENDER-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
@@ -32,7 +36,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || 'infrastructure');
   const [department, setDepartment] = useState(
-    initialData?.department || user?.department || localStorage.getItem('procureai_officer_department') || 'Ministry of Infrastructure & Urban Development'
+    officerAssignedDept || initialData?.department || 'Central Public Works Department (CPWD)'
   );
   const [estimatedValueInr, setEstimatedValueInr] = useState<number>(
     initialData?.estimated_budget_paisa ? Number(initialData.estimated_budget_paisa) / 100 : 250000000
@@ -200,7 +204,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
       title,
       description,
       category,
-      department,
+      department: isDeptLocked ? officerAssignedDept : department,
       estimated_project_value: Number(estimatedValueInr),
       opening_date: openingDate,
       closing_date: closingDate,
@@ -361,33 +365,57 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="text-[10px] text-gray-500 font-semibold uppercase block tracking-wider">
-                      PROCURING DEPARTMENT
+                    <label className="text-[10px] text-gray-500 font-semibold uppercase block tracking-wider flex items-center gap-1.5">
+                      <span>PROCURING DEPARTMENT</span>
+                      {isDeptLocked && (
+                        <span className="text-[9px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">
+                          🔒 Assigned
+                        </span>
+                      )}
                     </label>
-                    <button
-                      type="button"
-                      onClick={() => setIsDeptModalOpen(true)}
-                      className="text-[10px] font-semibold text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center gap-1"
-                    >
-                      🏛️ Browse Govt of India
-                    </button>
+                    {!isDeptLocked && (
+                      <button
+                        type="button"
+                        onClick={() => setIsDeptModalOpen(true)}
+                        className="text-[10px] font-semibold text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center gap-1"
+                      >
+                        🏛️ Browse Govt of India
+                      </button>
+                    )}
                   </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      required
-                      value={department}
-                      onChange={(e) => setDepartment(e.target.value)}
-                      className="w-full pl-3.5 pr-16 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setIsDeptModalOpen(true)}
-                      className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-[10px] font-semibold text-gray-600 transition-colors cursor-pointer"
-                    >
-                      Select
-                    </button>
-                  </div>
+                  {isDeptLocked ? (
+                    <div>
+                      <div className="w-full px-3.5 py-2 rounded-xl bg-gray-50/90 border border-gray-200 text-gray-900 text-xs font-semibold flex items-center justify-between shadow-xs">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-sm shrink-0">🏛️</span>
+                          <span className="truncate">{department}</span>
+                        </div>
+                        <span className="text-[10px] font-semibold text-gray-500 bg-white border border-gray-200 px-2 py-0.5 rounded-md shrink-0 ml-2">
+                          Officer Restricted
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-gray-500 mt-1">
+                        Locked to your authorized department. Tenders can only be created under your department.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        className="w-full pl-3.5 pr-16 py-2 rounded-xl bg-white border border-gray-200 text-gray-900 text-xs focus:outline-none focus:border-[#22C55E] focus:ring-1 focus:ring-[#22C55E]/30 transition-all shadow-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsDeptModalOpen(true)}
+                        className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-[10px] font-semibold text-gray-600 transition-colors cursor-pointer"
+                      >
+                        Select
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 

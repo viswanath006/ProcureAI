@@ -113,10 +113,146 @@ export interface PublicUser {
 }
 
 export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
+  // ── Department-based Government Officers (No personal names) ──
+  'cpwddept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000011',
+    email: 'cpwddept@govt.in',
+    full_name: 'CPWD Procurement Directorate',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Central Public Works Department (CPWD)',
+    status: 'active',
+  },
+  'nhaidept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000021',
+    email: 'nhaidept@govt.in',
+    full_name: 'NHAI Highway Procurement Cell',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'National Highways Authority of India (NHAI)',
+    status: 'active',
+  },
+  'railwaysdept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000022',
+    email: 'railwaysdept@govt.in',
+    full_name: 'Railways Zonal Procurement Lead',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Railway Board & Zonal Rail Procurement',
+    status: 'active',
+  },
+  'defencedept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000023',
+    email: 'defencedept@govt.in',
+    full_name: 'Defence Works & Acquisition Directorate',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Military Engineer Services (MES)',
+    status: 'active',
+  },
+  'energydept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000024',
+    email: 'energydept@govt.in',
+    full_name: 'Clean Energy & Power Tendering Cell',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Solar Energy Corporation of India (SECI Renewable Grid)',
+    status: 'active',
+  },
+  'techdept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000025',
+    email: 'techdept@govt.in',
+    full_name: 'NIC Central Technology Directorate',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'National Informatics Centre (NIC Central Procurement)',
+    status: 'active',
+  },
+  'healthdept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000026',
+    email: 'healthdept@govt.in',
+    full_name: 'AIIMS & Health Procurement Cell',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'AIIMS Centralized Medical Equipment Procurement Cell',
+    status: 'active',
+  },
+  'waterdept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000027',
+    email: 'waterdept@govt.in',
+    full_name: 'Jal Jeevan Mission Tendering Cell',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)',
+    status: 'active',
+  },
+  'educationdept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000028',
+    email: 'educationdept@govt.in',
+    full_name: 'Education ICT Procurement Cell',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Department of School Education & Literacy',
+    status: 'active',
+  },
+  'agridept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000029',
+    email: 'agridept@govt.in',
+    full_name: 'Agriculture Infrastructure Directorate',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Department of Agriculture & Farmers Welfare (Farm Mechanization)',
+    status: 'active',
+  },
+  'financedept@govt.in': {
+    id: '00000001-0000-0000-0000-000000000030',
+    email: 'financedept@govt.in',
+    full_name: 'Public Procurement Lead',
+    role_code: 'GOVT_OFFICER',
+    company_id: null,
+    department: 'Central Public Works Department (CPWD)',
+    status: 'active',
+  },
+
+  // ── Bidder / Auditor / Admin Roles (Standardized without personal names) ──
+  'bidder@alphacorp.dev': {
+    id: '00000001-0000-0000-0000-000000000012',
+    email: 'bidder@alphacorp.dev',
+    full_name: 'Apex Infra Bid Representative',
+    role_code: 'BIDDER',
+    company_id: '00000000-0000-0000-0000-000000000101',
+    status: 'active',
+  },
+  'auditor@cag.gov.in': {
+    id: '00000001-0000-0000-0000-000000000013',
+    email: 'auditor@cag.gov.in',
+    full_name: 'CAG Senior Procurement Auditor',
+    role_code: 'AUDITOR',
+    company_id: null,
+    status: 'active',
+  },
+  'admin@procureai.gov.in': {
+    id: '00000001-0000-0000-0000-000000000014',
+    email: 'admin@procureai.gov.in',
+    full_name: 'ProcureAI System Administrator',
+    role_code: 'ADMIN',
+    company_id: null,
+    status: 'active',
+  },
+  'admin@procureai.dev': {
+    id: '00000000-0000-0000-0000-000000000001',
+    email: 'admin@procureai.dev',
+    full_name: 'Platform Administrator',
+    role_code: 'ADMIN',
+    company_id: null,
+    status: 'active',
+  },
+
+  // ── Backward Compatibility Aliases ──
   'officer.suresh@finance.gov.in': {
     id: '00000001-0000-0000-0000-000000000011',
     email: 'officer.suresh@finance.gov.in',
-    full_name: 'Suresh Kumar (Director of Procurement)',
+    full_name: 'Procurement Officer',
     role_code: 'GOVT_OFFICER',
     company_id: null,
     department: 'Central Public Works Department (CPWD)',
@@ -134,31 +270,15 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
   'bidder.alpha@alphacorp.dev': {
     id: '00000001-0000-0000-0000-000000000012',
     email: 'bidder.alpha@alphacorp.dev',
-    full_name: 'Vikram Mehta (Apex Infra Buildtech Ltd)',
+    full_name: 'Apex Infra Bid Representative',
     role_code: 'BIDDER',
     company_id: '00000000-0000-0000-0000-000000000101',
-    status: 'active',
-  },
-  'rep.alpha@alphacorp.dev': {
-    id: '00000001-0000-0000-0000-000000000004',
-    email: 'rep.alpha@alphacorp.dev',
-    full_name: 'Representative Alpha (Alpha Corp)',
-    role_code: 'BIDDER',
-    company_id: '00000000-0000-0000-0000-000000000010',
     status: 'active',
   },
   'auditor.priya@cag.gov.in': {
     id: '00000001-0000-0000-0000-000000000013',
     email: 'auditor.priya@cag.gov.in',
-    full_name: 'Priya Sharma (Principal CAG Auditor)',
-    role_code: 'AUDITOR',
-    company_id: null,
-    status: 'active',
-  },
-  'auditor.gamma@procureai.dev': {
-    id: '00000001-0000-0000-0000-000000000003',
-    email: 'auditor.gamma@procureai.dev',
-    full_name: 'Auditor Gamma (Compliance Officer)',
+    full_name: 'CAG Senior Procurement Auditor',
     role_code: 'AUDITOR',
     company_id: null,
     status: 'active',
@@ -166,15 +286,7 @@ export const DEMO_FALLBACK_USERS: Record<string, PublicUser> = {
   'admin.rajesh@procureai.gov.in': {
     id: '00000001-0000-0000-0000-000000000014',
     email: 'admin.rajesh@procureai.gov.in',
-    full_name: 'Rajesh Verma (Platform Architect)',
-    role_code: 'ADMIN',
-    company_id: null,
-    status: 'active',
-  },
-  'admin@procureai.dev': {
-    id: '00000000-0000-0000-0000-000000000001',
-    email: 'admin@procureai.dev',
-    full_name: 'Platform Administrator',
+    full_name: 'Platform Architect',
     role_code: 'ADMIN',
     company_id: null,
     status: 'active',
@@ -308,11 +420,54 @@ export async function loginUser(input: LoginInput, ipAddress?: string): Promise<
   }
 
   // Fallback demo accounts support for SIH evaluation
-  const fallback = DEMO_FALLBACK_USERS[email.toLowerCase()];
+  const lowerEmail = email.toLowerCase();
+  const fallback = DEMO_FALLBACK_USERS[lowerEmail];
   if (!user && fallback) {
     if (password === 'ProcureAI_Dev_2026!' || password.length >= 6) {
       const tokens = await issueTokenPair(fallback.id, fallback, ipAddress);
       return { user: fallback, tokens };
+    }
+    throw new AuthenticationError('Invalid email or password', 'INVALID_CREDENTIALS');
+  }
+
+  // Dynamic Govt Officer login for any *dept@govt.in or @govt.in email
+  if (!user && (lowerEmail.endsWith('@govt.in') || lowerEmail.includes('dept@'))) {
+    const prefix = lowerEmail.split('@')[0];
+    let deptName = 'Central Public Works Department (CPWD)';
+    if (prefix.includes('nhai') || prefix.includes('morth') || prefix.includes('highway')) {
+      deptName = 'National Highways Authority of India (NHAI)';
+    } else if (prefix.includes('rail')) {
+      deptName = 'Railway Board & Zonal Rail Procurement';
+    } else if (prefix.includes('defence') || prefix.includes('mes') || prefix.includes('drdo')) {
+      deptName = 'Military Engineer Services (MES)';
+    } else if (prefix.includes('energy') || prefix.includes('seci') || prefix.includes('power')) {
+      deptName = 'Solar Energy Corporation of India (SECI Renewable Grid)';
+    } else if (prefix.includes('tech') || prefix.includes('nic') || prefix.includes('telecom')) {
+      deptName = 'National Informatics Centre (NIC Central Procurement)';
+    } else if (prefix.includes('health') || prefix.includes('aiims') || prefix.includes('medical')) {
+      deptName = 'AIIMS Centralized Medical Equipment Procurement Cell';
+    } else if (prefix.includes('water') || prefix.includes('jal') || prefix.includes('ganga')) {
+      deptName = 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)';
+    } else if (prefix.includes('edu') || prefix.includes('school')) {
+      deptName = 'Department of School Education & Literacy';
+    } else if (prefix.includes('agri') || prefix.includes('farmer')) {
+      deptName = 'Department of Agriculture & Farmers Welfare (Farm Mechanization)';
+    }
+
+    const hexHash = crypto.createHash('sha256').update(lowerEmail).digest('hex').slice(0, 12);
+    const dynamicOfficer: PublicUser = {
+      id: `00000001-0000-0000-0000-${hexHash}`,
+      email: lowerEmail,
+      full_name: `${deptName.split(' ')[0]} Procurement Officer`,
+      role_code: 'GOVT_OFFICER',
+      company_id: null,
+      department: deptName,
+      status: 'active',
+    };
+
+    if (password === 'ProcureAI_Dev_2026!' || password.length >= 6) {
+      const tokens = await issueTokenPair(dynamicOfficer.id, dynamicOfficer, ipAddress);
+      return { user: dynamicOfficer, tokens };
     }
     throw new AuthenticationError('Invalid email or password', 'INVALID_CREDENTIALS');
   }
@@ -578,6 +733,7 @@ async function issueTokenPair(
     email: user.email,
     roleCode: user.role_code,
     companyId: user.company_id,
+    department: user.department || null,
   });
 
   // Build refresh token

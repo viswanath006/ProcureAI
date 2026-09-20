@@ -280,3 +280,27 @@ export const GOVT_DEPARTMENTS: GovtDepartment[] = [
     code: 'DAFW-MOA',
   },
 ];
+
+/**
+ * Derives a standardized, official department credential email (e.g. cpwddept@govt.in, nhaidept@govt.in).
+ * Replaces personal/random names with department-based credentials.
+ */
+export function getDepartmentEmail(dept: GovtDepartment | null | string): string {
+  if (!dept) return 'cpwddept@govt.in';
+  const text = (typeof dept === 'string' ? dept : `${dept.id} ${dept.name} ${dept.code}`).toLowerCase();
+
+  if (text.includes('cpwd') || text.includes('public works')) return 'cpwddept@govt.in';
+  if (text.includes('nhai') || text.includes('highways') || text.includes('morth') || text.includes('nhidcl')) return 'nhaidept@govt.in';
+  if (text.includes('rail')) return 'railwaysdept@govt.in';
+  if (text.includes('mes') || text.includes('drdo') || text.includes('defence') || text.includes('military') || text.includes('capf') || text.includes('isro') || text.includes('barc')) return 'defencedept@govt.in';
+  if (text.includes('seci') || text.includes('power') || text.includes('solar') || text.includes('energy') || text.includes('ntpc') || text.includes('ongc') || text.includes('oil') || text.includes('eil')) return 'energydept@govt.in';
+  if (text.includes('nic') || text.includes('telecom') || text.includes('dot') || text.includes('cdac') || text.includes('digital') || text.includes('csir')) return 'techdept@govt.in';
+  if (text.includes('aiims') || text.includes('health') || text.includes('medical') || text.includes('cmss')) return 'healthdept@govt.in';
+  if (text.includes('jal') || text.includes('water') || text.includes('ganga') || text.includes('nmcg')) return 'waterdept@govt.in';
+  if (text.includes('school') || text.includes('education') || text.includes('higher') || text.includes('iit')) return 'educationdept@govt.in';
+  if (text.includes('agri') || text.includes('farmer')) return 'agridept@govt.in';
+  if (text.includes('finance') || text.includes('expenditure')) return 'financedept@govt.in';
+  if (typeof dept === 'object' && dept.id) return `${dept.id.replace(/[^a-z0-9]/g, '')}dept@govt.in`;
+  return 'cpwddept@govt.in';
+}
+

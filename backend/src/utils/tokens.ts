@@ -8,6 +8,7 @@ export interface AccessTokenPayload {
   email: string;
   roleCode: string;
   companyId: string | null;
+  department?: string | null;
   type: 'access';
 }
 

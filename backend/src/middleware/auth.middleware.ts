@@ -24,6 +24,7 @@ export function authenticate(req: Request, _res: Response, next: NextFunction): 
       email: payload.email,
       roleCode: payload.roleCode,
       companyId: payload.companyId,
+      department: payload.department || null,
     };
 
     next();
@@ -57,6 +58,7 @@ export function optionalAuthenticate(req: Request, _res: Response, next: NextFun
       email: payload.email,
       roleCode: payload.roleCode,
       companyId: payload.companyId,
+      department: payload.department || null,
     };
   } catch {
     // Silently ignore invalid/expired tokens in optional mode

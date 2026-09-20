@@ -12,6 +12,7 @@ declare global {
         email: string;
         roleCode: string;
         companyId: string | null;
+        department?: string | null;
       };
     }
   }

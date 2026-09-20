@@ -129,6 +129,17 @@ router.post(
       const validated = createTenderSchema.parse(req.body);
       const user = req.user!;
 
+      // Enforce department restriction for government officers
+      if (user.roleCode === 'GOVT_OFFICER' && user.department) {
+        if (validated.department && validated.department.trim().toLowerCase() !== user.department.trim().toLowerCase()) {
+          throw new AuthorizationError(
+            `You are only authorized to create tenders for your assigned department: ${user.department}`,
+            'DEPARTMENT_RESTRICTED'
+          );
+        }
+        validated.department = user.department;
+      }
+
       const start = new Date();
       const deadline = new Date(Date.now() + validated.submission_deadline_days * 24 * 60 * 60 * 1000);
 

@@ -11,6 +11,7 @@ import {
 } from '../utils/errors';
 import { loadLocalBids } from './bid.controller';
 import { getLocalDecision } from '../services/decision.service';
+import { DEMO_FALLBACK_USERS } from '../services/auth.service';
 
 // ─── Local Data Persistence Store ─────────────────────────────────────────────
 
@@ -503,6 +504,20 @@ export async function createTender(req: Request, res: Response, next: NextFuncti
 
     if (closingDate <= openingDate) {
       throw new ValidationError('Closing date must be after opening date', 'INVALID_DATES');
+    }
+
+    // Department restriction: Government officers can only create tenders in their assigned department
+    if (user.roleCode === 'GOVT_OFFICER') {
+      const assignedDept = user.department || DEMO_FALLBACK_USERS[user.email.toLowerCase()]?.department;
+      if (assignedDept) {
+        if (validated.department && validated.department.trim().toLowerCase() !== assignedDept.trim().toLowerCase()) {
+          throw new AuthorizationError(
+            `You are only authorized to create tenders for your assigned department: ${assignedDept}`,
+            'DEPARTMENT_RESTRICTED'
+          );
+        }
+        validated.department = assignedDept;
+      }
     }
 
     // Weight validation: If publishing, weights MUST sum to 100

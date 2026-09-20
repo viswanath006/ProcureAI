@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { DepartmentSelectModal } from '../common/DepartmentSelectModal';
-import { GovtDepartment } from '../../data/govtDepartments';
+import { GovtDepartment, getDepartmentEmail } from '../../data/govtDepartments';
 
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif";
 
@@ -54,15 +54,36 @@ export const LoginPage: React.FC = () => {
     const r = await login({ email, password });
     setSubmitting(false);
     if (r.success) {
-      if (selectedRole === 'GOVT_OFFICER' && selectedDept) {
+      const isGovt = selectedRole === 'GOVT_OFFICER' || email.toLowerCase().endsWith('@govt.in');
+      if (isGovt) {
         try {
           const saved = localStorage.getItem('procureai_user');
+          const deptName = selectedDept?.name || (email.toLowerCase().includes('nhai')
+            ? 'National Highways Authority of India (NHAI)'
+            : email.toLowerCase().includes('rail')
+            ? 'Railway Board & Zonal Rail Procurement'
+            : email.toLowerCase().includes('defence') || email.toLowerCase().includes('mes')
+            ? 'Military Engineer Services (MES)'
+            : email.toLowerCase().includes('energy') || email.toLowerCase().includes('seci')
+            ? 'Solar Energy Corporation of India (SECI Renewable Grid)'
+            : email.toLowerCase().includes('tech') || email.toLowerCase().includes('nic')
+            ? 'National Informatics Centre (NIC Central Procurement)'
+            : email.toLowerCase().includes('health') || email.toLowerCase().includes('aiims')
+            ? 'AIIMS Centralized Medical Equipment Procurement Cell'
+            : email.toLowerCase().includes('water') || email.toLowerCase().includes('jal')
+            ? 'Department of Drinking Water & Sanitation (Jal Jeevan Mission)'
+            : email.toLowerCase().includes('edu')
+            ? 'Department of School Education & Literacy'
+            : email.toLowerCase().includes('agri')
+            ? 'Department of Agriculture & Farmers Welfare (Farm Mechanization)'
+            : 'Central Public Works Department (CPWD)');
+
           if (saved) {
             const parsed = JSON.parse(saved);
-            parsed.department = selectedDept.name;
+            parsed.department = deptName;
             localStorage.setItem('procureai_user', JSON.stringify(parsed));
-            localStorage.setItem('procureai_officer_department', selectedDept.name);
           }
+          localStorage.setItem('procureai_officer_department', deptName);
         } catch {}
       }
       navigate(from, { replace: true });
@@ -73,12 +94,15 @@ export const LoginPage: React.FC = () => {
 
   const handleRoleSelect = (roleCode: string, roleEmail: string) => {
     setSelectedRole(roleCode);
-    setEmail(roleEmail);
     setPassword('ProcureAI_Dev_2026!');
     setError(null);
 
     if (roleCode === 'GOVT_OFFICER') {
+      const targetEmail = getDepartmentEmail(selectedDept);
+      setEmail(targetEmail);
       setIsDeptModalOpen(true);
+    } else {
+      setEmail(roleEmail);
     }
   };
 
@@ -93,10 +117,10 @@ export const LoginPage: React.FC = () => {
   };
 
   const demos = [
-    { role: 'GOVT_OFFICER', email: 'officer.suresh@finance.gov.in', label: 'Govt Officer', icon: '🏛️' },
-    { role: 'BIDDER', email: 'bidder.alpha@alphacorp.dev', label: 'Bidder', icon: '🏢' },
-    { role: 'AUDITOR', email: 'auditor.priya@cag.gov.in', label: 'Auditor', icon: '🔍' },
-    { role: 'ADMIN', email: 'admin.rajesh@procureai.gov.in', label: 'Administrator', icon: '⚙️' },
+    { role: 'GOVT_OFFICER', email: 'cpwddept@govt.in', label: 'Govt Officer', icon: '🏛️' },
+    { role: 'BIDDER', email: 'bidder@alphacorp.dev', label: 'Bidder', icon: '🏢' },
+    { role: 'AUDITOR', email: 'auditor@cag.gov.in', label: 'Auditor', icon: '🔍' },
+    { role: 'ADMIN', email: 'admin@procureai.gov.in', label: 'Administrator', icon: '⚙️' },
   ];
 
   return (
@@ -469,7 +493,12 @@ export const LoginPage: React.FC = () => {
         isOpen={isDeptModalOpen}
         onClose={() => setIsDeptModalOpen(false)}
         selectedDepartment={selectedDept?.name || ''}
-        onSelect={(dept) => setSelectedDept(dept)}
+        onSelect={(dept) => {
+          setSelectedDept(dept);
+          setSelectedRole('GOVT_OFFICER');
+          setEmail(getDepartmentEmail(dept));
+          setPassword('ProcureAI_Dev_2026!');
+        }}
         title="Select Government Department"
         subtitle="Choose your Ministry or Department under the Government of India"
       />
