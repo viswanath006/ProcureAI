@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src="assets/logo.png" alt="ProcureAI Logo" width="130" />
+
 ### **Intelligent. Fair. Transparent.**
 *An Enterprise-Grade, Explainable, and Tamper-Evident e-Procurement Governance Platform*
 
@@ -227,20 +229,12 @@ npm run demo               # 17-Step End-to-End Procurement Simulation
 
 ---
 
-## 📡 Key API Endpoints
+## 📡 API & Documentation
 
-| Domain | Method | Endpoint | Role | Description |
-|---|---|---|---|---|
-| **Auth** | `POST` | `/api/v1/auth/login` | Public | Authenticate & issue token pair |
-| **Tenders** | `GET` | `/api/v1/tenders` | Authenticated | Browse tenders with stage filtering |
-| **Tenders** | `POST` | `/api/v1/tenders` | `GOVT_OFFICER` | Create tender specifications |
-| **Bids** | `POST` | `/api/v1/bids/submit` | `BIDDER` | Submit AES-256 encrypted bid envelope |
-| **Bids** | `POST` | `/api/v1/bids/tender/:id/unseal` | `GOVT_OFFICER` | Official unsealing ceremony |
-| **AI** | `POST` | `/api/v1/ai/evaluate` | `GOVT_OFFICER` | Run multi-factor QCBS scoring |
-| **XAI** | `POST` | `/api/v1/ai/explain` | Authenticated | Generate SHAP plain-language attributions |
-| **Anomaly** | `POST` | `/api/v1/ai/anomaly` | `GOVT_OFFICER` | Run Isolation Forest collusion check |
-| **Decision** | `POST` | `/api/v1/tenders/:id/decision` | `GOVT_OFFICER` | Record contract award / justified override |
-| **Audit** | `GET` | `/api/v1/audit/verify` | `AUDITOR` | Verify cryptographic SHA-256 chain integrity |
+ProcureAI provides an enterprise REST API Gateway secured by dual-token JWT authentication, Helmet security policies, and strict Role-Based Access Control (RBAC).
+
+- 📖 **Interactive Swagger UI**: Launch the AI microservice and navigate to [http://localhost:8000/docs](http://localhost:8000/docs).
+- 📑 **Internal API Specifications**: See [docs/api.md](docs/api.md) for detailed route contracts, payload schemas, and access roles.
 
 ---
 
