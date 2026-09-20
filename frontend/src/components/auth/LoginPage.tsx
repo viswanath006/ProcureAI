@@ -41,8 +41,8 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [activeDemo, setActiveDemo] = useState<string | null>(null);
   const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const [selectedDept, setSelectedDept] = useState<GovtDepartment | null>(null);
   const from = (location.state as any)?.from?.pathname || '/';
@@ -53,38 +53,32 @@ export const LoginPage: React.FC = () => {
     setSubmitting(true);
     const r = await login({ email, password });
     setSubmitting(false);
-    if (r.success) navigate(from, { replace: true });
-    else setError(r.error || 'Invalid email or password.');
-  };
-
-  const handleDemo = async (demoEmail: string) => {
-    setActiveDemo(demoEmail);
-    setError(null);
-    const r = await login({ email: demoEmail, password: 'ProcureAI_Dev_2026!' });
-    setActiveDemo(null);
-    if (r.success) navigate(from, { replace: true });
-    else setError(r.error || 'Login failed.');
-  };
-
-  const handleSelectOfficerDepartment = async (dept: GovtDepartment) => {
-    setSelectedDept(dept);
-    setActiveDemo('officer.suresh@finance.gov.in');
-    setError(null);
-    const r = await login({ email: 'officer.suresh@finance.gov.in', password: 'ProcureAI_Dev_2026!' });
-    setActiveDemo(null);
     if (r.success) {
-      try {
-        const saved = localStorage.getItem('procureai_user');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          parsed.department = dept.name;
-          localStorage.setItem('procureai_user', JSON.stringify(parsed));
-          localStorage.setItem('procureai_officer_department', dept.name);
-        }
-      } catch {}
+      if (selectedRole === 'GOVT_OFFICER' && selectedDept) {
+        try {
+          const saved = localStorage.getItem('procureai_user');
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            parsed.department = selectedDept.name;
+            localStorage.setItem('procureai_user', JSON.stringify(parsed));
+            localStorage.setItem('procureai_officer_department', selectedDept.name);
+          }
+        } catch {}
+      }
       navigate(from, { replace: true });
     } else {
-      setError(r.error || 'Login failed.');
+      setError(r.error || 'Invalid email or password.');
+    }
+  };
+
+  const handleRoleSelect = (roleCode: string, roleEmail: string) => {
+    setSelectedRole(roleCode);
+    setEmail(roleEmail);
+    setPassword('ProcureAI_Dev_2026!');
+    setError(null);
+
+    if (roleCode === 'GOVT_OFFICER') {
+      setIsDeptModalOpen(true);
     }
   };
 
@@ -99,10 +93,10 @@ export const LoginPage: React.FC = () => {
   };
 
   const demos = [
-    { email: 'officer.suresh@finance.gov.in', label: 'Govt Officer', icon: '🏛️' },
-    { email: 'bidder.alpha@alphacorp.dev', label: 'Bidder', icon: '🏢' },
-    { email: 'auditor.priya@cag.gov.in', label: 'Auditor', icon: '🔍' },
-    { email: 'admin.rajesh@procureai.gov.in', label: 'Administrator', icon: '⚙️' },
+    { role: 'GOVT_OFFICER', email: 'officer.suresh@finance.gov.in', label: 'Govt Officer', icon: '🏛️' },
+    { role: 'BIDDER', email: 'bidder.alpha@alphacorp.dev', label: 'Bidder', icon: '🏢' },
+    { role: 'AUDITOR', email: 'auditor.priya@cag.gov.in', label: 'Auditor', icon: '🔍' },
+    { role: 'ADMIN', email: 'admin.rajesh@procureai.gov.in', label: 'Administrator', icon: '⚙️' },
   ];
 
   return (
@@ -226,111 +220,142 @@ export const LoginPage: React.FC = () => {
             Welcome back
           </h1>
 
-          {/* Demo buttons */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16, animation: 'authItemCascade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both' }}>
-            {demos.map((d) => (
-              <button key={d.email} type="button"
-                onClick={() => handleDemo(d.email)}
-                disabled={!!activeDemo}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-                  padding: '0 12px', height: 38, borderRadius: 6,
-                  border: '1px solid #dde0e3', background: '#fff',
-                  fontSize: 13, fontWeight: 400, color: '#111827',
-                  cursor: 'pointer', fontFamily: FONT, width: '100%',
-                  boxSizing: 'border-box',
-                  opacity: activeDemo && activeDemo !== d.email ? 0.4 : 1,
-                  transition: 'border-color 0.12s',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#bbb'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#dde0e3'; }}
-              >
-                {activeDemo === d.email
-                  ? <div style={{ width: 13, height: 13, borderRadius: '50%', border: '1.5px solid #ccc', borderTopColor: '#555', animation: 'spin .7s linear infinite', flexShrink: 0 }} />
-                  : <span style={{ fontSize: 15, lineHeight: 1, flexShrink: 0 }}>{d.icon}</span>
-                }
-                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {d.label}
-                </span>
-              </button>
-            ))}
+          {/* 4 Role Selector Buttons (no direct login) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: selectedRole === 'GOVT_OFFICER' ? 10 : 16, animation: 'authItemCascade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both' }}>
+            {demos.map((d) => {
+              const isSelected = selectedRole === d.role;
+              return (
+                <button
+                  key={d.role}
+                  type="button"
+                  onClick={() => handleRoleSelect(d.role, d.email)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 7,
+                    padding: '0 12px',
+                    height: 38,
+                    borderRadius: 6,
+                    border: isSelected ? '1.5px solid #111827' : '1px solid #dde0e3',
+                    backgroundColor: isSelected ? '#F3F4F6' : '#ffffff',
+                    fontSize: 13,
+                    fontWeight: isSelected ? 600 : 400,
+                    color: '#111827',
+                    cursor: 'pointer',
+                    fontFamily: FONT,
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    transition: 'all 0.12s ease-in-out',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) e.currentTarget.style.borderColor = '#bbb';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) e.currentTarget.style.borderColor = '#dde0e3';
+                  }}
+                >
+                  <span style={{ fontSize: 15, lineHeight: 1, flexShrink: 0 }}>{d.icon}</span>
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {d.label}
+                  </span>
+                  {isSelected && (
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#16A34A', marginLeft: 2, flexShrink: 0 }} />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Government Officer Department Option */}
-          <div style={{ marginBottom: 16, animation: 'authItemCascade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both' }}>
-            <button
-              type="button"
-              onClick={() => setIsDeptModalOpen(true)}
-              style={{
-                width: '100%',
-                padding: '9px 12px',
-                borderRadius: 8,
-                border: selectedDept ? '1.5px solid #16A34A' : '1px dashed #CBD5E1',
-                backgroundColor: selectedDept ? '#F0FDF4' : '#F8FAFC',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-                fontFamily: FONT,
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                if (!selectedDept) {
-                  e.currentTarget.style.borderColor = '#94A3B8';
-                  e.currentTarget.style.backgroundColor = '#F1F5F9';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!selectedDept) {
-                  e.currentTarget.style.borderColor = '#CBD5E1';
-                  e.currentTarget.style.backgroundColor = '#F8FAFC';
-                }
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
-                <span style={{ fontSize: 17, flexShrink: 0 }}>🏛️</span>
-                <div style={{ textAlign: 'left', minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 600,
-                      color: selectedDept ? '#15803D' : '#1E293B',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {selectedDept ? selectedDept.name : 'Govt Officer: Select Department'}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: '#64748B',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {selectedDept ? `${selectedDept.ministry} • Click to change` : 'Browse all Ministries in Govt of India'}
-                  </div>
-                </div>
+          {/* Department Selection (Displayed ONLY when Govt Officer is selected) */}
+          {selectedRole === 'GOVT_OFFICER' && (
+            <div style={{ marginBottom: 16, animation: 'authItemCascade 0.3s ease-out both' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <label style={{ ...labelStyle, fontSize: 12, margin: 0 }}>
+                  Government Department <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                {selectedDept && (
+                  <span style={{ fontSize: 11, color: '#16A34A', fontWeight: 600 }}>✓ Selected</span>
+                )}
               </div>
-              <span
+              <button
+                type="button"
+                onClick={() => setIsDeptModalOpen(true)}
                 style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: selectedDept ? '#16A34A' : '#2563EB',
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  backgroundColor: selectedDept ? '#DCFCE7' : '#EFF6FF',
-                  flexShrink: 0,
-                  marginLeft: 8,
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: 8,
+                  border: selectedDept ? '1.5px solid #16A34A' : '1.5px dashed #CBD5E1',
+                  backgroundColor: selectedDept ? '#F0FDF4' : '#F8FAFC',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  transition: 'all 0.15s ease',
+                  textAlign: 'left',
+                }}
+                onMouseEnter={(e) => {
+                  if (!selectedDept) {
+                    e.currentTarget.style.borderColor = '#94A3B8';
+                    e.currentTarget.style.backgroundColor = '#F1F5F9';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!selectedDept) {
+                    e.currentTarget.style.borderColor = '#CBD5E1';
+                    e.currentTarget.style.backgroundColor = '#F8FAFC';
+                  }
                 }}
               >
-                {selectedDept ? 'Change' : 'Select'}
-              </span>
-            </button>
-          </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>🏛️</span>
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        color: selectedDept ? '#15803D' : '#1E293B',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {selectedDept ? selectedDept.name : 'Select Department (Govt of India)...'}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: '#64748B',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginTop: 1,
+                      }}
+                    >
+                      {selectedDept
+                        ? `${selectedDept.ministry} • ${selectedDept.code}`
+                        : 'Click to choose from all 41 Ministries & Departments'}
+                    </div>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: selectedDept ? '#16A34A' : '#2563EB',
+                    padding: '3px 8px',
+                    borderRadius: 4,
+                    backgroundColor: selectedDept ? '#DCFCE7' : '#EFF6FF',
+                    flexShrink: 0,
+                    marginLeft: 8,
+                  }}
+                >
+                  {selectedDept ? 'Change' : 'Browse All'}
+                </span>
+              </button>
+            </div>
+          )}
 
           {/* OR divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '20px 0 24px', fontFamily: FONT, animation: 'authItemCascade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.09s both' }}>
@@ -444,9 +469,9 @@ export const LoginPage: React.FC = () => {
         isOpen={isDeptModalOpen}
         onClose={() => setIsDeptModalOpen(false)}
         selectedDepartment={selectedDept?.name || ''}
-        onSelect={handleSelectOfficerDepartment}
+        onSelect={(dept) => setSelectedDept(dept)}
         title="Select Government Department"
-        subtitle="Sign in as Government Officer representing any Ministry or Department of the Government of India"
+        subtitle="Choose your Ministry or Department under the Government of India"
       />
     </div>
   );
