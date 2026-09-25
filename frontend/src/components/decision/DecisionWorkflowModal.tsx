@@ -34,10 +34,10 @@ export const OsintVerificationBadge: React.FC<{ bidder: any }> = ({ bidder }) =>
     return (
       <span
         className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs cursor-help"
-        title="MCA statutory records verified: Active company status, confirmed corporate identity, and clean cross-bidder collusion screening."
+        title="Corporate statutory records verified: Active company status, confirmed corporate identity, and clean background screening."
       >
         <span className="text-emerald-600 font-bold">✓</span>
-        <span>OSINT Verified</span>
+        <span>Registry Verified</span>
       </span>
     );
   }
@@ -54,7 +54,7 @@ export const OsintVerificationBadge: React.FC<{ bidder: any }> = ({ bidder }) =>
           onClick={() => setShowTooltip(!showTooltip)}
         >
           <span>⚠️</span>
-          <span>OSINT Alert</span>
+          <span>Verification Alert</span>
         </span>
 
         {showTooltip && (
@@ -62,22 +62,22 @@ export const OsintVerificationBadge: React.FC<{ bidder: any }> = ({ bidder }) =>
             <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
               <span className="font-bold text-amber-400 font-mono text-[11px] flex items-center gap-1.5">
                 <span>⚠️</span>
-                <span>OSINT & Collusion Notice</span>
+                <span>Vendor Verification Notice</span>
               </span>
               <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 uppercase">
-                Human Review
+                Officer Review
               </span>
             </div>
 
             <p className="text-[11px] text-slate-200 leading-relaxed">
-              <strong className="text-amber-300 font-mono">SHAP Reason: </strong>
+              <strong className="text-amber-300 font-mono">Key Factor: </strong>
               {shapReason}
             </p>
 
             {reasonsList.length > 0 && (
               <div className="mt-2 pt-2 border-t border-slate-800/80 space-y-1">
                 <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
-                  Cross-Bidder Collusion Signals:
+                  Collusion & Pattern Signals:
                 </span>
                 {reasonsList.map((r: string, idx: number) => (
                   <div key={idx} className="text-[10px] text-amber-200 flex items-start gap-1 font-sans">
@@ -115,10 +115,10 @@ export const OsintVerificationBadge: React.FC<{ bidder: any }> = ({ bidder }) =>
   return (
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 border border-gray-300 shadow-2xs cursor-help"
-      title="MCA public records gateway connection timed out or unavailable. Non-blocking; does not disqualify bidder."
+      title="Corporate records gateway connection timed out or unavailable. Non-blocking; does not disqualify bidder."
     >
       <span className="text-gray-400">⚪</span>
-      <span>OSINT Unavailable</span>
+      <span>Verification Pending</span>
     </span>
   );
 };
@@ -393,7 +393,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                       </span>
                     </div>
                     <p className="text-xs text-gray-700 leading-relaxed font-sans">
-                      You are about to save the final award decision for <strong className="text-gray-950">{dossier?.tender?.reference_number}</strong>. Submitting this will permanently lock the record and commit it to the cryptographic audit ledger so it cannot be altered or deleted.
+                      You are about to save the final award decision for <strong className="text-gray-950">{dossier?.tender?.reference_number}</strong>. Submitting this will permanently lock the record and commit it to the permanent audit ledger so it cannot be altered or deleted.
                     </p>
                   </div>
                 </div>
@@ -552,12 +552,12 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 </div>
               )}
 
-              {/* Cryptographic Security & Verification Notice */}
+              {/* Security & Verification Notice */}
               <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-slate-800 text-slate-300 flex flex-wrap justify-between items-center gap-3 font-mono text-[11px] shadow-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-slate-400">Security Ledger Protocol:</span>
-                  <span className="text-emerald-400 font-bold">SHA-256 Tamper-Proof Chain</span>
+                  <span className="text-slate-400">Audit Protocol:</span>
+                  <span className="text-emerald-400 font-bold">Immutable Audit Chain</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-slate-400">Decision Lock:</span>
@@ -593,7 +593,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Cryptographically Signing & Locking Decision...</span>
+                      <span>Digitally Signing & Locking Decision...</span>
                     </>
                   ) : (
                     <>
@@ -782,7 +782,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
                       <div className="flex items-center gap-1.5 text-slate-800 font-bold text-xs font-mono uppercase tracking-wider">
                         <span>🔍</span>
-                        <span>6. Key Reasons for AI Scores (XAI)</span>
+                        <span>6. Key Reasons for AI Scores (Score Breakdown)</span>
                       </div>
                       <div className="space-y-1.5">
                         {dossier?.explainability_report?.positive_contributors?.slice(0, 3).map((item: string, i: number) => (
@@ -803,7 +803,7 @@ export const DecisionWorkflowModal: React.FC<DecisionWorkflowModalProps> = ({
                 <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-gray-600">
                   <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">Model Engine:</span>
-                    <strong className="text-gray-900 font-semibold">{dossier?.audit_info?.model_version || 'v2.4.0-xai-shap'}</strong>
+                    <strong className="text-gray-900 font-semibold">{dossier?.audit_info?.model_version || 'ProcureAI Engine v2.4'}</strong>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-gray-400">Tamper Audit:</span>

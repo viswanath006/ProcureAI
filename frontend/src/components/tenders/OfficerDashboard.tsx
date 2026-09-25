@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api/client';
 
-import { BidderComparisonChart } from '../charts/BidderComparisonChart';
-import { RiskIndicatorsChart } from '../charts/RiskIndicatorsChart';
-import { HistoricalPatternsChart } from '../charts/HistoricalPatternsChart';
-import { DemoScenarioConsole } from '../demo/DemoScenarioConsole';
-
 interface OfficerDashboardProps {
   onSelectTender: (tenderId: string) => void;
   onCreateTender: () => void;
@@ -233,14 +228,6 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         </div>
       </div>
 
-
-      {/* ── Visual Analytics & Decision Intelligence Charts ─────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <BidderComparisonChart />
-        <RiskIndicatorsChart />
-      </div>
-
-      <HistoricalPatternsChart />
 
       {/* ── Action Header ─────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-200/80 pb-4">
@@ -610,8 +597,6 @@ export const OfficerDashboard: React.FC<OfficerDashboardProps> = ({
         </div>
       </div>
 
-      {/* ── 17-Step Lifecycle Workflow Tracker ──────────────────── */}
-      <DemoScenarioConsole />
     </div>
   );
 };

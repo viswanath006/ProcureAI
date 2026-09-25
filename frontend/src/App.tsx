@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LoginPage } from './components/auth/LoginPage';
@@ -8,10 +8,6 @@ import { TendersPortal } from './components/portals/TendersPortal';
 import { BidderPortal } from './components/portals/BidderPortal';
 import { AuditorPortal } from './components/portals/AuditorPortal';
 import { AdminPortal } from './components/portals/AdminPortal';
-import { BidderComparisonChart } from './components/charts/BidderComparisonChart';
-import { RiskIndicatorsChart } from './components/charts/RiskIndicatorsChart';
-import { HistoricalPatternsChart } from './components/charts/HistoricalPatternsChart';
-import { DemoScenarioConsole } from './components/demo/DemoScenarioConsole';
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'San Francisco', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif";
 
@@ -107,6 +103,19 @@ const TABS: TabItem[] = [
   },
 ];
 
+/** Maps each role to the subset of tabs it should see */
+const ROLE_TABS: Record<string, TabId[]> = {
+  GOVT_OFFICER: ['overview', 'tenders', 'evaluations', 'audit'],
+  BIDDER:       ['tenders', 'bids'],
+  AUDITOR:      ['tenders', 'audit'],
+  ADMIN:        ['overview', 'tenders', 'evaluations', 'bids', 'audit', 'reports', 'settings'],
+};
+
+function getTabsForRole(roleCode?: string): TabItem[] {
+  const allowed = ROLE_TABS[roleCode || ''] ?? TABS;
+  return TABS.filter((t) => allowed.includes(t.id));
+}
+
 function NavigationHeader({
   activeTab,
   setActiveTab,
@@ -116,6 +125,7 @@ function NavigationHeader({
 }) {
   const { user, isAuthenticated, logout, switchDemoRole } = useAuth();
   const [roleOpen, setRoleOpen] = useState(false);
+  const visibleTabs = useMemo(() => getTabsForRole(user?.role_code), [user?.role_code]);
 
   const roles = [
     { label: 'Government Officer', email: 'officer.suresh@finance.gov.in', code: 'GOVT_OFFICER', color: 'text-amber-700 bg-amber-50 border-amber-200' },
@@ -153,7 +163,7 @@ function NavigationHeader({
         {/* Center: 7 Navigation Tabs right on the side of ProcureAI, between ProcureAI and Role */}
         {isAuthenticated && user && (
           <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 overflow-x-auto no-scrollbar mx-2" aria-label="Main Navigation">
-            {TABS.map((tab) => {
+            {visibleTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
@@ -273,7 +283,7 @@ function NavigationHeader({
       {/* For tablets & mobile: sleek secondary row below ProcureAI and Role */}
       {isAuthenticated && user && (
         <div className="lg:hidden border-t border-gray-100 px-3 sm:px-4 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-gray-50/50">
-          {TABS.map((tab) => {
+          {visibleTabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
@@ -719,10 +729,7 @@ function MainDashboard({ activeTab }: { activeTab: TabId }) {
 
           {activeTab === 'evaluations' && (
             <ProtectedRoute allowedRoles={['GOVT_OFFICER', 'AUDITOR', 'ADMIN', 'EVALUATOR']}>
-              <div className="space-y-6">
-                <BidderComparisonChart />
-                <DemoScenarioConsole />
-              </div>
+              <TendersPortal key="evaluations" initialMode="registry" hideSwitcher={true} />
             </ProtectedRoute>
           )}
 
@@ -740,9 +747,10 @@ function MainDashboard({ activeTab }: { activeTab: TabId }) {
 
           {activeTab === 'reports' && (
             <ProtectedRoute>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <RiskIndicatorsChart />
-                <HistoricalPatternsChart />
+              <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center space-y-3 shadow-xs">
+                <span className="text-2xl">📊</span>
+                <h4 className="text-sm font-bold text-gray-900">Reports Coming Soon</h4>
+                <p className="text-xs text-gray-500">Analytics and reporting dashboards will be available once sufficient procurement data is collected.</p>
               </div>
             </ProtectedRoute>
           )}
@@ -764,19 +772,17 @@ function AppShell() {
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const [activeTab, setActiveTab] = useState<TabId>(() => {
-    if (user?.role_code === 'BIDDER') return 'bids';
-    if (user?.role_code === 'AUDITOR') return 'audit';
-    if (user?.role_code === 'ADMIN') return 'settings';
-    return 'overview';
+    const roleTabs = ROLE_TABS[user?.role_code || ''];
+    return roleTabs ? roleTabs[0] : 'overview';
   });
 
-  // Sync tab when user switches role
+  // Sync tab when user switches role — land on the first tab for that role
   useEffect(() => {
-    if (user?.role_code === 'BIDDER') setActiveTab('bids');
-    else if (user?.role_code === 'AUDITOR') setActiveTab('audit');
-    else if (user?.role_code === 'ADMIN') setActiveTab('settings');
+    const roleTabs = ROLE_TABS[user?.role_code || ''];
+    if (roleTabs) setActiveTab(roleTabs[0]);
     else setActiveTab('overview');
   }, [user?.role_code]);
+
 
   return (
     <div style={{ fontFamily: FONT }} className={`min-h-screen flex flex-col font-sans relative ${isAuthPage ? 'bg-white' : 'bg-[#FDFDFE] text-gray-900'}`}>

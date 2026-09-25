@@ -40,7 +40,7 @@ export const AuditorPortal: React.FC = () => {
       if (chainRes.success && chainRes.data) {
         setLogs(chainRes.data.logs);
       } else {
-        setError(chainRes.error?.message || 'Failed to load cryptographic audit ledger');
+        setError(chainRes.error?.message || 'Failed to load audit ledger');
       }
 
       if (decRes.success && decRes.data) {
@@ -294,17 +294,17 @@ export const AuditorPortal: React.FC = () => {
         {/* Chain Hash Info Bar */}
         <div className={`mt-3 pt-3 border-t grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs ${isValid ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-900'}`}>
           <div>
-            <span>Verified Sequential Blocks: </span>
+            <span>Verified Records: </span>
             <strong className="font-bold">{verificationResult?.totalBlocks || logs.length}</strong>
           </div>
           <div className="truncate" title={verificationResult?.rootHash || 'Genesis Block Hash'}>
-            <span>Root Hash: </span>
+            <span>Anchor Record: </span>
             <strong className="font-bold">
-              {verificationResult?.rootHash ? `${verificationResult.rootHash.slice(0, 16)}...` : 'Genesis Block'}
+              {verificationResult?.rootHash ? `${verificationResult.rootHash.slice(0, 16)}...` : 'Initial Checkpoint'}
             </strong>
           </div>
           <div className="truncate" title={verificationResult?.latestHash || 'Chain Head Hash'}>
-            <span>Chain Head Hash: </span>
+            <span>Latest Security Token: </span>
             <strong className="font-bold">
               {verificationResult?.latestHash ? `${verificationResult.latestHash.slice(0, 16)}...` : 'Latest Verified'}
             </strong>
@@ -384,23 +384,23 @@ export const AuditorPortal: React.FC = () => {
                   onChange={(e) => setFilters({ ...filters, event_type: e.target.value })}
                   className="w-full px-2.5 py-1.5 rounded-lg bg-[#F9FAFB] border border-gray-200 text-gray-900 text-xs focus:bg-white focus:border-blue-500 focus:outline-none transition-all"
                 >
-                  <option value="ALL">All 16 Event Types</option>
-                  <option value="login">login</option>
-                  <option value="tender_creation">tender_creation</option>
-                  <option value="tender_publication">tender_publication</option>
-                  <option value="tender_modification">tender_modification</option>
-                  <option value="bidder_registration">bidder_registration</option>
-                  <option value="document_upload">document_upload</option>
-                  <option value="bid_submission">bid_submission</option>
-                  <option value="bid_locking">bid_locking</option>
-                  <option value="bid_opening">bid_opening</option>
-                  <option value="ai_evaluation">ai_evaluation</option>
-                  <option value="recommendation_generation">recommendation_generation</option>
-                  <option value="government_approval">government_approval</option>
-                  <option value="government_rejection">government_rejection</option>
-                  <option value="recommendation_override">recommendation_override</option>
-                  <option value="decision_modification_attempt">decision_modification_attempt</option>
-                  <option value="suspicious_activity">suspicious_activity</option>
+                  <option value="ALL">All Event Types</option>
+                  <option value="login">User Login</option>
+                  <option value="tender_creation">Tender Creation</option>
+                  <option value="tender_publication">Tender Publication</option>
+                  <option value="tender_modification">Tender Modification</option>
+                  <option value="bidder_registration">Bidder Registration</option>
+                  <option value="document_upload">Document Upload</option>
+                  <option value="bid_submission">Bid Submission</option>
+                  <option value="bid_locking">Bid Locking</option>
+                  <option value="bid_opening">Bid Opening</option>
+                  <option value="ai_evaluation">AI Evaluation</option>
+                  <option value="recommendation_generation">Recommendation Generated</option>
+                  <option value="government_approval">Government Approval</option>
+                  <option value="government_rejection">Government Rejection</option>
+                  <option value="recommendation_override">Officer Override</option>
+                  <option value="decision_modification_attempt">Unauthorized Alteration Attempt</option>
+                  <option value="suspicious_activity">Suspicious Activity Flag</option>
                 </select>
               </div>
 
@@ -434,7 +434,7 @@ export const AuditorPortal: React.FC = () => {
             </div>
           </div>
 
-          {/* ── Cryptographic Audit Chain Ledger Table ───────────────────────── */}
+          {/* ── Permanent Audit Chain Ledger Table ───────────────────────── */}
           <div className="rounded-2xl bg-white border border-gray-200 shadow-xs overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -445,8 +445,8 @@ export const AuditorPortal: React.FC = () => {
                     <th className="py-3 px-3 font-bold uppercase">Action</th>
                     <th className="py-3 px-3 font-bold uppercase">Actor & Role</th>
                     <th className="py-3 px-3 font-bold uppercase">Entity</th>
-                    <th className="py-3 px-3 font-bold uppercase">Previous Hash</th>
-                    <th className="py-3 px-3 font-bold uppercase">Current Hash</th>
+                    <th className="py-3 px-3 font-bold uppercase">Prior Token</th>
+                    <th className="py-3 px-3 font-bold uppercase">Security Token</th>
                     <th className="py-3 px-3 font-bold uppercase text-center">Status</th>
                   </tr>
                 </thead>
@@ -489,7 +489,7 @@ export const AuditorPortal: React.FC = () => {
                             </td>
                             <td className="py-3 px-3 text-gray-400 text-xs truncate max-w-[90px]" title={log.prev_hash}>
                               {log.prev_hash === '0000000000000000000000000000000000000000000000000000000000000000'
-                                ? 'GENESIS (0x0)'
+                                ? 'INITIAL (0x0)'
                                 : `${log.prev_hash.slice(0, 8)}...`}
                             </td>
                             <td className="py-3 px-3 text-blue-600 text-xs font-semibold truncate max-w-[90px]" title={log.curr_hash}>
@@ -497,7 +497,7 @@ export const AuditorPortal: React.FC = () => {
                             </td>
                             <td className="py-3 px-3 text-center whitespace-nowrap">
                               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                ⛓️ LINKED
+                                ⛓️ VERIFIED
                               </span>
                             </td>
                           </tr>
@@ -513,7 +513,7 @@ export const AuditorPortal: React.FC = () => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                                   <div className="p-3 rounded-xl bg-white border border-gray-200 space-y-1 shadow-xs">
-                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Digital Codes (Record IDs)</span>
+                                    <span className="text-[10px] text-gray-400 font-semibold block uppercase tracking-wider">Security Verification Codes</span>
                                     <div className="text-xs text-gray-700 break-all select-all font-medium">
                                       <span className="text-gray-400 font-normal">PREV: </span>{log.prev_hash}
                                     </div>

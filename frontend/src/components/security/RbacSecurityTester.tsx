@@ -26,7 +26,7 @@ const TEST_CASES: SecurityTestCase[] = [
     name: 'Unseal Bids (Pre-Deadline Check)',
     endpoint: '/tenders/00000003-0000-0000-0000-000000000001/bids',
     method: 'GET',
-    description: 'Bids are cryptographically sealed until deadline. Bidders are strictly denied. Officers are checked against deadline.',
+    description: 'Bids are securely sealed until deadline. Bidders are strictly denied. Officers are checked against deadline.',
     authorizedRoles: ['GOVT_OFFICER', 'AUDITOR', 'ADMIN'],
     expectedResultForCurrentRole: 'DENY',
   },
@@ -218,7 +218,7 @@ export const RbacSecurityTester: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="text-xl">🛡️</span>
             <h3 className="text-lg font-bold text-slate-100">
-              Live RBAC & Cryptographic Security Validation Matrix
+              Live Role Access & Security Verification Matrix
             </h3>
           </div>
           <p className="text-xs text-slate-400 mt-1">
@@ -360,7 +360,7 @@ export const RbacSecurityTester: React.FC = () => {
       {Object.keys(results).length > 0 && (
         <div className="pt-4 border-t border-slate-800/80 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>Latest Security Test Payloads (Cryptographic Inspection)</span>
+            <span>Latest Security Test Payloads (Security Inspection)</span>
             <span className="text-[10px] text-slate-500">JSON Responses</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">

@@ -1338,17 +1338,20 @@ export async function getOfficerDashboard(_req: Request, res: Response, next: Ne
 
       const completedCount = allLocalTenders.filter((t) => ['COMPLETED', 'AWARDED', 'DECISION_MADE'].includes(normalizeStatus(t.status))).length;
 
-      highRiskTenders = [
-        {
-          id: '00000000-0000-0000-0000-000000000100',
-          reference_number: 'PROC-2026-EDU-SCH-01',
-          title: 'Government School Infrastructure Project - Phase 2',
-          department: 'Department of School Education & Literacy',
-          status: getLocalTender('00000000-0000-0000-0000-000000000100').status,
-          risk_level: 'high',
-          risk_title: 'Price proximity clustering (<0.50% margin) between 2 bidders',
-        },
-      ];
+      const demoRiskTender = getLocalTender('00000000-0000-0000-0000-000000000100');
+      highRiskTenders = demoRiskTender
+        ? [
+            {
+              id: demoRiskTender.id,
+              reference_number: demoRiskTender.reference_number,
+              title: demoRiskTender.title,
+              department: demoRiskTender.department,
+              status: demoRiskTender.status,
+              risk_level: 'high',
+              risk_title: 'Price proximity clustering (<0.50% margin) between 2 bidders',
+            },
+          ]
+        : [];
 
       summaryCounts = {
         total_tenders: String(allLocalTenders.length),

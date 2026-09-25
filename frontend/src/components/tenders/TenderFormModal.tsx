@@ -727,7 +727,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
                           copy[idx].description = e.target.value;
                           setCriteria(copy);
                         }}
-                        placeholder="Define how AI scoring algorithms will evaluate proposals against this criteria..."
+                        placeholder="Define how proposals will be evaluated against this criteria..."
                         className="w-full px-2.5 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-800 text-xs focus:outline-none focus:border-blue-500"
                       />
                     </div>
@@ -742,7 +742,7 @@ export const TenderFormModal: React.FC<TenderFormModalProps> = ({
             <div key="documents" className="tab-pane-fade space-y-4 text-xs pb-36">
               <div className="flex justify-between items-center">
                 <span className="text-gray-500 text-[11px]">
-                  Bidders must upload cryptographic sealed PDF/excel attachments matching these requirements.
+                  Bidders must upload sealed PDF or Excel attachments matching these requirements.
                 </span>
                 <button
                   type="button"

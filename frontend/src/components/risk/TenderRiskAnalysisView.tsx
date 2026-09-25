@@ -42,7 +42,7 @@ export const TenderRiskAnalysisView: React.FC<TenderRiskAnalysisViewProps> = ({ 
     return (
       <div className="p-12 text-center space-y-3 font-mono">
         <div className="w-8 h-8 border-2 border-procure-500 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-xs text-slate-400">Executing Isolation Forest anomaly & collusion analysis...</p>
+        <p className="text-xs text-slate-400">Analyzing bid patterns and pricing irregularities...</p>
       </div>
     );
   }
@@ -73,10 +73,10 @@ export const TenderRiskAnalysisView: React.FC<TenderRiskAnalysisViewProps> = ({ 
         <div className="space-y-1">
           <div className="flex items-center gap-2 font-mono">
             <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">
-              ProcureAI Anti-Bias & Anomaly Analysis Module (Phase 9)
+              ProcureAI Fairness & Pricing Risk Analysis
             </span>
             <span className="px-2 py-0.5 rounded text-[9px] bg-procure-500/20 text-procure-300 border border-procure-500/30">
-              Isolation Forest v1.2
+              Risk Detection Engine v1.2
             </span>
           </div>
           <p className="text-[11px] text-slate-400 leading-relaxed">
@@ -220,7 +220,7 @@ export const TenderRiskAnalysisView: React.FC<TenderRiskAnalysisViewProps> = ({ 
           <div className="flex items-center gap-2">
             <span className="text-sm">🤝</span>
             <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
-              Feature 2 — Possible Bid Collusion Indicators
+              Feature 2 — Price Clustering & Collusion Indicators
             </h4>
           </div>
           <span className="text-[10px] font-mono text-slate-400">
@@ -283,7 +283,7 @@ export const TenderRiskAnalysisView: React.FC<TenderRiskAnalysisViewProps> = ({ 
           <div className="flex items-center gap-2">
             <span className="text-sm">🌲</span>
             <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
-              Feature 1 — Bid Anomaly Detection (Isolation Forest)
+              Feature 1 — Bid Anomaly & Price Deviation Check
             </h4>
           </div>
           <div className="flex items-center gap-1.5 font-mono text-[10px]">
@@ -370,7 +370,7 @@ export const TenderRiskAnalysisView: React.FC<TenderRiskAnalysisViewProps> = ({ 
                 {isExpanded && (
                   <div className="mt-2 pt-2 border-t border-slate-800/80 space-y-2 animate-fadeIn font-mono">
                     <div className="flex justify-between items-center text-[10px] text-slate-400">
-                      <span>Isolation Forest Score: {bid.anomaly_score}</span>
+                      <span>Anomaly Risk Score: {bid.anomaly_score}</span>
                       <span>Outlier Status: {bid.is_outlier ? 'Flagged Outlier' : 'Standard'}</span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">

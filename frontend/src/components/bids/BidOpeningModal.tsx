@@ -81,7 +81,7 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
     } else {
       setStatusMessage({
         type: 'success',
-        text: '✓ All submitted bids passed cryptographic tamper verification. Hashes match immutable baseline.',
+        text: '✓ All submitted bids passed security verification. Records are intact.',
       });
     }
   };
@@ -99,7 +99,7 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
         type: hasTampering ? 'warning' : 'success',
         text: hasTampering
           ? '⚠️ Bids unsealed. Tampering discrepancies detected on one or more proposals.'
-          : '✓ Official Bid Opening completed. All cryptographic envelopes unsealed and decrypted.',
+          : '✓ Official Bid Opening completed. All sealed proposals unsealed successfully.',
       });
       loadData();
       onRefresh();
@@ -121,11 +121,11 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-xl">🔓</span>
               <h3 className="text-lg font-bold text-slate-100 font-mono">
-                Official Bid Opening & Tamper Verification Console
+                Official Bid Opening & Security Verification Console
               </h3>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Secure sealed-bid protocol. Cryptographic envelopes remain locked until the submission deadline passes.
+              Secure sealed-bid protocol. Sealed envelopes remain locked until the submission deadline passes.
             </p>
           </div>
           <button
@@ -139,7 +139,7 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
         {/* 5-State Visual Pipeline Stepper */}
         <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
           <span className="text-[10px] text-slate-400 uppercase font-mono font-bold tracking-wider block">
-            Cryptographic Sealing Pipeline
+            Sealed Bidding Pipeline
           </span>
           <div className="flex items-center justify-between">
             {STAGES.map((stage, idx) => {
@@ -247,7 +247,7 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
         <div className="flex-1 overflow-y-auto pr-1 space-y-3">
           {isLoading ? (
             <div className="p-8 text-center text-xs text-slate-400 font-mono animate-pulse">
-              Loading cryptographic sealed envelopes...
+              Loading sealed envelopes...
             </div>
           ) : data?.bids?.length === 0 ? (
             <div className="p-8 text-center text-xs text-slate-500">
@@ -333,7 +333,7 @@ export const BidOpeningModal: React.FC<BidOpeningModalProps> = ({
         {/* Footer */}
         <div className="flex justify-between items-center pt-4 border-t border-slate-800 text-xs">
           <span className="text-slate-500 font-mono text-[10px]">
-            🛡️ Strict Auditor Rule: Unsealing is cryptographically blocked before submission deadline.
+            🛡️ Strict Audit Rule: Opening bids is strictly blocked before the submission deadline.
           </span>
           <button
             onClick={onClose}

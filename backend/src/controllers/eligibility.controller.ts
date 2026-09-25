@@ -3,6 +3,7 @@ import { query, queryOne, queryRows, withTransaction } from '../config/database'
 import { Company, CompanyDocument, TenderRequirement, Bid } from '../types/database';
 import { evaluateBidderEligibility, BidderEligibilityReport } from '../services/eligibility.engine';
 import { OsintService } from '../services/osint.service';
+import { resolveBidderCompany } from '../services/auth.service';
 import crypto from 'crypto';
 
 async function recordAuditLog(
@@ -64,51 +65,13 @@ export async function getMyCompanyProfile(
       // Database offline mode — fall back to demo company profile
     }
 
-    // Demo company profile fallback
+    const resolvedCompany = resolveBidderCompany(req.user?.email, companyId);
+
+    // Dynamic resolved company profile fallback
     res.json({
       success: true,
       data: {
-        company: {
-          id: companyId,
-          registration_number: 'CIN-U45200MH2012PLC123456',
-          name: 'Apex Infra Buildtech Ltd',
-          legal_name: 'Apex Infrastructure & Civil Buildtech Private Limited',
-          tax_id: '27AABCA1234F1Z9',
-          industry: 'Civil Infrastructure & Construction',
-          address_line1: 'B-402, Nariman Point Commercial Tower',
-          city: 'Mumbai',
-          state: 'Maharashtra',
-          postal_code: '400021',
-          website: 'https://apexbuildtech.dev',
-          annual_turnover_paisa: 75000000000,
-          net_worth_paisa: 25000000000,
-          years_in_operation: 14,
-          employee_count: 350,
-          completed_projects_count: 5,
-          completed_projects: [
-            { project_name: 'Metro Line Elevated Viaduct Package 4', client: 'MMRDA', value_cr: 120, completion_year: 2024 },
-            { project_name: 'Model Higher Secondary School Complex', client: 'PWD Maharashtra', value_cr: 45, completion_year: 2023 },
-            { project_name: 'Smart City IT & Administrative Hub', client: 'Nashik Smart City', value_cr: 85, completion_year: 2022 },
-          ],
-          technical_capabilities: [
-            'Prefabricated Precast Concrete Structures',
-            'Seismic Zone IV Compliant Structural Engineering',
-            'BIM Level 2 Digital Modeling & Scheduling',
-            'ISO 9001:2015 Quality Management Systems',
-          ],
-          financial_capacity: {
-            bank_solvency_cr: 50,
-            audited_financial_years: ['2023-24', '2024-25', '2025-26'],
-            working_capital_cr: 35,
-          },
-          compliance_info: {
-            gst_status: 'ACTIVE_COMPLIANT',
-            pan_verified: true,
-            pf_esi_registration: true,
-            debarment_status: 'CLEAR',
-          },
-          status: 'verified',
-        },
+        company: resolvedCompany,
         documents: [
           {
             id: 'doc-001',
@@ -405,27 +368,7 @@ export async function precheckEligibility(
     }
 
     if (!company) {
-      company = {
-        id: companyId,
-        registration_number: 'CIN-U45200MH2012PLC123456',
-        name: 'Apex Infra Buildtech Ltd',
-        legal_name: 'Apex Infrastructure & Civil Buildtech Private Limited',
-        tax_id: '27AABCA1234F1Z9',
-        industry: 'Civil Infrastructure & Construction',
-        address_line1: 'B-402, Nariman Point Commercial Tower',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        country: 'India',
-        postal_code: '400021',
-        annual_turnover_paisa: 75000000000,
-        net_worth_paisa: 25000000000,
-        years_in_operation: 14,
-        employee_count: 350,
-        completed_projects_count: 5,
-        status: 'verified',
-        created_at: new Date('2026-01-01').toISOString(),
-        updated_at: new Date().toISOString(),
-      } as any;
+      company = resolveBidderCompany(req.user?.email, companyId) as any;
     }
 
     if (!requirements || requirements.length === 0) {

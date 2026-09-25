@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../api/client';
 import { BidReceiptCard } from './BidReceiptCard';
+import { useAuth } from '../../contexts/AuthContext';
+import { BIDDER_COMPANIES } from '../../data/bidderCompanies';
 
 interface SealedBidSubmissionModalProps {
   tender: any;
@@ -16,6 +18,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
   onClose,
   onSuccess,
 }) => {
+  const { user } = useAuth();
   const [bidAmountInr, setBidAmountInr] = useState<number>(450000000);
   const [completionDays, setCompletionDays] = useState<number>(180);
   const [technicalProposal, setTechnicalProposal] = useState(
@@ -30,9 +33,30 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
   const [declarationAccepted, setDeclarationAccepted] = useState(false);
 
   const [companyProfile, setCompanyProfile] = useState<any | null>(null);
-  const [companyName, setCompanyName] = useState('Apex Infra Buildtech Ltd');
   const [companyDocs, setCompanyDocs] = useState<any[]>([]);
   const [eligibilityChecking, setEligibilityChecking] = useState(false);
+
+  // Derive authenticated bidder company name
+  const effectiveCompanyName = useMemo(() => {
+    // 1. If backend API returned a company profile name that is NOT the generic fallback
+    if (companyProfile?.name && companyProfile.name !== 'Apex Infra Buildtech Ltd') {
+      return companyProfile.name;
+    }
+    // 2. Lookup matching contractor in BIDDER_COMPANIES by email
+    if (user?.email) {
+      const match = BIDDER_COMPANIES.find((c) => c.email.toLowerCase() === user.email.toLowerCase());
+      if (match) return match.name;
+    }
+    // 3. User's full_name (if not an officer/admin)
+    if (user?.full_name && !user.full_name.toLowerCase().includes('officer') && !user.full_name.toLowerCase().includes('admin')) {
+      return user.full_name.replace(/ Bid Representative$/i, '').trim();
+    }
+    // 4. Fallback to API profile name if present
+    if (companyProfile?.name) {
+      return companyProfile.name;
+    }
+    return 'Registered Bidder Entity';
+  }, [companyProfile, user]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sealingStep, setSealingStep] = useState<string>('');
@@ -49,9 +73,6 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
       if (profileRes.success && profileRes.data) {
         setCompanyProfile(profileRes.data.company);
-        if (profileRes.data.company?.name) {
-          setCompanyName(profileRes.data.company.name);
-        }
         setCompanyDocs(profileRes.data.documents || []);
       }
 
@@ -85,7 +106,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
     const payload = {
       tenderId: tender.id,
-      companyName: companyName.trim(),
+      companyName: effectiveCompanyName,
       bidAmountInr: Number(bidAmountInr),
       completionDays: Number(completionDays),
       technicalProposal,
@@ -149,7 +170,7 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
             <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center text-xs">
               <div>
                 <span className="text-[10px] text-slate-400 font-mono block">ELIGIBILITY CHECK</span>
-                <span className="font-bold text-slate-200">{companyProfile?.name || 'Your Company'}</span>
+                <span className="font-bold text-slate-200">{effectiveCompanyName}</span>
               </div>
               <div>
                 {eligibilityChecking ? (
@@ -170,20 +191,27 @@ export const SealedBidSubmissionModal: React.FC<SealedBidSubmissionModalProps> =
 
             {/* Submission Form */}
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-4 pr-1 text-xs">
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <label className="text-[10px] text-slate-400 font-mono block">
-                  BIDDING COMPANY NAME
-                </label>
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] text-slate-400 font-mono block font-semibold">
+                    BIDDING COMPANY NAME (LOCKED)
+                  </label>
+                  <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+                    <svg className="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                    </svg>
+                    Authenticated Entity Locked
+                  </span>
+                </div>
                 <input
                   type="text"
-                  required
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="e.g. Apex Infra Buildtech Ltd, Bharat Civil Works, Crescent Urban..."
-                  className="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 font-medium text-xs focus:outline-none focus:border-emerald-500"
+                  readOnly
+                  disabled
+                  value={effectiveCompanyName}
+                  className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 font-semibold text-xs cursor-not-allowed select-none opacity-95"
                 />
                 <span className="text-[10px] text-slate-500 block">
-                  Official registered entity name submitted on this tender.
+                  Official registered entity name locked to authenticated account ({user?.email || 'authenticated bidder'}). Bids cannot be submitted on behalf of another company.
                 </span>
               </div>
 

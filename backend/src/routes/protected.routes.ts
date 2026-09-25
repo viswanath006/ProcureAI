@@ -33,6 +33,7 @@ import {
   restoreValidAuditChain,
 } from '../services/auditChain.service';
 import { DEMO_CONSTANTS } from '../services/demoScenario.service';
+import { resolveBidderCompany } from '../services/auth.service';
 import { getLocalTender, saveLocalTender, loadLocalTenders } from '../controllers/tender.controller';
 import { loadLocalBids } from '../controllers/bid.controller';
 import { OsintService, lookupMcaRecordFromAiService } from '../services/osint.service';
@@ -386,24 +387,12 @@ router.get(
         if (err instanceof NotFoundError) throw err;
       }
 
-      // Offline fallback for demo bidder
+      // Dynamic fallback for bidder company profile
+      const resolvedCompany = resolveBidderCompany(user.email, user.companyId);
       res.json({
         success: true,
         data: {
-          company: {
-            id: user.companyId || '00000000-0000-0000-0000-000000000101',
-            registration_number: 'CIN-U45200MH2012PLC123456',
-            name: 'Apex Infra Buildtech Ltd',
-            legal_name: 'Apex Infrastructure & Civil Buildtech Private Limited',
-            industry: 'Civil Infrastructure & Construction',
-            city: 'Mumbai',
-            state: 'Maharashtra',
-            country: 'India',
-            status: 'verified',
-            employee_count: 350,
-            years_in_operation: 14,
-            verified_at: '2025-01-10T00:00:00.000Z',
-          },
+          company: resolvedCompany,
         },
       });
     } catch (error) {

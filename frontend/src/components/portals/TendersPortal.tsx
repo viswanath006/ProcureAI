@@ -8,6 +8,24 @@ import { SealedBidSubmissionModal } from '../bids/SealedBidSubmissionModal';
 
 const FONT = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 
+const STATUS_LABELS: Record<string, string> = {
+  ALL: 'All',
+  DRAFT: 'Draft',
+  PUBLISHED: 'Published',
+  OPEN: 'Open for Bids',
+  CLOSED: 'Closed',
+  UNDER_EVALUATION: 'Under Review',
+  RECOMMENDATION_READY: 'Scores Ready',
+  DECISION_MADE: 'Award Decided',
+  COMPLETED: 'Completed',
+};
+
+const formatStatus = (st: string) => {
+  if (!st) return '';
+  const key = st.toUpperCase();
+  return STATUS_LABELS[key] || st.replace(/_/g, ' ');
+};
+
 interface TendersPortalProps {
   initialMode?: 'dashboard' | 'registry';
   hideSwitcher?: boolean;
@@ -218,7 +236,7 @@ export const TendersPortal: React.FC<TendersPortalProps> = ({
                           : 'bg-white text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200'
                         }`}
                     >
-                      {st}
+                      {STATUS_LABELS[st] || st}
                     </button>
                   )
                 )}
@@ -270,7 +288,7 @@ export const TendersPortal: React.FC<TendersPortalProps> = ({
                                     : 'bg-amber-50 text-amber-700 border border-amber-200'
                               }`}
                           >
-                            {t.status}
+                            {formatStatus(t.status)}
                           </span>
                         </div>
 
@@ -315,7 +333,7 @@ export const TendersPortal: React.FC<TendersPortalProps> = ({
                         <div>
                           <span className="text-[10px] text-gray-400 font-medium block">STATUS</span>
                           <span className="font-semibold text-gray-900 uppercase">
-                            {inlineSelectedTender.status}
+                            {formatStatus(inlineSelectedTender.status)}
                           </span>
                         </div>
                         <div>

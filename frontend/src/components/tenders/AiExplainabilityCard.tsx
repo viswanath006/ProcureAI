@@ -105,7 +105,7 @@ export const AiExplainabilityCard: React.FC<AiExplainabilityCardProps> = ({
         </div>
 
         <div className="text-right font-mono">
-          <span className="text-[10px] text-slate-400 block uppercase">Composite Score</span>
+          <span className="text-[10px] text-slate-400 block uppercase">Total Score</span>
           <span className="text-2xl font-black text-emerald-400">
             {Number(explanation.total_score).toFixed(1)}
             <span className="text-xs font-normal text-slate-500"> / 100</span>
@@ -203,25 +203,25 @@ export const AiExplainabilityCard: React.FC<AiExplainabilityCardProps> = ({
         </div>
       </div>
 
-      {/* ── SHAP Feature Impact Balance Meter (Collapsible) ────────────── */}
+      {/* ── Factor Impact Balance Meter (Collapsible) ────────────── */}
       {explanation.shap_attributions && Object.keys(explanation.shap_attributions).length > 0 && (
         <div className="pt-2 border-t border-slate-800">
           <button
             onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
-            className="text-[10px] font-mono text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors"
+            className="text-[10px] font-mono text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors cursor-pointer"
           >
             <span>{showTechnicalDetails ? '▼' : '▶'}</span>
             <span>
               {showTechnicalDetails
-                ? 'Hide SHAP Attribution Impact Meter'
-                : 'View SHAP Multi-Factor Impact Meter'}
+                ? 'Hide Factor Impact Balance Meter'
+                : 'View Detailed Factor Impact Breakdown'}
             </span>
           </button>
 
           {showTechnicalDetails && (
             <div className="mt-3 p-3.5 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3 animate-fadeIn">
               <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
-                <span>FACTOR ATTRIBUTION (MARGINAL CONTRIBUTION RELATIVE TO BASELINE)</span>
+                <span>FACTOR IMPACT (SCORE CONTRIBUTION RELATIVE TO BASELINE)</span>
                 <span>Baseline: {explanation.baseline_expected_score || 72.0} pts</span>
               </div>
 
@@ -257,7 +257,7 @@ export const AiExplainabilityCard: React.FC<AiExplainabilityCardProps> = ({
               </div>
 
               <p className="text-[10px] text-slate-500 font-mono italic">
-                Attribution calculated using SHAP (Shapley Additive exPlanations) across 6 weighted evaluation dimensions.
+                Contribution calculated across 6 weighted evaluation dimensions.
               </p>
             </div>
           )}
@@ -268,7 +268,7 @@ export const AiExplainabilityCard: React.FC<AiExplainabilityCardProps> = ({
       {explanation.plain_language_narrative && (
         <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 text-[11px] text-slate-300 leading-relaxed">
           <span className="font-bold text-slate-400 block text-[10px] font-mono uppercase mb-0.5">
-            Dossier Narrative
+            Evaluation Summary Note
           </span>
           {explanation.plain_language_narrative}
         </div>

@@ -182,7 +182,7 @@ export const CompanyProfileEditor: React.FC = () => {
     if (res.success) {
       setNewDocName('');
       setNewDocValidUntil('');
-      setStatusMessage({ type: 'success', text: 'Document uploaded and SHA-256 integrity token recorded.' });
+      setStatusMessage({ type: 'success', text: 'Document uploaded and verification token recorded.' });
       loadProfile();
     } else {
       setStatusMessage({ type: 'error', text: res.error?.message || 'Document registration failed.' });
@@ -661,9 +661,9 @@ export const CompanyProfileEditor: React.FC = () => {
         <div className="card-glass p-6 space-y-6 text-xs">
           <div className="flex justify-between items-center border-b border-slate-800 pb-3">
             <div>
-              <h4 className="text-sm font-bold text-slate-200 font-mono">Cryptographic Document Vault</h4>
+              <h4 className="text-sm font-bold text-slate-200 font-mono">Verified Document Vault</h4>
               <p className="text-[11px] text-slate-400">
-                Tamper-evident verification repository. All compliance documents are SHA-256 hash verified.
+                Secure verification repository. All compliance documents are digitally verified and sealed.
               </p>
             </div>
           </div>
@@ -707,7 +707,7 @@ export const CompanyProfileEditor: React.FC = () => {
                   disabled={isUploadingDoc}
                   className="w-full py-2 px-3 rounded-lg bg-procure-600 hover:bg-procure-500 text-white font-semibold font-mono transition-colors"
                 >
-                  {isUploadingDoc ? 'Hashing...' : 'Upload & Hash'}
+                  {isUploadingDoc ? 'Uploading...' : 'Upload & Verify'}
                 </button>
               </div>
             </div>
@@ -742,7 +742,7 @@ export const CompanyProfileEditor: React.FC = () => {
                   </div>
 
                   <div className="pt-2 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between text-[10px] font-mono text-slate-500">
-                    <span className="truncate max-w-md">SHA-256: {doc.sha256_hash}</span>
+                    <span className="truncate max-w-md">Verification Token: {doc.sha256_hash ? doc.sha256_hash.slice(0, 16) + '...' : 'Verified'}</span>
                     <span>Added: {new Date(doc.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>

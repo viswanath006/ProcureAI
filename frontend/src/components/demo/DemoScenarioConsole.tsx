@@ -76,7 +76,7 @@ export const DemoScenarioConsole: React.FC = () => {
             </div>
 
             <div className="pt-2 border-t border-gray-100 flex flex-col sm:flex-row justify-between sm:items-center gap-1 text-[10px]">
-              <span className="text-gray-400 font-semibold uppercase tracking-wider">SHA-256 INTEGRITY HASH:</span>
+              <span className="text-gray-400 font-semibold uppercase tracking-wider">SECURITY VERIFICATION TOKEN:</span>
               <span className="text-gray-700 bg-gray-50 px-2 py-0.5 rounded border border-gray-200 truncate max-w-full sm:max-w-[340px] font-medium">
                 {scenario2Override.integrityHash}
               </span>
@@ -84,7 +84,7 @@ export const DemoScenarioConsole: React.FC = () => {
           </div>
 
           <div className="p-3 rounded-lg bg-amber-100/60 border border-amber-200 text-xs text-amber-800">
-            <strong>Anti-Bias Policy:</strong> This event is archived in the cryptographic ledger as a potential governance-risk pattern for supervisory review. The system strictly avoids making unsupported accusations of corruption.
+            <strong>Fairness Policy:</strong> This event is archived in the permanent audit record as an administrative review pattern. The system strictly avoids making unsupported accusations of misconduct.
           </div>
         </div>
       )}

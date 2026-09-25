@@ -121,11 +121,11 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
     const res = await api.runSyntheticBenchmarkDemo(tenderId, weights);
     setIsLoading(false);
     if (res.success) {
-      setSuccess('Synthetic Benchmark demonstration evaluated successfully!');
+      setSuccess('Demonstration evaluation completed successfully!');
       loadRecommendations();
       if (onEvaluationComplete) onEvaluationComplete();
     } else {
-      setError(res.error?.message || 'Failed to run synthetic benchmark demo');
+      setError(res.error?.message || 'Failed to run evaluation demo');
     }
   };
 
@@ -218,7 +218,7 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                 <span className="text-procure-400">🤖</span> Multi-Criteria Evaluation Engine
               </h3>
               <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-procure-500/20 text-procure-300 border border-procure-500/30">
-                PHASE 7
+                EVALUATION
               </span>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700">
                 {tenderStatus}
@@ -255,10 +255,10 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                 <button
                   onClick={handleRunSyntheticBenchmark}
                   disabled={isLoading}
-                  className="px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white text-[11px] font-semibold transition-all shadow-md shadow-indigo-600/20 disabled:opacity-50 flex items-center gap-1.5"
-                  title={`Benchmark evaluation using verified ${effectiveDepartment} contractors`}
+                  className="px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white text-[11px] font-semibold transition-all shadow-md shadow-indigo-600/20 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                  title={`Test evaluation using verified ${effectiveDepartment} contractors`}
                 >
-                  <span>🧪</span> Benchmark Sector
+                  <span>🧪</span> Run Demo Evaluation
                 </button>
 
                 <button
@@ -532,10 +532,10 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
           <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-xl">
             📊
           </div>
-          <h4 className="text-sm font-bold text-slate-200">No Evaluation Dossier Recorded</h4>
+          <h4 className="text-sm font-bold text-slate-200">No Evaluations Recorded</h4>
           <p className="text-xs text-slate-400 max-w-md mx-auto">
             Run the AI Evaluation on submitted eligible bids, or launch the{' '}
-            <strong className="text-indigo-400">Synthetic Benchmark Demo</strong> to test multi-factor weighted scoring.
+            <strong className="text-indigo-400">Sample Evaluation Demo</strong> to test multi-factor weighted scoring.
           </p>
         </div>
       ) : (
@@ -545,7 +545,7 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
               Evaluated Bidder Rankings ({recommendations.length})
             </h4>
             <span className="text-[10px] text-slate-500 font-mono">
-              Model: {evaluationData?.evaluation?.model_name || 'procureai-multifactor-v1.7'}
+              Engine: {evaluationData?.evaluation?.model_name || 'ProcureAI Evaluation Engine'}
             </span>
           </div>
 
@@ -592,7 +592,7 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                           </span>
                           {r.is_synthetic && (
                             <span className="text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-800 text-slate-400 border border-slate-700">
-                              SYNTHETIC
+                              SAMPLE DEMO
                             </span>
                           )}
                         </div>
@@ -603,7 +603,7 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                     </div>
 
                     <div className="text-right font-mono">
-                      <span className="text-[10px] text-slate-500 block uppercase">Composite Score</span>
+                      <span className="text-[10px] text-slate-500 block uppercase">Total Score</span>
                       <span
                         className={`text-xl font-bold ${
                           r.rank === 1 ? 'text-emerald-400' : 'text-slate-200'
@@ -632,7 +632,7 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                         />
                       </div>
                       <span className="text-[9px] text-slate-500 block font-mono text-right">
-                        Raw: {price ? Math.round(price.raw_score) : 0}/100
+                        Base: {price ? Math.round(price.raw_score) : 0}/100
                       </span>
                     </div>
 
@@ -759,17 +759,17 @@ export const AiEvaluationView: React.FC<AiEvaluationViewProps> = ({
                       ))}
                     </div>
 
-                    {/* XAI Explainability Toggle */}
+                    {/* Explainability Toggle */}
                     <div className="pt-2 border-t border-slate-800/80">
                       <button
                         onClick={() => setExpandedXaiBidId(expandedXaiBidId === r.id ? null : r.id)}
-                        className="text-[11px] font-mono text-procure-400 hover:text-procure-300 flex items-center gap-1.5 transition-colors font-semibold"
+                        className="text-[11px] font-mono text-procure-400 hover:text-procure-300 flex items-center gap-1.5 transition-colors font-semibold cursor-pointer"
                       >
                         <span>💡</span>
                         <span>
                           {expandedXaiBidId === r.id
-                            ? 'Hide Explainability Dossier'
-                            : `Why did the AI score ${r.company_name}? (View XAI Dossier)`}
+                            ? 'Hide Score Breakdown'
+                            : `Why did the AI score ${r.company_name}? (View Score Details)`}
                         </span>
                       </button>
 

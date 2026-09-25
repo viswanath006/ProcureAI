@@ -67,11 +67,11 @@ export const EligibilityReportModal: React.FC<EligibilityReportModalProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-xl">🛡️</span>
               <h3 className="text-lg font-bold text-slate-100 font-mono">
-                Bidder Eligibility Screening Console
+                Bidder Eligibility Verification
               </h3>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Deterministic qualification gate executed BEFORE AI ranking. Disqualified bids are excluded from scoring models.
+              Automatic qualification check executed before AI evaluation. Only eligible bidders proceed to scoring.
             </p>
           </div>
           <button

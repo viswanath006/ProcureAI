@@ -929,3 +929,353 @@ async function issueTokenPair(
     refreshExpiresMs,
   };
 }
+
+// ─── Bidder Company Resolution ────────────────────────────────────────────────
+
+export interface ResolvedCompanyProfile {
+  id: string;
+  registration_number: string;
+  name: string;
+  legal_name: string;
+  tax_id: string;
+  industry: string;
+  address_line1: string;
+  city: string;
+  state: string;
+  country: string;
+  postal_code: string;
+  website: string;
+  annual_turnover_paisa: number;
+  net_worth_paisa: number;
+  years_in_operation: number;
+  employee_count: number;
+  completed_projects_count: number;
+  completed_projects: any[];
+  technical_capabilities: string[];
+  financial_capacity: any;
+  compliance_info: any;
+  status: string;
+}
+
+export function resolveBidderCompany(email?: string, companyId?: string | null): ResolvedCompanyProfile {
+  const lowerEmail = (email || '').toLowerCase().trim();
+  const cid = companyId || '00000000-0000-0000-0000-000000000101';
+
+  // 1. TCS / Tata Consultancy Services
+  if (lowerEmail.includes('tcs') || cid === '00000000-0000-0000-0000-000000000106') {
+    return {
+      id: cid,
+      registration_number: 'CIN-L22210MH1995PLC084781',
+      name: 'Tata Consultancy Services (TCS Public Sector)',
+      legal_name: 'Tata Consultancy Services Limited',
+      tax_id: '27AAACT2727Q1ZW',
+      industry: 'Information Technology & Cloud Infrastructure',
+      address_line1: 'TCS House, Raveline Street, Fort',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      country: 'India',
+      postal_code: '400001',
+      website: 'https://www.tcs.com',
+      annual_turnover_paisa: 24089300000000,
+      net_worth_paisa: 9840000000000,
+      years_in_operation: 56,
+      employee_count: 601546,
+      completed_projects_count: 42,
+      completed_projects: [
+        { project_name: 'Passport Seva Project (PSP Phase 2)', client: 'Ministry of External Affairs', value_cr: 2026, completion_year: 2024 },
+        { project_name: 'National Government Services Portal Cloud Stack', client: 'NIC / MeitY', value_cr: 850, completion_year: 2023 },
+        { project_name: 'Core Banking Infrastructure Modernization', client: 'State Bank of India', value_cr: 1450, completion_year: 2022 },
+      ],
+      technical_capabilities: [
+        'Quantum-Resilient Cloud Architecture',
+        'CMMI Level 5 Software Development Lifecycle',
+        'ISO 27001 / SOC 2 Type II Certified Security Operations',
+        'Hyperscale Tier-4 Data Center Engineering',
+      ],
+      financial_capacity: {
+        bank_solvency_cr: 5000,
+        audited_financial_years: ['2023-24', '2024-25', '2025-26'],
+        working_capital_cr: 4200,
+      },
+      compliance_info: {
+        gst_status: 'ACTIVE_COMPLIANT',
+        pan_verified: true,
+        pf_esi_registration: true,
+        debarment_status: 'CLEAR',
+      },
+      status: 'verified',
+    };
+  }
+
+  // 2. L&T (Larsen & Toubro)
+  if (lowerEmail.includes('lnt') || lowerEmail.includes('larson')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-L99999MH1946PLC004768',
+      name: 'Larsen & Toubro Ltd (L&T Infrastructure)',
+      legal_name: 'Larsen & Toubro Limited',
+      tax_id: '27AAACL0149P1ZK',
+      industry: 'Heavy Civil Infrastructure & Engineering',
+      address_line1: 'L&T House, Ballard Estate',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      country: 'India',
+      postal_code: '400001',
+      website: 'https://www.larsentoubro.com',
+      annual_turnover_paisa: 18334100000000,
+      net_worth_paisa: 7500000000000,
+      years_in_operation: 86,
+      employee_count: 55000,
+      completed_projects_count: 35,
+      completed_projects: [
+        { project_name: 'Mumbai Trans Harbour Link (MTHL Package 1)', client: 'MMRDA', value_cr: 7637, completion_year: 2024 },
+        { project_name: 'Western Dedicated Freight Corridor (WDFC)', client: 'DFCCIL', value_cr: 4500, completion_year: 2023 },
+      ],
+      technical_capabilities: [
+        'Precast Segmental Bridge Construction',
+        'Tunnel Boring Machine (TBM) Underground Operations',
+        'Mega High-Speed Rail Viaduct Engineering',
+      ],
+      financial_capacity: { bank_solvency_cr: 8000, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 6000 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 3. Dilip Buildcon Limited (DBL)
+  if (lowerEmail.includes('dilip')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-L45201MP2006PLC018689',
+      name: 'Dilip Buildcon Limited (DBL)',
+      legal_name: 'Dilip Buildcon Limited',
+      tax_id: '23AABCD1984Q1Z2',
+      industry: 'Highways, Expressways & Bridges EPC',
+      address_line1: 'Plot No. 5, Inside Govind Narayan Singh Gate, Chuna Bhatti, Kolar Road',
+      city: 'Bhopal',
+      state: 'Madhya Pradesh',
+      country: 'India',
+      postal_code: '462016',
+      website: 'https://www.dilipbuildcon.com',
+      annual_turnover_paisa: 1053700000000,
+      net_worth_paisa: 460000000000,
+      years_in_operation: 19,
+      employee_count: 38000,
+      completed_projects_count: 28,
+      completed_projects: [
+        { project_name: 'Delhi-Mumbai Expressway Package 12', client: 'NHAI', value_cr: 1250, completion_year: 2024 },
+        { project_name: 'Zuari Cable-Stayed Bridge', client: 'MoRTH', value_cr: 1400, completion_year: 2023 },
+      ],
+      technical_capabilities: ['Automated Paver Machine Deployment', 'Hybrid Annuity Model (HAM) Project Delivery'],
+      financial_capacity: { bank_solvency_cr: 1200, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 850 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 4. Shapoorji Pallonji
+  if (lowerEmail.includes('shapoorji')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-U45200MH1943PTC003812',
+      name: 'Shapoorji Pallonji & Company Pvt Ltd',
+      legal_name: 'Shapoorji Pallonji and Company Private Limited',
+      tax_id: '27AABCS2209F1Z1',
+      industry: 'Mega Structures & Civil Construction',
+      address_line1: 'SP Centre, 41/44 Minoo Desai Marg, Colaba',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      country: 'India',
+      postal_code: '400005',
+      website: 'https://www.shapoorjipallonji.com',
+      annual_turnover_paisa: 2800000000000,
+      net_worth_paisa: 1200000000000,
+      years_in_operation: 159,
+      employee_count: 40000,
+      completed_projects_count: 30,
+      completed_projects: [{ project_name: 'Atal Tunnel Approaches', client: 'BRO', value_cr: 800, completion_year: 2021 }],
+      technical_capabilities: ['High-Altitude Structural Engineering', 'Heritage Renovation & Seismic Retrofitting'],
+      financial_capacity: { bank_solvency_cr: 2500, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 1800 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 5. Titagarh Rail Systems
+  if (lowerEmail.includes('titagarh')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-L72200WB1997PLC084823',
+      name: 'Titagarh Rail Systems Limited',
+      legal_name: 'Titagarh Rail Systems Limited',
+      tax_id: '19AAACT5588M1Z8',
+      industry: 'Rail Rolling Stock & Metro Infrastructure',
+      address_line1: 'Titagarh Towers, 756 Anandapur',
+      city: 'Kolkata',
+      state: 'West Bengal',
+      country: 'India',
+      postal_code: '700107',
+      website: 'https://www.titagarh.in',
+      annual_turnover_paisa: 278000000000,
+      net_worth_paisa: 110000000000,
+      years_in_operation: 27,
+      employee_count: 4500,
+      completed_projects_count: 14,
+      completed_projects: [{ project_name: 'Pune Metro Aluminum Coaches', client: 'MahaMetro', value_cr: 1125, completion_year: 2023 }],
+      technical_capabilities: ['Aluminum Rail Coach Fabrication', 'CBTC Train Automation Integration'],
+      financial_capacity: { bank_solvency_cr: 600, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 400 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 6. Bharat Electronics Limited (BEL)
+  if (lowerEmail.includes('bel')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-L32309KA1954GOI000787',
+      name: 'Bharat Electronics Limited (BEL)',
+      legal_name: 'Bharat Electronics Limited',
+      tax_id: '29AAACB1864Q1ZT',
+      industry: 'Defence Electronics, Radar & Aerospace Systems',
+      address_line1: 'Outer Ring Road, Nagavara',
+      city: 'Bengaluru',
+      state: 'Karnataka',
+      country: 'India',
+      postal_code: '560045',
+      website: 'https://bel-india.in',
+      annual_turnover_paisa: 1736200000000,
+      net_worth_paisa: 1400000000000,
+      years_in_operation: 70,
+      employee_count: 9000,
+      completed_projects_count: 22,
+      completed_projects: [{ project_name: 'Akash Missile Weapon System Radar Integration', client: 'DRDO / MoD', value_cr: 2400, completion_year: 2024 }],
+      technical_capabilities: ['Radars and Sensor Network Deployment', 'C4I Battlefield System Integration'],
+      financial_capacity: { bank_solvency_cr: 3000, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 2500 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 7. Adani Green Energy Limited
+  if (lowerEmail.includes('adani')) {
+    return {
+      id: cid,
+      registration_number: 'CIN-L40106GJ2015PLC082007',
+      name: 'Adani Green Energy Limited',
+      legal_name: 'Adani Green Energy Limited',
+      tax_id: '24AABCA7253H1Z4',
+      industry: 'Renewable Power, Solar & Grid Transmission',
+      address_line1: 'Adani Corporate House, Shantigram, SG Highway',
+      city: 'Ahmedabad',
+      state: 'Gujarat',
+      country: 'India',
+      postal_code: '382421',
+      website: 'https://www.adanigreenenergy.com',
+      annual_turnover_paisa: 779200000000,
+      net_worth_paisa: 620000000000,
+      years_in_operation: 10,
+      employee_count: 3200,
+      completed_projects_count: 18,
+      completed_projects: [{ project_name: 'Khavda Renewable Energy Park (2 GW)', client: 'SECI', value_cr: 4800, completion_year: 2024 }],
+      technical_capabilities: ['Utility Scale Solar Grid Synchronization', 'Wind-Solar Hybrid Generation Systems'],
+      financial_capacity: { bank_solvency_cr: 3500, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 2200 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 8. Other known demo accounts in DEMO_FALLBACK_USERS
+  const fallbackUser = DEMO_FALLBACK_USERS[lowerEmail];
+  if (fallbackUser && fallbackUser.role_code === 'BIDDER') {
+    const cleanName = fallbackUser.full_name.replace(/ Bid Representative$/i, '').trim();
+    return {
+      id: cid,
+      registration_number: `CIN-U45200MH2020PLC${cleanName.slice(0, 4).toUpperCase()}`,
+      name: cleanName,
+      legal_name: `${cleanName} Private Limited`,
+      tax_id: '27AABCA9999F1Z9',
+      industry: 'Government Procurement Contractor',
+      address_line1: 'Corporate Tower, Commercial Area',
+      city: 'New Delhi',
+      state: 'Delhi',
+      country: 'India',
+      postal_code: '110001',
+      website: 'https://procureai.gov.in',
+      annual_turnover_paisa: 50000000000,
+      net_worth_paisa: 20000000000,
+      years_in_operation: 12,
+      employee_count: 250,
+      completed_projects_count: 8,
+      completed_projects: [{ project_name: 'Institutional Facility Development', client: 'State Govt', value_cr: 75, completion_year: 2023 }],
+      technical_capabilities: ['ISO 9001 Certified Quality Management', 'Full EPC Delivery Capability'],
+      financial_capacity: { bank_solvency_cr: 50, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 35 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 9. Registered persistent users fallback
+  const registeredUsers = loadLocalUsers();
+  const registered = registeredUsers.get(lowerEmail);
+  if (registered && registered.role_code === 'BIDDER') {
+    const regName = registered.full_name.replace(/ Bid Representative$/i, '').trim();
+    return {
+      id: cid,
+      registration_number: `CIN-U45200DL2022PLC${regName.slice(0, 4).toUpperCase()}`,
+      name: regName,
+      legal_name: `${regName} Limited`,
+      tax_id: '07AABCD1111Q1Z5',
+      industry: 'Commercial Procurement Contractor',
+      address_line1: 'Registered Commercial Office',
+      city: 'New Delhi',
+      state: 'Delhi',
+      country: 'India',
+      postal_code: '110001',
+      website: 'https://procureai.gov.in',
+      annual_turnover_paisa: 45000000000,
+      net_worth_paisa: 15000000000,
+      years_in_operation: 8,
+      employee_count: 120,
+      completed_projects_count: 4,
+      completed_projects: [{ project_name: 'Public Infrastructure Package', client: 'PWD', value_cr: 35, completion_year: 2024 }],
+      technical_capabilities: ['Quality Assurance Standard Compliance'],
+      financial_capacity: { bank_solvency_cr: 40, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 25 },
+      compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+      status: 'verified',
+    };
+  }
+
+  // 10. Default Fallback: Apex Infra Buildtech Ltd
+  return {
+    id: cid,
+    registration_number: 'CIN-U45200MH2012PLC123456',
+    name: 'Apex Infra Buildtech Ltd',
+    legal_name: 'Apex Infrastructure & Civil Buildtech Private Limited',
+    tax_id: '27AABCA1234F1Z9',
+    industry: 'Civil Infrastructure & Construction',
+    address_line1: 'B-402, Nariman Point Commercial Tower',
+    city: 'Mumbai',
+    state: 'Maharashtra',
+    country: 'India',
+    postal_code: '400021',
+    website: 'https://apexbuildtech.dev',
+    annual_turnover_paisa: 75000000000,
+    net_worth_paisa: 25000000000,
+    years_in_operation: 14,
+    employee_count: 350,
+    completed_projects_count: 5,
+    completed_projects: [
+      { project_name: 'Metro Line Elevated Viaduct Package 4', client: 'MMRDA', value_cr: 120, completion_year: 2024 },
+      { project_name: 'Model Higher Secondary School Complex', client: 'PWD Maharashtra', value_cr: 45, completion_year: 2023 },
+    ],
+    technical_capabilities: [
+      'Prefabricated Precast Concrete Structures',
+      'Seismic Zone IV Compliant Structural Engineering',
+      'BIM Level 2 Digital Modeling',
+    ],
+    financial_capacity: { bank_solvency_cr: 50, audited_financial_years: ['2023-24', '2024-25', '2025-26'], working_capital_cr: 35 },
+    compliance_info: { gst_status: 'ACTIVE_COMPLIANT', pan_verified: true, pf_esi_registration: true, debarment_status: 'CLEAR' },
+    status: 'verified',
+  };
+}

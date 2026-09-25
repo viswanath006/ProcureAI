@@ -30,6 +30,23 @@ const LIFECYCLE_STAGES = [
   'COMPLETED',
 ];
 
+const STAGE_LABELS: Record<string, string> = {
+  DRAFT: 'Draft Created',
+  PUBLISHED: 'Published',
+  OPEN: 'Bidding Open',
+  CLOSED: 'Bidding Closed',
+  BIDS_REVEALED: 'Bids Unsealed',
+  UNDER_EVALUATION: 'Under Review',
+  RECOMMENDATION_READY: 'Scores Ready',
+  DECISION_MADE: 'Award Decided',
+  COMPLETED: 'Completed',
+};
+
+const formatStage = (st: string) => {
+  if (!st) return '';
+  return STAGE_LABELS[st.toUpperCase()] || st.replace(/_/g, ' ');
+};
+
 export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
   tenderId,
   isOpen,
@@ -272,7 +289,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   }`}
                 >
                   <div className="text-[9px] opacity-70 mb-0.5">0{idx + 1}</div>
-                  <div className="truncate font-medium text-[10px]">{stage.replace('_', ' ')}</div>
+                  <div className="truncate font-medium text-[10px]">{formatStage(stage)}</div>
                 </div>
               );
             })}
@@ -290,7 +307,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                 <span>Next Step</span>
               </span>
               <p className="text-[11px] text-gray-500 mt-0.5">
-                Current status is <strong className="text-blue-600">[{currentStatus}]</strong>. Select an action below.
+                Current status is <strong className="text-blue-600">[{formatStage(currentStatus)}]</strong>. Select an action below.
               </p>
             </div>
 
@@ -455,7 +472,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                   Winning Bidder: <strong className="text-emerald-950 font-bold">{data?.tender?.awarded_company_name || data?.tender?.decision?.selected_bidder || 'Winning Bidder'}</strong>
                   {data?.tender?.decision?.integrity_hash && (
                     <span className="ml-2 font-mono text-[10px] text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
-                      SHA-256: {data.tender.decision.integrity_hash.slice(0, 16)}...
+                      Security Token: {data.tender.decision.integrity_hash.slice(0, 16)}...
                     </span>
                   )}
                 </span>
@@ -465,7 +482,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
               onClick={() => setIsDecisionModalOpen(true)}
               className="px-3.5 py-1.5 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-medium shadow-xs transition-colors shrink-0"
             >
-              View Decision Dossier
+              View Decision Details
             </button>
           </div>
         )}
@@ -755,7 +772,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                     <span>Companies Who Have Bidded ({data?.unsealedBids?.length || 0})</span>
                   </h4>
                   <p className="text-[11px] text-gray-500">
-                    Review candidate company submissions, verify cryptographic seals, and select for official award.
+                    Review candidate company submissions, verify sealed bids, and select for official award.
                   </p>
                 </div>
 
@@ -841,7 +858,7 @@ export const TenderDetailModal: React.FC<TenderDetailModalProps> = ({
                               <span>•</span>
                               <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
                                 <svg className="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                                <span>AES-256 Sealed</span>
+                                <span>Securely Sealed</span>
                               </span>
                             </div>
 

@@ -74,11 +74,11 @@ export const EligibilityPreCheckModal: React.FC<EligibilityPreCheckModalProps> =
             <div className="flex items-center gap-2">
               <span className="text-xl">🔍</span>
               <h3 className="text-lg font-bold text-slate-100 font-mono">
-                Bidder Qualification Self-Screening Gate
+                Bidder Qualification Check
               </h3>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Verify your company credentials against mandatory eligibility gates before cryptographic proposal submission.
+              Verify your company credentials against mandatory eligibility rules before submitting your sealed proposal.
             </p>
           </div>
           <button
@@ -134,7 +134,7 @@ export const EligibilityPreCheckModal: React.FC<EligibilityPreCheckModalProps> =
           {isLoading ? (
             <div className="p-8 text-center space-y-2 animate-pulse">
               <div className="w-6 h-6 rounded-full border-2 border-procure-500 border-t-transparent animate-spin mx-auto" />
-              <p className="text-xs text-slate-400 font-mono">Running automated qualification algorithms...</p>
+              <p className="text-xs text-slate-400 font-mono">Verifying bidder qualifications...</p>
             </div>
           ) : report ? (
             <div className="space-y-4">

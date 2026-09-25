@@ -14,6 +14,8 @@ import {
 import { evaluateBidderEligibility } from '../services/eligibility.engine';
 import { ValidationError, ForbiddenError, NotFoundError } from '../utils/errors';
 import { recordChainEvent } from '../services/auditChain.service';
+import { resolveBidderCompany } from '../services/auth.service';
+import { loadLocalTenders } from './tender.controller';
 
 // ─── Local Persistent Store for Dev / Offline Database Fallback ──────────────
 const DATA_DIR = path.resolve(__dirname, '../../data');
@@ -93,7 +95,10 @@ export async function submitSealedBid(
     if (!user) {
       throw new ForbiddenError('Authentication required to submit bids.');
     }
-    const effectiveCompanyId = user.companyId || '00000000-0000-0000-0000-000000000101';
+    const userCompany = resolveBidderCompany(user.email, user.companyId);
+    const effectiveCompanyId = (user.roleCode === 'BIDDER')
+      ? userCompany.id
+      : (user.companyId || userCompany.id);
 
     const {
       tenderId,
@@ -137,14 +142,23 @@ export async function submitSealedBid(
     }
 
     if (!tender) {
-      tender = {
-        id: tenderId,
-        reference_number: 'PROC-2026-EDU-SCH-01',
-        title: 'Government School Infrastructure Project - Phase 2',
-        status: 'OPEN',
-        submission_start_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        submission_deadline_at: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-      };
+      const localTender = loadLocalTenders().find((t: any) => t.id === tenderId);
+      if (localTender) {
+        tender = {
+          ...localTender,
+          submission_start_at: localTender.submission_start_at || new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          submission_deadline_at: localTender.submission_deadline_at || localTender.submission_deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        };
+      } else {
+        tender = {
+          id: tenderId,
+          reference_number: 'PROC-2026-EDU-SCH-01',
+          title: 'Government School Infrastructure Project - Phase 2',
+          status: 'OPEN',
+          submission_start_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          submission_deadline_at: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+        };
+      }
     }
 
     const now = new Date();
@@ -214,9 +228,10 @@ export async function submitSealedBid(
       // Database offline mode - fallback company
     }
 
-    const resolvedCompanyName = (companyName && typeof companyName === 'string' && companyName.trim())
-      ? companyName.trim()
-      : (company?.name || 'Apex Infra Buildtech Ltd');
+    // Enforce locked company identity: a bidder cannot submit on behalf of a different company
+    const resolvedCompanyName = (user.roleCode === 'BIDDER')
+      ? userCompany.name
+      : ((companyName && typeof companyName === 'string' && companyName.trim()) || userCompany.name);
 
     if (!company) {
       company = {
@@ -631,6 +646,7 @@ export async function getTenderBidsForOfficer(
       if (compAIdx >= 0) {
         mergedBids[compAIdx] = {
           ...mergedBids[compAIdx],
+          company_name: latest.company_name || mergedBids[compAIdx].company_name,
           bid_reference: latest.bid_reference,
           amount_inr: latest.amount_inr,
           completion_days: latest.completion_days,
